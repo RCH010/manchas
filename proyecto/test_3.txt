@@ -1,0 +1,26 @@
+let valorNumerico:int = 12;
+
+function sumTwoNumbers: int(firstNumber: int, secondNumber: int) {
+  return firstNumber + secondNumber;
+}
+
+function multiplyTwoNumbers: int(firstNumber: int, secondNumber: int) {
+  let result: int;
+  result = firstNumber * secondNumber;
+  return result;
+}
+
+function divideTwoNumbers: float() {
+  
+}
+
+
+main () {
+  let strValue: string;
+  read(strValue);
+  if(funciona(strValue)) {
+    print("Si funciona");
+  } else {
+    print(no, no funciona);
+  }
+}
