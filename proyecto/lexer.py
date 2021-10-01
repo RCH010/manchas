@@ -7,6 +7,7 @@ import re
 # Define reserved words
 
 keywords={
+    'program': 'PROGRAM',
     # === TYPES ===
     'let': 'LET',
     'int': 'INT',
@@ -46,7 +47,7 @@ keywords={
 tokens = [
     # Literals
     'ID', 'CTEF', 'CTEI', 'CTEC', 'CTESTRING',
-    # Delimeters , : ; ( ) [ ]
+    # Delimeters , : ; ( ) [ ] { }
     'COMMA', 'COLON', 'SEMI',
     'LPAREN', 'RPAREN',
     'LBRACKET', 'RBRACKET',
