@@ -105,7 +105,9 @@ t_DIVIDE = r'/'
 
 # Literals
 t_CTESTRING = r'\".*\"'
-t_CTECHAR = r'\'(.{1})\''
+t_CTEC = r'\'(.{1})\''
+# t_TRUE = r'[tT][rR][uU][eE]'
+# t_FALSE = r'[fF][aA][lL][sS][eE]'
 
 def t_newline(t):
     r'\n+'

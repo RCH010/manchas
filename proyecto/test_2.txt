@@ -1,8 +1,8 @@
+program test2;
 let valorNumerico:int;
-valorNumerico = 12;
 
-function funciona: bool(siFunciona:string) {
-  if(siFunciona == "yes") {
+function funciona: bool(siFunciona:int) {
+  if(siFunciona == 2) {
     return true;
   } else {
     return false;
@@ -10,11 +10,11 @@ function funciona: bool(siFunciona:string) {
 }
 
 main () {
-  let strValue: string;
   read(strValue);
-  if(funciona(strValue)) {
+  if (strValue < 4) {
     print("Si funciona");
   } else {
     print("no, no funciona");
   }
+  let strValue: float;
 }
