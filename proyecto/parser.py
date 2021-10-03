@@ -50,15 +50,16 @@ def p_params(p):
         | ID COLON type'''
 
 def p_statements(p):
-    '''statements : assignment
-        | condition
-        | writing
-        | reading
-        | repetition
-        | return
-        | function_call
-        | expression
-        | special_functions'''
+    '''statements : assignment statements1
+        | vars statements1
+        | condition statements1
+        | writing statements1
+        | reading statements1
+        | repetition statements1
+        | return statements1
+        | function_call statements1
+        | expression statements1
+        | special_functions statements1'''
 
 def p_special_functions(p):
     '''special_functions : mean
@@ -66,6 +67,10 @@ def p_special_functions(p):
         | mode
         | variance
         | standard_deviation'''
+
+def p_statements1(p):
+    '''statements1 : statements
+        | epsilon'''
 
 def p_assignment(p):
     '''assignment : ID EQUALS expression SEMI
@@ -149,7 +154,7 @@ def p_conditional_loop(p):
     '''conditional_loop : WHILE LPAREN expression RPAREN DO block'''
 
 def p_non_conditional_loop(p):
-    '''non_conditional_loop : FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN'''
+    '''non_conditional_loop : FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block'''
 
 def p_return(p):
     '''return : RETURN expression SEMI'''

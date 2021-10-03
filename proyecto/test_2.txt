@@ -10,11 +10,10 @@ function funciona: bool(siFunciona:int) {
 }
 
 main () {
-  read(strValue);
+  let thisVar:float;
   if (strValue < 4) {
     print("Si funciona");
   } else {
     print("no, no funciona");
   }
-  let strValue: float;
 }
