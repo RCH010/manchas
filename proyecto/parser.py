@@ -33,7 +33,7 @@ def p_type_1(p):
 
 def p_function(p):
     '''function : FUNCTION ID COLON return_type LPAREN params RPAREN block
-        | ID COLON return_type LPAREN RPAREN block'''
+        | FUNCTION ID COLON return_type LPAREN RPAREN block'''
 
 def p_main_block(p):
     '''main_block : MAIN LPAREN RPAREN block'''
