@@ -16,10 +16,12 @@ def p_program_1(p):
 # VARS
 def p_vars(p):
     '''vars : LET vars_prima_1'''
+    p[0] = ('let', p[1])
 
 def p_vars_prima_1(p):
     '''vars_prima_1 : ID COLON type SEMI
         | ID COMMA vars_prima_1'''
+    p[0] = (p[1], )
 
 def p_type(p):
     '''type : INT type_1
@@ -60,6 +62,8 @@ def p_statements(p):
         | function_call statements1
         | expression statements1
         | special_functions statements1'''
+    p[0] = (p[1], p[2])
+    evaluate(p[0])
 
 def p_special_functions(p):
     '''special_functions : mean
@@ -71,10 +75,15 @@ def p_special_functions(p):
 def p_statements1(p):
     '''statements1 : statements
         | epsilon'''
+    p[0] = p[1]
 
 def p_assignment(p):
     '''assignment : ID EQUALS expression SEMI
         | ID LBRACKET expression RBRACKET EQUALS expression SEMI'''
+    if(len(p) == 5):
+        p[0] = ('equals', p[1], p[3])
+    else:
+        p[0] = ('equals-array', p[1], p[3], p[6])
 
 def p_condition(p):
     '''condition : IF LPAREN expression RPAREN block
@@ -83,15 +92,20 @@ def p_condition(p):
 # expression
 def p_expression(p):
     '''expression : exp
-        | exp LT exp
+        | expression1
+    '''
+    p[0] = p[1]
+
+def p_expression1(p):
+    '''expression1 : exp LT exp
         | exp LE exp
         | exp GT exp
         | exp GE exp
         | exp EQ exp
         | exp NE exp
         | exp AND exp
-        | exp OR exp
-    '''
+        | exp OR exp'''
+    p[0] = (p[1], p[2], p[3])
 
 def p_exp(p):
     '''exp : term
@@ -194,5 +208,7 @@ def p_error(token):
     print(token)
     token.lexer.skip(1)
 
-
 parser = yacc.yacc()
+
+def evaluate(p):
+    print('Evaluate:', p)

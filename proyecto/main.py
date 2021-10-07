@@ -2,10 +2,11 @@ import sys
 from lexer import lexer
 from parser import parser
 
+
 def main(argv):
     f = open(f"{argv[1]}", "r")
     input = f.read()
-    res = parser.parse(input, debug=1)
+    res = parser.parse(input, debug=False)
     print(res)
 
 if __name__ == "__main__":

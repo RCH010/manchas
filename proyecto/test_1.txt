@@ -1,4 +1,6 @@
 program test;
+let algo: float;
 main () {
+  algo = 32.1;
   print("Hello world");
 }

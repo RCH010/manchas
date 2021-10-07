@@ -84,9 +84,6 @@ t_RBRACKET = r'\]'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 
-# Assignment
-t_EQUALS = r'='
-
 # Operators 
 t_LT = r'<'
 t_LE = r'<='
@@ -94,6 +91,9 @@ t_GT = r'>'
 t_GE = r'>='
 t_EQ = r'=='
 t_NE = r'!='
+
+# Assignment
+t_EQUALS = r'='
 
 t_OR = r'\|\|'
 t_AND = r'&&'
@@ -116,20 +116,29 @@ def t_newline(t):
 def t_ID(t):
     r'[A-Za-z]([A-Za-z]|[0-9])*'
     t.type = keywords.get(t.value, 'ID')
+    # print(t.type, t.value)
     return t
 
 def t_CTEF(t):
     r'[0-9]+(\.[0-9]+)'
-    t.value = float(t.value)
+    try:
+        t.value = float(t.value)
+    except ValueError:
+        print("Invalid float value", t.value)
+        t.value = 0
     return t
 
 def t_CTEI(t):
     r'[0-9]+'
-    t.value = int(t.value)
+    try:
+        t.value = int(t.value)
+    except ValueError:
+        print("Invalid Int value", t.value)
+        t.value = 0
     return t
+
 # Tokens error
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
-
 lexer = lex.lex()
