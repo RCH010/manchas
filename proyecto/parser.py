@@ -1,11 +1,20 @@
 import ply.yacc as yacc
 from lexer import tokens, keywords
 
-symbol_table = {}
+# symbol_table = {
+#     "mi_variable": 
+# }
+
+# procedimientos = {
+#     "global": Class procedimientos
+#     ... "mi_funcion": class procedimientos
+
+# }
 
 # PROGRAM
 def p_program(p):
     '''program : PROGRAM ID SEMI program_1'''
+    print('esto')
     p[0] = 'correct'
 
 def p_program_1(p):
@@ -18,16 +27,20 @@ def p_vars(p):
     '''vars : LET vars_prima_1'''
     p[0] = ('let', p[1])
 
+# var_1, var_2 : int;
+# var_1 : int;
 def p_vars_prima_1(p):
     '''vars_prima_1 : ID COLON type SEMI
         | ID COMMA vars_prima_1'''
-    p[0] = (p[1], )
+    print(p[1], p[3])
+    # añado la var a mi tabla de variables
 
 def p_type(p):
     '''type : INT type_1
         | FLOAT type_1
         | CHAR type_1
         | BOOL type_1'''
+    p[0] = int
 
 def p_type_1(p):
     '''type_1 : LBRACKET expression RBRACKET
@@ -53,7 +66,6 @@ def p_params(p):
 
 def p_statements(p):
     '''statements : assignment statements1
-        | vars statements1
         | condition statements1
         | writing statements1
         | reading statements1
