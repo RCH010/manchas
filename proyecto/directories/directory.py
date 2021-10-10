@@ -1,3 +1,5 @@
+import sys
+
 class Directory():
 
     def __init__(self):
@@ -9,5 +11,12 @@ class Directory():
     def getOne(self, id):
         if id not in self.dic:
             print (id, 'not in directory')
-            return 'Error'
+            sys.exit()
     
+    def print_directory_keys(self):
+        for key, value in self.dic.items():
+            print(key)
+
+    def print_directory(self):
+        for key, value in self.dic.items():
+            print(key, '->',value)
