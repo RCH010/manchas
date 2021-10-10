@@ -1,8 +1,10 @@
-program test;
-let algo: float;
-let dos: int;
+program nombreDeAlgunProgramaID;
 
-main () {
+let algo: float;
+
+
+main () 
+{
   algo = 32.1;
   dos = 1 + 1;
   print("Hello world");

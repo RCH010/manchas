@@ -1,7 +1,10 @@
 program test2;
 let valorNumerico:int;
 
-function funciona: bool(siFunciona:int) {
+function miSuperFuncion: bool(unvarParam:int)
+let varFuncion1: int;
+let varFuncion3: float;
+{
   if(siFunciona == 2) {
     return true;
   } else {
@@ -9,8 +12,15 @@ function funciona: bool(siFunciona:int) {
   }
 }
 
-main () {
-  let thisVar:float;
+function segundafuncion: int()
+let varSegundo: char;
+{
+  print("Hola mundo");
+}
+
+main () 
+let res: int;
+{
   if (strValue < 4) {
     print("Si funciona");
   } else {
