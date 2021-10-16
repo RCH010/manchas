@@ -1,5 +1,9 @@
 import sys
 
+'''
+Base class for a directory.
+Scopes class and vars class inherit from Directory
+'''
 class Directory():
 
     def __init__(self):

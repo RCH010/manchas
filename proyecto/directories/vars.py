@@ -2,6 +2,10 @@ import sys
 from utils import Data_types
 from directories.directory import Directory
 
+'''
+Vars directory, is used to manage all variables from a specific scope
+a instance of Vars is used on an instance of Scopes
+'''
 class Vars(Directory):
     def __init__(self, scope):
         super().__init__()
