@@ -47,8 +47,8 @@ Rule 41    statements1 -> statements
 Rule 42    statements1 -> epsilon
 Rule 43    assignment -> ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
 Rule 44    assignment -> ID LBRACKET expression RBRACKET EQUALS expression SEMI
-Rule 45    condition -> IF LPAREN expression RPAREN block
-Rule 46    condition -> IF LPAREN expression RPAREN block ELSE block
+Rule 45    condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+Rule 46    condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
 Rule 47    expression -> exp
 Rule 48    expression -> expression1 np_add_quadruple_logical
 Rule 49    expression -> expression0 np_add_quadruple_or_and
@@ -126,6 +126,9 @@ Rule 120   np_add_quadruple_times_div -> <empty>
 Rule 121   np_add_quadruple_logical -> <empty>
 Rule 122   np_add_quadruple_or_and -> <empty>
 Rule 123   np_assign_expression -> <empty>
+Rule 124   np_condition_gotof -> <empty>
+Rule 125   np_condition_end_gotof -> <empty>
+Rule 126   np_condition_goto_else -> <empty>
 
 Terminals, with rules where they appear
 
@@ -220,6 +223,9 @@ np_add_quadruple_times_div : 62
 np_add_satck_vars    : 9
 np_add_vars          : 8 25 26
 np_assign_expression : 43
+np_condition_end_gotof : 45 46
+np_condition_goto_else : 46
+np_condition_gotof   : 45 46
 np_create_global     : 1 2
 np_create_main_scope : 20 21
 np_create_new_scope  : 16 17 18 19
@@ -817,8 +823,8 @@ state 46
     (35) statements -> . special_functions statements1
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -1737,8 +1743,8 @@ state 70
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -1856,8 +1862,8 @@ state 71
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -1975,8 +1981,8 @@ state 72
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -2094,8 +2100,8 @@ state 73
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -2213,8 +2219,8 @@ state 74
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -2332,8 +2338,8 @@ state 75
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -2452,8 +2458,8 @@ state 76
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -2628,8 +2634,8 @@ state 77
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -2749,8 +2755,8 @@ state 78
     (105) epsilon -> .
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
-    (45) condition -> . IF LPAREN expression RPAREN block
-    (46) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> . IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (79) writing -> . PRINT LPAREN writing_1 RPAREN SEMI
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
@@ -2905,8 +2911,8 @@ state 79
 
 state 80
 
-    (45) condition -> IF . LPAREN expression RPAREN block
-    (46) condition -> IF . LPAREN expression RPAREN block ELSE block
+    (45) condition -> IF . LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> IF . LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
 
     LPAREN          shift and go to state 146
 
@@ -4463,8 +4469,8 @@ state 145
 
 state 146
 
-    (45) condition -> IF LPAREN . expression RPAREN block
-    (46) condition -> IF LPAREN . expression RPAREN block ELSE block
+    (45) condition -> IF LPAREN . expression RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> IF LPAREN . expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -5696,8 +5702,8 @@ state 179
 
 state 180
 
-    (45) condition -> IF LPAREN expression . RPAREN block
-    (46) condition -> IF LPAREN expression . RPAREN block ELSE block
+    (45) condition -> IF LPAREN expression . RPAREN np_condition_gotof block np_condition_end_gotof
+    (46) condition -> IF LPAREN expression . RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
@@ -6625,13 +6631,13 @@ state 215
 
 state 216
 
-    (45) condition -> IF LPAREN expression RPAREN . block
-    (46) condition -> IF LPAREN expression RPAREN . block ELSE block
-    (22) block -> . LBRACE statements RBRACE
+    (45) condition -> IF LPAREN expression RPAREN . np_condition_gotof block np_condition_end_gotof
+    (46) condition -> IF LPAREN expression RPAREN . np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof
+    (124) np_condition_gotof -> .
 
-    LBRACE          shift and go to state 46
+    LBRACE          reduce using rule 124 (np_condition_gotof -> .)
 
-    block                          shift and go to state 237
+    np_condition_gotof             shift and go to state 237
 
 state 217
 
@@ -7070,33 +7076,13 @@ state 236
 
 state 237
 
-    (45) condition -> IF LPAREN expression RPAREN block .
-    (46) condition -> IF LPAREN expression RPAREN block . ELSE block
+    (45) condition -> IF LPAREN expression RPAREN np_condition_gotof . block np_condition_end_gotof
+    (46) condition -> IF LPAREN expression RPAREN np_condition_gotof . block ELSE np_condition_goto_else block np_condition_end_gotof
+    (22) block -> . LBRACE statements RBRACE
 
-    ID              reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    IF              reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    PRINT           reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    READ            reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    RETURN          reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    FOR             reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    WHILE           reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    MEAN            reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    MEDIAN          reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    MODE            reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    VARIANCE        reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    STDEV           reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    LPAREN          reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    LBRACKET        reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    PLUS            reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    MINUS           reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    CTEI            reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    CTEF            reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    CTEC            reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    TRUE            reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    FALSE           reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    RBRACE          reduce using rule 45 (condition -> IF LPAREN expression RPAREN block .)
-    ELSE            shift and go to state 253
+    LBRACE          shift and go to state 46
 
+    block                          shift and go to state 253
 
 state 238
 
@@ -7370,19 +7356,42 @@ state 252
 
 state 253
 
-    (46) condition -> IF LPAREN expression RPAREN block ELSE . block
-    (22) block -> . LBRACE statements RBRACE
+    (45) condition -> IF LPAREN expression RPAREN np_condition_gotof block . np_condition_end_gotof
+    (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block . ELSE np_condition_goto_else block np_condition_end_gotof
+    (125) np_condition_end_gotof -> .
 
-    LBRACE          shift and go to state 46
+    ELSE            shift and go to state 261
+    ID              reduce using rule 125 (np_condition_end_gotof -> .)
+    IF              reduce using rule 125 (np_condition_end_gotof -> .)
+    PRINT           reduce using rule 125 (np_condition_end_gotof -> .)
+    READ            reduce using rule 125 (np_condition_end_gotof -> .)
+    RETURN          reduce using rule 125 (np_condition_end_gotof -> .)
+    FOR             reduce using rule 125 (np_condition_end_gotof -> .)
+    WHILE           reduce using rule 125 (np_condition_end_gotof -> .)
+    MEAN            reduce using rule 125 (np_condition_end_gotof -> .)
+    MEDIAN          reduce using rule 125 (np_condition_end_gotof -> .)
+    MODE            reduce using rule 125 (np_condition_end_gotof -> .)
+    VARIANCE        reduce using rule 125 (np_condition_end_gotof -> .)
+    STDEV           reduce using rule 125 (np_condition_end_gotof -> .)
+    LPAREN          reduce using rule 125 (np_condition_end_gotof -> .)
+    LBRACKET        reduce using rule 125 (np_condition_end_gotof -> .)
+    PLUS            reduce using rule 125 (np_condition_end_gotof -> .)
+    MINUS           reduce using rule 125 (np_condition_end_gotof -> .)
+    CTEI            reduce using rule 125 (np_condition_end_gotof -> .)
+    CTEF            reduce using rule 125 (np_condition_end_gotof -> .)
+    CTEC            reduce using rule 125 (np_condition_end_gotof -> .)
+    TRUE            reduce using rule 125 (np_condition_end_gotof -> .)
+    FALSE           reduce using rule 125 (np_condition_end_gotof -> .)
+    RBRACE          reduce using rule 125 (np_condition_end_gotof -> .)
 
-    block                          shift and go to state 260
+    np_condition_end_gotof         shift and go to state 260
 
 state 254
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET . COMMA reading_1
     (88) reading_1 -> ID LBRACKET expression RBRACKET .
 
-    COMMA           shift and go to state 261
+    COMMA           shift and go to state 262
     RPAREN          reduce using rule 88 (reading_1 -> ID LBRACKET expression RBRACKET .)
 
 
@@ -7433,7 +7442,7 @@ state 255
     TRUE            shift and go to state 65
     FALSE           shift and go to state 66
 
-    expression                     shift and go to state 262
+    expression                     shift and go to state 263
     exp                            shift and go to state 50
     expression1                    shift and go to state 51
     expression0                    shift and go to state 52
@@ -7536,33 +7545,42 @@ state 259
 
 state 260
 
-    (46) condition -> IF LPAREN expression RPAREN block ELSE block .
+    (45) condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .
 
-    ID              reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    IF              reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    PRINT           reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    READ            reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    RETURN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    FOR             reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    WHILE           reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    MEAN            reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    MEDIAN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    MODE            reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    VARIANCE        reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    STDEV           reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    LPAREN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    LBRACKET        reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    PLUS            reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    MINUS           reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    CTEI            reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    CTEF            reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    CTEC            reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    TRUE            reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    FALSE           reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    RBRACE          reduce using rule 46 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    ID              reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    IF              reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    PRINT           reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    READ            reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    RETURN          reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    FOR             reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    WHILE           reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    MEAN            reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    MEDIAN          reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    MODE            reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    VARIANCE        reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    STDEV           reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    LPAREN          reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    LBRACKET        reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    PLUS            reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    MINUS           reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    CTEI            reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    CTEF            reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    CTEC            reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    TRUE            reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    FALSE           reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
+    RBRACE          reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
 
 
 state 261
+
+    (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE . np_condition_goto_else block np_condition_end_gotof
+    (126) np_condition_goto_else -> .
+
+    LBRACE          reduce using rule 126 (np_condition_goto_else -> .)
+
+    np_condition_goto_else         shift and go to state 264
+
+state 262
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET COMMA . reading_1
     (85) reading_1 -> . ID COMMA reading_1
@@ -7572,27 +7590,36 @@ state 261
 
     ID              shift and go to state 185
 
-    reading_1                      shift and go to state 263
+    reading_1                      shift and go to state 265
 
-state 262
+state 263
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression . BY expression RPAREN block
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    BY              shift and go to state 264
+    BY              shift and go to state 266
     AND             shift and go to state 100
     OR              shift and go to state 101
 
 
-state 263
+state 264
+
+    (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else . block np_condition_end_gotof
+    (22) block -> . LBRACE statements RBRACE
+
+    LBRACE          shift and go to state 46
+
+    block                          shift and go to state 267
+
+state 265
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET COMMA reading_1 .
 
     RPAREN          reduce using rule 86 (reading_1 -> ID LBRACKET expression RBRACKET COMMA reading_1 .)
 
 
-state 264
+state 266
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY . expression RPAREN block
     (47) expression -> . exp
@@ -7639,7 +7666,7 @@ state 264
     TRUE            shift and go to state 65
     FALSE           shift and go to state 66
 
-    expression                     shift and go to state 265
+    expression                     shift and go to state 268
     exp                            shift and go to state 50
     expression1                    shift and go to state 51
     expression0                    shift and go to state 52
@@ -7649,27 +7676,85 @@ state 264
     factor_prima_1                 shift and go to state 57
     varcte                         shift and go to state 60
 
-state 265
+state 267
+
+    (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block . np_condition_end_gotof
+    (125) np_condition_end_gotof -> .
+
+    ID              reduce using rule 125 (np_condition_end_gotof -> .)
+    IF              reduce using rule 125 (np_condition_end_gotof -> .)
+    PRINT           reduce using rule 125 (np_condition_end_gotof -> .)
+    READ            reduce using rule 125 (np_condition_end_gotof -> .)
+    RETURN          reduce using rule 125 (np_condition_end_gotof -> .)
+    FOR             reduce using rule 125 (np_condition_end_gotof -> .)
+    WHILE           reduce using rule 125 (np_condition_end_gotof -> .)
+    MEAN            reduce using rule 125 (np_condition_end_gotof -> .)
+    MEDIAN          reduce using rule 125 (np_condition_end_gotof -> .)
+    MODE            reduce using rule 125 (np_condition_end_gotof -> .)
+    VARIANCE        reduce using rule 125 (np_condition_end_gotof -> .)
+    STDEV           reduce using rule 125 (np_condition_end_gotof -> .)
+    LPAREN          reduce using rule 125 (np_condition_end_gotof -> .)
+    LBRACKET        reduce using rule 125 (np_condition_end_gotof -> .)
+    PLUS            reduce using rule 125 (np_condition_end_gotof -> .)
+    MINUS           reduce using rule 125 (np_condition_end_gotof -> .)
+    CTEI            reduce using rule 125 (np_condition_end_gotof -> .)
+    CTEF            reduce using rule 125 (np_condition_end_gotof -> .)
+    CTEC            reduce using rule 125 (np_condition_end_gotof -> .)
+    TRUE            reduce using rule 125 (np_condition_end_gotof -> .)
+    FALSE           reduce using rule 125 (np_condition_end_gotof -> .)
+    RBRACE          reduce using rule 125 (np_condition_end_gotof -> .)
+
+    np_condition_end_gotof         shift and go to state 269
+
+state 268
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY expression . RPAREN block
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 266
+    RPAREN          shift and go to state 270
     AND             shift and go to state 100
     OR              shift and go to state 101
 
 
-state 266
+state 269
+
+    (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .
+
+    ID              reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    IF              reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    PRINT           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    READ            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    RETURN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    FOR             reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    WHILE           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    MEAN            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    MEDIAN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    MODE            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    VARIANCE        reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    STDEV           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    LPAREN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    LBRACKET        reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    PLUS            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    MINUS           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    CTEI            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    CTEF            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    CTEC            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    TRUE            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    FALSE           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    RBRACE          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+
+
+state 270
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN . block
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 46
 
-    block                          shift and go to state 267
+    block                          shift and go to state 271
 
-state 267
+state 271
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block .
 

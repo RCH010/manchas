@@ -7,10 +7,13 @@ let var2Func1: float;
 let var3Func1: bool;
 {
   if(var3Func1 == ((var1Func1 + 5) > var2Func1)) {
+    var1Func1 = 10;
     return 1;
   } else {
+    var2Func1 = 10.5;
     return 2;
   }
+  valorNumerico = 10 *4;
 }
 
 main () 

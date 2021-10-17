@@ -23,5 +23,8 @@ class Quadruple():
     def getResult(self):
         return self.result
 
+    def setResult(self, new_result):
+        self.result = new_result
+
     def print(self):
         print('\t', self.operator, '\t', self.left_operand, '\t', self.right_operand, '\t', self.result)

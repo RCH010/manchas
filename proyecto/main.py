@@ -10,7 +10,8 @@ def main(argv):
     res = parser.parse(input, debug=False)
     print('\t\t QUADRUPES')
     print('==================================================')
-    for quad in quadruples:
+    for indx, quad in enumerate(quadruples):
+        print(indx, end='') 
         quad.print()
         
     #program_scopes.print_directory()

@@ -23,8 +23,10 @@ quadruples = [];
 operands = deque()
 # Operatores stack (+ -, =, /..)
 operators = deque()
-# Types stack ()
+# Types stack
 types = deque()
+# jups stack 
+jumps = deque()
 
 ###
 tempsCount = 0
@@ -124,8 +126,8 @@ def p_assignment(p):
         p[0] = ('equals-array', p[1], p[3], p[6])
 
 def p_condition(p):
-    '''condition : IF LPAREN expression RPAREN block
-        |  IF LPAREN expression RPAREN block ELSE block'''
+    '''condition : IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
+        |  IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof'''
 
 # expression
 def p_expression(p):
@@ -394,6 +396,7 @@ def p_np_add_quadruple_or_and(p):
 
 def p_np_assign_expression(p):
     '''np_assign_expression : '''
+    global operators, operands, types, quadruples
     operator = operators.pop()
     right_operand = operands.pop()
     right_type = types.pop()
@@ -407,6 +410,39 @@ def p_np_assign_expression(p):
     
     new_quadruple = Quadruple(operator, right_operand, None, left_operand)
     quadruples.append(new_quadruple)
+
+def p_np_condition_gotof(p):
+    '''np_condition_gotof : '''
+    global operands, types, quadruples, jumps
+    res_if_type = types.pop()
+    if res_if_type != Data_types['BOOLEAN']:
+        print('Error, type mismatch on if')
+        sys.exit()
+    res_if = operands.pop()
+    new_quadruple = Quadruple('GOTOF', res_if, None, None)
+    quadruples.append(new_quadruple)
+    jumps.append(len(quadruples) - 1)
+
+def p_np_condition_end_gotof(p):
+    '''np_condition_end_gotof : '''
+    global jumps, quadruples
+    jump_end_pos = jumps.pop()
+    old_quadruple = quadruples[jump_end_pos]
+    old_quadruple.setResult(len(quadruples))
+
+
+def p_np_condition_goto_else(p):
+    '''np_condition_goto_else : '''
+    new_quadruple = Quadruple('GOTO', None, None, None)
+    quadruples.append(new_quadruple)
+    jump_end_pos = jumps.pop()
+    jumps.append(len(quadruples) - 1)
+    old_quadruple = quadruples[jump_end_pos]
+    old_quadruple.setResult(len(quadruples))
+
+
+
+
 
 def generate_new_quadruple(operator_to_check):
     global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount
