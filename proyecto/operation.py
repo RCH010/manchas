@@ -13,6 +13,9 @@ class Operation:
             Relation_operators.EQUAL,
             Relation_operators.DIFFERENT,
         ]
+        if(symbol == Relation_operators.EQUALS):
+            return type1 == type2
+
         # int-int
         if(type1 == Data_types['INTEGER'] and type2 == Data_types['INTEGER']):
             if(symbol == Relation_operators.DIVISION):

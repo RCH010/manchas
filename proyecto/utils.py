@@ -34,4 +34,6 @@ class Relation_operators(metaclass=MetaTypes):
     # Boolean operators
     AND = '&&'
     OR = '||'
+    # Aignment
+    EQUALS = '='
 

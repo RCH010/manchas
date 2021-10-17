@@ -115,11 +115,12 @@ def p_statements1(p):
     p[0] = p[1]
 
 def p_assignment(p):
-    '''assignment : ID EQUALS expression SEMI
-        | ID LBRACKET expression RBRACKET EQUALS expression SEMI'''
+    '''assignment : ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
+        | ID LBRACKET expression RBRACKET EQUALS expression SEMI''' #TODO: ARREGLOS
     if(len(p) == 5):
         p[0] = ('equals', p[1], p[3])
     else:
+        # TODO Asignación de arrelgos
         p[0] = ('equals-array', p[1], p[3], p[6])
 
 def p_condition(p):
@@ -390,6 +391,22 @@ def p_np_add_quadruple_logical(p):
 def p_np_add_quadruple_or_and(p):
     '''np_add_quadruple_or_and : '''
     generate_new_quadruple(['||', '&&'])
+
+def p_np_assign_expression(p):
+    '''np_assign_expression : '''
+    operator = operators.pop()
+    right_operand = operands.pop()
+    right_type = types.pop()
+    left_operand = operands.pop()
+    left_type = types.pop()
+    res_type = Operation.getType(operator, right_type, left_type)
+
+    if res_type == 'Error':
+        print('Invalid operation, type mismatch on', right_type, 'and', left_type, 'with a', operator)
+        sys.exit()
+    
+    new_quadruple = Quadruple(operator, right_operand, None, left_operand)
+    quadruples.append(new_quadruple)
 
 def generate_new_quadruple(operator_to_check):
     global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount
