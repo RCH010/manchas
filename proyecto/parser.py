@@ -129,23 +129,26 @@ def p_condition(p):
 # expression
 def p_expression(p):
     '''expression : exp
-        | expression1
+        | expression1 np_add_quadruple_logical
+        | expression0 np_add_quadruple_or_and
     '''
     p[0] = p[1]
 
+def p_expression0(p):
+    '''expression0 : expression AND np_add_operator expression
+        | expression OR np_add_operator expression'''
+
 def p_expression1(p):
-    '''expression1 : exp LT exp
-        | exp LE exp
-        | exp GT exp
-        | exp GE exp
-        | exp EQ exp
-        | exp NE exp
-        | exp AND exp
-        | exp OR exp'''
+    '''expression1 : exp LT np_add_operator exp
+        | exp LE np_add_operator exp
+        | exp GT np_add_operator exp
+        | exp GE np_add_operator exp
+        | exp EQ np_add_operator exp
+        | exp NE np_add_operator exp'''
     p[0] = (p[1], p[2], p[3])
 
 def p_exp(p):
-    '''exp : term np_add_quadruple
+    '''exp : term np_add_quadruple_sum_min
         | term exp_1'''
 
 def p_exp_1(p):
@@ -153,7 +156,7 @@ def p_exp_1(p):
         | MINUS np_add_operator exp'''
 
 def p_term(p):
-    '''term : factor
+    '''term : factor np_add_quadruple_times_div
         | factor term_2'''
 
 def p_term_2(p):
@@ -316,8 +319,7 @@ def p_np_add_id_quad(p):
     # Add number and type int to operands and types stacks
     operands.append(p[-1])
     types.append(var_type)
-
-    print('np_add_var_quad: -->', p[-1])
+    #print('np_add_var_quad: -->', p[-1])
 
 
 def p_np_add_cte_int(p):
@@ -325,7 +327,7 @@ def p_np_add_cte_int(p):
     global operands, types
     operands.append(p[-1])
     types.append(Data_types['INTEGER'])
-    print('np_add_cte_int: -->', p[-1])
+    #print('np_add_cte_int: -->', p[-1])
 
 
 def p_np_add_cte_float(p):
@@ -333,7 +335,7 @@ def p_np_add_cte_float(p):
     global operands, types
     operands.append(p[-1])
     types.append(Data_types['FLOAT'])
-    print('np_add_cte_float: -->', p[-1])
+    #print('np_add_cte_float: -->', p[-1])
 
 
 def p_np_add_cte_char(p):
@@ -341,7 +343,7 @@ def p_np_add_cte_char(p):
     global operands, types
     operands.append(p[-1])
     types.append(Data_types['CHARACTER'])
-    print('np_add_cte_char: -->', p[-1])
+    #print('np_add_cte_char: -->', p[-1])
 
 
 def p_np_add_cte_bool(p):
@@ -349,19 +351,19 @@ def p_np_add_cte_bool(p):
     global program_scopes, current_scope
     operands.append(p[-1])
     types.append(Data_types['BOOLEAN'])
-    print('np_add_cte_bool: -->', p[-1])
+    #print('np_add_cte_bool: -->', p[-1])
 
 # Add operator to poper stack
 def p_np_add_operator(p):
     '''np_add_operator : '''
     global operators
-    print('add operator', p[-1])
+    #print('add operator', p[-1])
     operators.append(p[-1])
 
 def p_np_add_paren(p):
     '''np_add_paren : '''
     global operators
-    print('add operator', p[-1])
+    #print('add operator', p[-1])
     operators.append(p[-1])
 
 def p_np_pop_paren(p):
@@ -373,17 +375,35 @@ def p_np_pop_paren(p):
     operators.pop()
 
 
-def p_np_add_quadruple(p):
-    '''np_add_quadruple : '''
+def p_np_add_quadruple_sum_min(p):
+    '''np_add_quadruple_sum_min : '''
+    generate_new_quadruple(['+', '-'])
+
+def p_np_add_quadruple_times_div(p):
+    '''np_add_quadruple_times_div : '''
+    generate_new_quadruple(['*', '/'])
+
+def p_np_add_quadruple_logical(p):
+    '''np_add_quadruple_logical : '''
+    generate_new_quadruple(['<', '<=', '>', '>=', '==', '!='])
+
+def p_np_add_quadruple_or_and(p):
+    '''np_add_quadruple_or_and : '''
+    generate_new_quadruple(['||', '&&'])
+
+def generate_new_quadruple(operator_to_check):
     global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount
-    if operators[-1] == '+' or operators[-1] == '-':
+    if len(operators) > 0 and (operators[-1] in operator_to_check):
+        # Get operator and operands from stacks
         operator = operators.pop()
         right_operand = operands.pop()
         right_type = types.pop()
         left_operand = operands.pop()
         left_type = types.pop()
+        # Get the resulting type of the operation
         res_type = Operation.getType(operator, right_type, left_type)
-        if(res_type == 'Error'):
+        
+        if res_type == 'Error':
             print('Invalid operation, type mismatch on', right_type, 'and', left_type, 'with a', operator)
             sys.exit()
         # generate new temporal of type rest_type
@@ -391,17 +411,28 @@ def p_np_add_quadruple(p):
         temp_var_name = f"_temp{tempsCount}"
         tempsCount += 1
         current_scope_vars.add_new_var(temp_var_name, res_type)
-        quadruples.append(Quadruple(operator, left_operand, right_operand, temp_var_name))
+        # Append a new quadruple to the quadruples list
+        new_quadruple = Quadruple(operator, left_operand, right_operand, temp_var_name)
+        # new_quadruple.print()
+        quadruples.append(new_quadruple)
+        # add to operands and types stacks the result
         operands.append(temp_var_name)
         types.append(res_type)
 
-        
-        
 
 def get_var(var_id):
     global program_scopes, current_scope
     scope_vars = program_scopes.get_vars_table(current_scope)
     directory_var = scope_vars.get_one(var_id)
+    # if 'not_in_directory' received, check the global scope
+    if (directory_var == 'not_in_directory'):
+        program_vars = program_scopes.get_vars_table('program')
+        directory_var = program_vars.get_one(var_id)
+    
+    if (directory_var == 'not_in_directory'):
+        print(var_id, 'not in scope or global directorues')
+        sys.exit();
+
     return directory_var
 
 

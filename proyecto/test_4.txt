@@ -1,0 +1,24 @@
+program test4;
+let valorNumerico:int;
+
+function funcion1: bool(unvarParam:int)
+let var1Func1: int;
+let var2Func1: float;
+let var3Func1: bool;
+{
+  if(var3Func1 == ((var1Func1 + 5) > var2Func1)) {
+    return 1;
+  } else {
+    return 2;
+  }
+}
+
+main () 
+let res: bool;
+{
+  if (res && valorNumerico < 10) {
+    print("Si funciona");
+  } else {
+    print("no, no funciona");
+  }
+}

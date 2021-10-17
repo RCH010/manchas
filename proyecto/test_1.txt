@@ -7,8 +7,8 @@ main ()
 let v1, v2: int;
 let v3: float;
 {
-  v1 = 32.1 - 10;
-  v2 = v3 + 1;
+  v1 = 32.1 - (9 + 10 * 5);
+  v2 = v3 * 1;
 
   print("Hello world");
 }

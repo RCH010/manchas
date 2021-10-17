@@ -14,8 +14,7 @@ class Directory():
 
     def get_one(self, id):
         if id not in self.dic:
-            print (id, 'not in directory')
-            sys.exit()
+            return 'not_in_directory'
         return self.dic[id]
     
     def print_directory_keys(self):

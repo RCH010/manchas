@@ -1,5 +1,6 @@
 program test2;
 let valorNumerico:int;
+let strValue:int;
 
 function miSuperFuncion: bool(unvarParam:int)
 let varFuncion1: int;

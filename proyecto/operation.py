@@ -3,6 +3,7 @@ from utils import Relation_operators, Data_types
 class Operation:
     
     def getType(symbol, type1, type2):
+        # print('checking', symbol, type1, type2)
         sum_times_minus = [Relation_operators.SUM, Relation_operators.MINUS, Relation_operators.TIMES]
         comparisson_operators = [
             Relation_operators.LESSTHAN,
@@ -60,7 +61,9 @@ class Operation:
                 sys.exit()
         # bool-bool
         if(type1 == Data_types['BOOLEAN'] and type2 == Data_types['BOOLEAN']):
-            if(symbol == Relation_operators.AND or symbol == Relation_operators.OR):
+            if(symbol == Relation_operators.AND or 
+                symbol == Relation_operators.OR or 
+                symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
                 print('Invalid operation', type1, symbol, type2)
