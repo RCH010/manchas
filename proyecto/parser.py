@@ -4,25 +4,30 @@ from collections import deque
 from lexer import tokens, keywords
 from directories.scopes import Scopes_directory
 from directories.vars import Vars
+from operation import Operation
 from utils import Data_types
-
-# symbol_table = {
-#     "mi_variable": 
-# }
-
-# procedimientos = {
-#     "global": Class procedimientos
-#     ... "mi_funcion": class procedimientos
-
-# }
+from quadruples import Quadruple
 
 # Program directory, this contains all functions and the main scope
 program_scopes = Scopes_directory()
 current_scope = ''
-# Used for declaration of many variables in one line
+# Used for declaration of many variables in one line (Params on funcitions as well)
 # for example: let my_var1, my_var2 : int;
 vars_stack = deque()
 params_vars_stack = deque()
+
+# Quaduples array, each element should be of type Quadruples
+# Each quadruple is an operation, here we also have jumps and stuff
+quadruples = [];
+# Operands Poper stack (A, B, t1..)
+operands = deque()
+# Operatores stack (+ -, =, /..)
+operators = deque()
+# Types stack ()
+types = deque()
+
+###
+tempsCount = 0
 
 # PROGRAM
 def p_program(p):
@@ -140,23 +145,23 @@ def p_expression1(p):
     p[0] = (p[1], p[2], p[3])
 
 def p_exp(p):
-    '''exp : term
+    '''exp : term np_add_quadruple
         | term exp_1'''
 
 def p_exp_1(p):
-    '''exp_1 : PLUS exp
-        | MINUS exp'''
+    '''exp_1 : PLUS np_add_operator exp
+        | MINUS np_add_operator exp'''
 
 def p_term(p):
     '''term : factor
         | factor term_2'''
 
 def p_term_2(p):
-    '''term_2 : TIMES term
-        | DIVIDE term'''
+    '''term_2 : TIMES np_add_operator term
+        | DIVIDE np_add_operator term'''
 
 def p_factor(p):
-    '''factor : LPAREN expression RPAREN
+    '''factor : LPAREN np_add_paren expression RPAREN np_pop_paren 
         | LBRACKET expression RBRACKET
         | function_call
         | factor_prima_1'''
@@ -167,12 +172,13 @@ def p_factor_prima_1(p):
         | varcte'''
 
 def p_varcte(p):
-    '''varcte : ID
-        | CTEI
-        | CTEF
-        | CTEC
-        | TRUE
-        | FALSE'''
+    '''varcte : ID np_add_id_quad
+        | CTEI np_add_cte_int
+        | CTEF np_add_cte_float
+        | CTEC np_add_cte_char
+        | TRUE np_add_cte_bool
+        | FALSE np_add_cte_bool'''
+    p[0] = p[1]
 
 def p_writing(p):
     '''writing : PRINT LPAREN writing_1 RPAREN SEMI'''
@@ -298,6 +304,112 @@ def p_np_add_vars(p):
         current_scope_vars = program_scopes.get_vars_table(current_scope)
         current_scope_vars.add_new_var(vars_stack[0], vars_type)
         vars_stack.popleft()
+
+# =========
+# ==
+
+def p_np_add_id_quad(p):
+    '''np_add_id_quad : '''
+    global operands, types
+    current_var = get_var(p[-1])
+    var_type = current_var['type']
+    # Add number and type int to operands and types stacks
+    operands.append(p[-1])
+    types.append(var_type)
+
+    print('np_add_var_quad: -->', p[-1])
+
+
+def p_np_add_cte_int(p):
+    '''np_add_cte_int : '''
+    global operands, types
+    operands.append(p[-1])
+    types.append(Data_types['INTEGER'])
+    print('np_add_cte_int: -->', p[-1])
+
+
+def p_np_add_cte_float(p):
+    '''np_add_cte_float : '''
+    global operands, types
+    operands.append(p[-1])
+    types.append(Data_types['FLOAT'])
+    print('np_add_cte_float: -->', p[-1])
+
+
+def p_np_add_cte_char(p):
+    '''np_add_cte_char : '''
+    global operands, types
+    operands.append(p[-1])
+    types.append(Data_types['CHARACTER'])
+    print('np_add_cte_char: -->', p[-1])
+
+
+def p_np_add_cte_bool(p):
+    '''np_add_cte_bool : '''
+    global program_scopes, current_scope
+    operands.append(p[-1])
+    types.append(Data_types['BOOLEAN'])
+    print('np_add_cte_bool: -->', p[-1])
+
+# Add operator to poper stack
+def p_np_add_operator(p):
+    '''np_add_operator : '''
+    global operators
+    print('add operator', p[-1])
+    operators.append(p[-1])
+
+def p_np_add_paren(p):
+    '''np_add_paren : '''
+    global operators
+    print('add operator', p[-1])
+    operators.append(p[-1])
+
+def p_np_pop_paren(p):
+    '''np_pop_paren : '''
+    global operators
+    if operators[-1] != '(':
+        print('Error, not ( in operators stack')
+        sys.exit()
+    operators.pop()
+
+
+def p_np_add_quadruple(p):
+    '''np_add_quadruple : '''
+    global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount
+    if operators[-1] == '+' or operators[-1] == '-':
+        operator = operators.pop()
+        right_operand = operands.pop()
+        right_type = types.pop()
+        left_operand = operands.pop()
+        left_type = types.pop()
+        res_type = Operation.getType(operator, right_type, left_type)
+        if(res_type == 'Error'):
+            print('Invalid operation, type mismatch on', right_type, 'and', left_type, 'with a', operator)
+            sys.exit()
+        # generate new temporal of type rest_type
+        current_scope_vars = program_scopes.get_vars_table(current_scope)
+        temp_var_name = f"_temp{tempsCount}"
+        tempsCount += 1
+        current_scope_vars.add_new_var(temp_var_name, res_type)
+        quadruples.append(Quadruple(operator, left_operand, right_operand, temp_var_name))
+        operands.append(temp_var_name)
+        types.append(res_type)
+
+        
+        
+
+def get_var(var_id):
+    global program_scopes, current_scope
+    scope_vars = program_scopes.get_vars_table(current_scope)
+    directory_var = scope_vars.get_one(var_id)
+    return directory_var
+
+
+# tempName = f"temp{cont}"
+# cont += 1
+
+
+
 
 
 parser = yacc.yacc()

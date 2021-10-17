@@ -12,10 +12,11 @@ class Directory():
     def exists(self, id):
         return id in self.dic
 
-    def getOne(self, id):
+    def get_one(self, id):
         if id not in self.dic:
             print (id, 'not in directory')
             sys.exit()
+        return self.dic[id]
     
     def print_directory_keys(self):
         for key, value in self.dic.items():

@@ -4,6 +4,7 @@ let valorNumerico:int;
 function miSuperFuncion: bool(unvarParam:int)
 let varFuncion1: int;
 let varFuncion3: float;
+let siFunciona: float;
 {
   if(siFunciona == 2) {
     return true;
