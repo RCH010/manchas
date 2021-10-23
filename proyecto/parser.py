@@ -209,7 +209,7 @@ def p_repetition(p):
         | conditional_loop'''
 
 def p_conditional_loop(p):
-    '''conditional_loop : WHILE LPAREN expression RPAREN DO block'''
+    '''conditional_loop : WHILE np_while_init LPAREN expression RPAREN DO block'''
 
 def p_non_conditional_loop(p):
     '''non_conditional_loop : FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block'''
@@ -311,8 +311,9 @@ def p_np_add_vars(p):
         current_scope_vars.add_new_var(vars_stack[0], vars_type)
         vars_stack.popleft()
 
-# =========
-# ==
+# ======================================================================
+#                  Code generation linal statements
+# ======================================================================
 
 def p_np_add_id_quad(p):
     '''np_add_id_quad : '''
@@ -440,6 +441,15 @@ def p_np_condition_goto_else(p):
     old_quadruple = quadruples[jump_end_pos]
     old_quadruple.setResult(len(quadruples))
 
+# ======================================================================
+#                  Code generation linal statements
+# ======================================================================
+
+def p_np_while_init (p):
+    '''np_while_init : '''
+    jumps.append(len(quadruples))
+    
+    # jump de la posicion del while
 
 
 

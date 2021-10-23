@@ -93,7 +93,7 @@ Rule 87    reading_1 -> ID
 Rule 88    reading_1 -> ID LBRACKET expression RBRACKET
 Rule 89    repetition -> non_conditional_loop
 Rule 90    repetition -> conditional_loop
-Rule 91    conditional_loop -> WHILE LPAREN expression RPAREN DO block
+Rule 91    conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block
 Rule 92    non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
 Rule 93    return -> RETURN expression SEMI
 Rule 94    function_call -> ID LPAREN RPAREN SEMI
@@ -129,6 +129,7 @@ Rule 123   np_assign_expression -> <empty>
 Rule 124   np_condition_gotof -> <empty>
 Rule 125   np_condition_end_gotof -> <empty>
 Rule 126   np_condition_goto_else -> <empty>
+Rule 127   np_while_init -> <empty>
 
 Terminals, with rules where they appear
 
@@ -230,6 +231,7 @@ np_create_global     : 1 2
 np_create_main_scope : 20 21
 np_create_new_scope  : 16 17 18 19
 np_pop_paren         : 66
+np_while_init        : 91
 params               : 17 19 25
 program              : 0
 program_1            : 1 2 3
@@ -843,7 +845,7 @@ state 46
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -1763,7 +1765,7 @@ state 70
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -1882,7 +1884,7 @@ state 71
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -2001,7 +2003,7 @@ state 72
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -2120,7 +2122,7 @@ state 73
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -2239,7 +2241,7 @@ state 74
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -2358,7 +2360,7 @@ state 75
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -2478,7 +2480,7 @@ state 76
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -2654,7 +2656,7 @@ state 77
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -2775,7 +2777,7 @@ state 78
     (39) special_functions -> . variance
     (40) special_functions -> . standard_deviation
     (92) non_conditional_loop -> . FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block
-    (91) conditional_loop -> . WHILE LPAREN expression RPAREN DO block
+    (91) conditional_loop -> . WHILE np_while_init LPAREN expression RPAREN DO block
     (58) exp -> . term np_add_quadruple_sum_min
     (59) exp -> . term exp_1
     (52) expression1 -> . exp LT np_add_operator exp
@@ -3193,10 +3195,12 @@ state 91
 
 state 92
 
-    (91) conditional_loop -> WHILE . LPAREN expression RPAREN DO block
+    (91) conditional_loop -> WHILE . np_while_init LPAREN expression RPAREN DO block
+    (127) np_while_init -> .
 
-    LPAREN          shift and go to state 151
+    LPAREN          reduce using rule 127 (np_while_init -> .)
 
+    np_while_init                  shift and go to state 151
 
 state 93
 
@@ -4620,60 +4624,10 @@ state 150
 
 state 151
 
-    (91) conditional_loop -> WHILE LPAREN . expression RPAREN DO block
-    (47) expression -> . exp
-    (48) expression -> . expression1 np_add_quadruple_logical
-    (49) expression -> . expression0 np_add_quadruple_or_and
-    (58) exp -> . term np_add_quadruple_sum_min
-    (59) exp -> . term exp_1
-    (52) expression1 -> . exp LT np_add_operator exp
-    (53) expression1 -> . exp LE np_add_operator exp
-    (54) expression1 -> . exp GT np_add_operator exp
-    (55) expression1 -> . exp GE np_add_operator exp
-    (56) expression1 -> . exp EQ np_add_operator exp
-    (57) expression1 -> . exp NE np_add_operator exp
-    (50) expression0 -> . expression AND np_add_operator expression
-    (51) expression0 -> . expression OR np_add_operator expression
-    (62) term -> . factor np_add_quadruple_times_div
-    (63) term -> . factor term_2
-    (66) factor -> . LPAREN np_add_paren expression RPAREN np_pop_paren
-    (67) factor -> . LBRACKET expression RBRACKET
-    (68) factor -> . function_call
-    (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN RPAREN SEMI
-    (95) function_call -> . ID LPAREN function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN RPAREN
-    (70) factor_prima_1 -> . PLUS varcte
-    (71) factor_prima_1 -> . MINUS varcte
-    (72) factor_prima_1 -> . varcte
-    (73) varcte -> . ID np_add_id_quad
-    (74) varcte -> . CTEI np_add_cte_int
-    (75) varcte -> . CTEF np_add_cte_float
-    (76) varcte -> . CTEC np_add_cte_char
-    (77) varcte -> . TRUE np_add_cte_bool
-    (78) varcte -> . FALSE np_add_cte_bool
+    (91) conditional_loop -> WHILE np_while_init . LPAREN expression RPAREN DO block
 
-    LPAREN          shift and go to state 55
-    LBRACKET        shift and go to state 48
-    ID              shift and go to state 58
-    PLUS            shift and go to state 59
-    MINUS           shift and go to state 61
-    CTEI            shift and go to state 62
-    CTEF            shift and go to state 63
-    CTEC            shift and go to state 64
-    TRUE            shift and go to state 65
-    FALSE           shift and go to state 66
+    LPAREN          shift and go to state 188
 
-    expression                     shift and go to state 188
-    exp                            shift and go to state 50
-    expression1                    shift and go to state 51
-    expression0                    shift and go to state 52
-    term                           shift and go to state 53
-    factor                         shift and go to state 54
-    function_call                  shift and go to state 56
-    factor_prima_1                 shift and go to state 57
-    varcte                         shift and go to state 60
 
 state 152
 
@@ -5797,14 +5751,60 @@ state 187
 
 state 188
 
-    (91) conditional_loop -> WHILE LPAREN expression . RPAREN DO block
-    (50) expression0 -> expression . AND np_add_operator expression
-    (51) expression0 -> expression . OR np_add_operator expression
+    (91) conditional_loop -> WHILE np_while_init LPAREN . expression RPAREN DO block
+    (47) expression -> . exp
+    (48) expression -> . expression1 np_add_quadruple_logical
+    (49) expression -> . expression0 np_add_quadruple_or_and
+    (58) exp -> . term np_add_quadruple_sum_min
+    (59) exp -> . term exp_1
+    (52) expression1 -> . exp LT np_add_operator exp
+    (53) expression1 -> . exp LE np_add_operator exp
+    (54) expression1 -> . exp GT np_add_operator exp
+    (55) expression1 -> . exp GE np_add_operator exp
+    (56) expression1 -> . exp EQ np_add_operator exp
+    (57) expression1 -> . exp NE np_add_operator exp
+    (50) expression0 -> . expression AND np_add_operator expression
+    (51) expression0 -> . expression OR np_add_operator expression
+    (62) term -> . factor np_add_quadruple_times_div
+    (63) term -> . factor term_2
+    (66) factor -> . LPAREN np_add_paren expression RPAREN np_pop_paren
+    (67) factor -> . LBRACKET expression RBRACKET
+    (68) factor -> . function_call
+    (69) factor -> . factor_prima_1
+    (94) function_call -> . ID LPAREN RPAREN SEMI
+    (95) function_call -> . ID LPAREN function_call_1 RPAREN SEMI
+    (96) function_call -> . ID LPAREN function_call_1 RPAREN
+    (97) function_call -> . ID LPAREN RPAREN
+    (70) factor_prima_1 -> . PLUS varcte
+    (71) factor_prima_1 -> . MINUS varcte
+    (72) factor_prima_1 -> . varcte
+    (73) varcte -> . ID np_add_id_quad
+    (74) varcte -> . CTEI np_add_cte_int
+    (75) varcte -> . CTEF np_add_cte_float
+    (76) varcte -> . CTEC np_add_cte_char
+    (77) varcte -> . TRUE np_add_cte_bool
+    (78) varcte -> . FALSE np_add_cte_bool
 
-    RPAREN          shift and go to state 224
-    AND             shift and go to state 100
-    OR              shift and go to state 101
+    LPAREN          shift and go to state 55
+    LBRACKET        shift and go to state 48
+    ID              shift and go to state 58
+    PLUS            shift and go to state 59
+    MINUS           shift and go to state 61
+    CTEI            shift and go to state 62
+    CTEF            shift and go to state 63
+    CTEC            shift and go to state 64
+    TRUE            shift and go to state 65
+    FALSE           shift and go to state 66
 
+    expression                     shift and go to state 224
+    exp                            shift and go to state 50
+    expression1                    shift and go to state 51
+    expression0                    shift and go to state 52
+    term                           shift and go to state 53
+    factor                         shift and go to state 54
+    function_call                  shift and go to state 56
+    factor_prima_1                 shift and go to state 57
+    varcte                         shift and go to state 60
 
 state 189
 
@@ -6852,9 +6852,13 @@ state 223
 
 state 224
 
-    (91) conditional_loop -> WHILE LPAREN expression RPAREN . DO block
+    (91) conditional_loop -> WHILE np_while_init LPAREN expression . RPAREN DO block
+    (50) expression0 -> expression . AND np_add_operator expression
+    (51) expression0 -> expression . OR np_add_operator expression
 
-    DO              shift and go to state 244
+    RPAREN          shift and go to state 244
+    AND             shift and go to state 100
+    OR              shift and go to state 101
 
 
 state 225
@@ -7179,12 +7183,10 @@ state 243
 
 state 244
 
-    (91) conditional_loop -> WHILE LPAREN expression RPAREN DO . block
-    (22) block -> . LBRACE statements RBRACE
+    (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN . DO block
 
-    LBRACE          shift and go to state 46
+    DO              shift and go to state 256
 
-    block                          shift and go to state 256
 
 state 245
 
@@ -7454,31 +7456,12 @@ state 255
 
 state 256
 
-    (91) conditional_loop -> WHILE LPAREN expression RPAREN DO block .
+    (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO . block
+    (22) block -> . LBRACE statements RBRACE
 
-    ID              reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    IF              reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    PRINT           reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    READ            reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    RETURN          reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    FOR             reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    WHILE           reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    MEAN            reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    MEDIAN          reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    MODE            reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    VARIANCE        reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    STDEV           reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    LPAREN          reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    LBRACKET        reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    PLUS            reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    MINUS           reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    CTEI            reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    CTEF            reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    CTEC            reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    TRUE            reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    FALSE           reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
-    RBRACE          reduce using rule 91 (conditional_loop -> WHILE LPAREN expression RPAREN DO block .)
+    LBRACE          shift and go to state 46
 
+    block                          shift and go to state 264
 
 state 257
 
@@ -7578,7 +7561,7 @@ state 261
 
     LBRACE          reduce using rule 126 (np_condition_goto_else -> .)
 
-    np_condition_goto_else         shift and go to state 264
+    np_condition_goto_else         shift and go to state 265
 
 state 262
 
@@ -7590,7 +7573,7 @@ state 262
 
     ID              shift and go to state 185
 
-    reading_1                      shift and go to state 265
+    reading_1                      shift and go to state 266
 
 state 263
 
@@ -7598,28 +7581,56 @@ state 263
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    BY              shift and go to state 266
+    BY              shift and go to state 267
     AND             shift and go to state 100
     OR              shift and go to state 101
 
 
 state 264
 
+    (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .
+
+    ID              reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    IF              reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    PRINT           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    READ            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    RETURN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    FOR             reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    WHILE           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    MEAN            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    MEDIAN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    MODE            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    VARIANCE        reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    STDEV           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    LPAREN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    LBRACKET        reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    PLUS            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    MINUS           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    CTEI            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    CTEF            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    CTEC            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    TRUE            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    FALSE           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+    RBRACE          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN DO block .)
+
+
+state 265
+
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else . block np_condition_end_gotof
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 46
 
-    block                          shift and go to state 267
+    block                          shift and go to state 268
 
-state 265
+state 266
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET COMMA reading_1 .
 
     RPAREN          reduce using rule 86 (reading_1 -> ID LBRACKET expression RBRACKET COMMA reading_1 .)
 
 
-state 266
+state 267
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY . expression RPAREN block
     (47) expression -> . exp
@@ -7666,7 +7677,7 @@ state 266
     TRUE            shift and go to state 65
     FALSE           shift and go to state 66
 
-    expression                     shift and go to state 268
+    expression                     shift and go to state 269
     exp                            shift and go to state 50
     expression1                    shift and go to state 51
     expression0                    shift and go to state 52
@@ -7676,7 +7687,7 @@ state 266
     factor_prima_1                 shift and go to state 57
     varcte                         shift and go to state 60
 
-state 267
+state 268
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block . np_condition_end_gotof
     (125) np_condition_end_gotof -> .
@@ -7704,20 +7715,20 @@ state 267
     FALSE           reduce using rule 125 (np_condition_end_gotof -> .)
     RBRACE          reduce using rule 125 (np_condition_end_gotof -> .)
 
-    np_condition_end_gotof         shift and go to state 269
+    np_condition_end_gotof         shift and go to state 270
 
-state 268
+state 269
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY expression . RPAREN block
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 270
+    RPAREN          shift and go to state 271
     AND             shift and go to state 100
     OR              shift and go to state 101
 
 
-state 269
+state 270
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .
 
@@ -7745,16 +7756,16 @@ state 269
     RBRACE          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
 
 
-state 270
+state 271
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN . block
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 46
 
-    block                          shift and go to state 271
+    block                          shift and go to state 272
 
-state 271
+state 272
 
     (92) non_conditional_loop -> FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block .
 
