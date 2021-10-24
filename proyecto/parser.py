@@ -209,7 +209,7 @@ def p_repetition(p):
         | conditional_loop'''
 
 def p_conditional_loop(p):
-    '''conditional_loop : WHILE np_while_init LPAREN expression RPAREN DO block'''
+    '''conditional_loop : WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block'''
 
 def p_non_conditional_loop(p):
     '''non_conditional_loop : FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block'''
@@ -445,13 +445,33 @@ def p_np_condition_goto_else(p):
 #                  Code generation linal statements
 # ======================================================================
 
+# Where the while starts (before stop condition)
 def p_np_while_init (p):
     '''np_while_init : '''
     jumps.append(len(quadruples))
-    
-    # jump de la posicion del while
 
+# After
+def p_np_while_expression (p):
+    '''np_while_expression : '''
+    exp_type = types.pop()
+    if exp_type != Data_types['BOOLEAN']:
+        create_error('Type-mismatch on While expresion')
+    exp_res = operands.pop()
+    # Generate quadruple, the result reamins
+    new_quadruple = Quadruple('GOTOF', exp_res, None, None)
+    quadruples.append(new_quadruple)
+    jumps.append(len(quadruples) - 1)
 
+def p_np_while_end_block (p):
+    '''np_while_end_block : '''
+    end_pos = jumps.pop()
+    return_pos = jumps.pop()
+    # Generate quadruple, the result reamins
+    new_quadruple = Quadruple('GOTO', None, None, return_pos)
+    quadruples.append(new_quadruple)
+    # Update the quadr
+    old_quadruple = quadruples[end_pos]
+    old_quadruple.setResult(len(quadruples))
 
 
 def generate_new_quadruple(operator_to_check):
@@ -467,8 +487,7 @@ def generate_new_quadruple(operator_to_check):
         res_type = Operation.getType(operator, right_type, left_type)
         
         if res_type == 'Error':
-            print('Invalid operation, type mismatch on', right_type, 'and', left_type, 'with a', operator)
-            sys.exit()
+            create_error('Invalid operation, type mismatch on {right_type} and {left_type} with a {operator}')
         # generate new temporal of type rest_type
         current_scope_vars = program_scopes.get_vars_table(current_scope)
         temp_var_name = f"_temp{tempsCount}"
@@ -502,8 +521,12 @@ def get_var(var_id):
 # tempName = f"temp{cont}"
 # cont += 1
 
-
-
+def create_error(message):
+    print('====================================')
+    print('\t Error:')
+    print('\t {message}')
+    print('====================================')
+    sys.exit()
 
 
 parser = yacc.yacc()

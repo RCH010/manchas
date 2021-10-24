@@ -5,8 +5,9 @@ function sumTwoNumbers: int(firstNumber: int, secondNumber: int) {
   return firstNumber + secondNumber;
 }
 
-function multiplyTwoNumbers: int(firstNumber: int, secondNumber: int) {
-  let result: int;
+function multiplyTwoNumbers: int(firstNumber: int, secondNumber: int)
+let result: int;
+{
   result = firstNumber * secondNumber;
   return result;
 }
@@ -15,8 +16,9 @@ function divideTwoNumbers: float(firstNumber:float, secondNumber: float) {
   return (firstNumber / secondNumber);
 }
 
-function sumFrom0ToN: int(givenLimit: int) {
-  let i, result: int;
+function sumFrom0ToN: int(givenLimit: int)
+let i, result: int;
+{
   for(i = 0 to givenLimit by 1) {
     print(i);
     result = result + i;
@@ -24,16 +26,13 @@ function sumFrom0ToN: int(givenLimit: int) {
   return result;
 }
 
-main () {
+main ()
   let sumResult, multResult: int;
   let divResult: float;
   let aNumber: int;
+{
   aNumber = 90;
   
-  sumResult = sumTwoNumbers(8, 9);
-  multResult = multiplyTwoNumbers(0, 12);
-  divResult = divideTwoNumbers(120, 1.5);
-
-  sumResult = sumFrom0ToN(sumResult) + 10 * 5;
-  print("The result is: ", sumResult);
+  
+  print("The result is: ");
 }

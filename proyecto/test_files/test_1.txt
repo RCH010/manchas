@@ -3,13 +3,17 @@ program nombreDeAlgunProgramaID;
 let algo: float;
 
 
-main () 
+main ()
 let v1, v2: int;
 let v3: int;
 {
   v1 = 32 - (9 + 10 * 5);
   v2 = v3 * 1;
   v1 = v1 + v2;
+
+  while (v1 < 10) do {
+    v1 = v1 - 1;
+  }
 
   print("Hello world");
 }
