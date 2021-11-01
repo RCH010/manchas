@@ -212,7 +212,7 @@ def p_conditional_loop(p):
     '''conditional_loop : WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block'''
 
 def p_non_conditional_loop(p):
-    '''non_conditional_loop : FOR LPAREN ID EQUALS expression TO expression BY expression RPAREN block'''
+    '''non_conditional_loop : FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression np_non_conditional_delta RPAREN block np_non_conditional_end'''
 
 def p_return(p):
     '''return : RETURN expression SEMI'''
@@ -318,6 +318,7 @@ def p_np_add_vars(p):
 def p_np_add_id_quad(p):
     '''np_add_id_quad : '''
     global operands, types
+    # Get var instance from vars table
     current_var = get_var(p[-1])
     var_type = current_var['type']
     # Add number and type int to operands and types stacks
@@ -442,7 +443,7 @@ def p_np_condition_goto_else(p):
     old_quadruple.setResult(len(quadruples))
 
 # ======================================================================
-#                  Code generation linal statements
+#                  Code generation non-linear statements
 # ======================================================================
 
 # Where the while starts (before stop condition)
@@ -473,6 +474,84 @@ def p_np_while_end_block (p):
     old_quadruple = quadruples[end_pos]
     old_quadruple.setResult(len(quadruples))
 
+def p_np_assign_expression_for(p):
+    '''np_assign_expression_for : '''
+    global operators, operands, types, quadruples, jumps
+    operator = operators.pop()
+    right_operand = operands.pop()
+    right_type = types.pop()
+    left_operand = operands.pop()
+    left_type = types.pop()
+    res_type = Operation.getType(operator, right_type, left_type)
+    # In the case of the 'for' the type of the variable must be integer
+    if right_type != Data_types['INTEGER'] or left_type != Data_types['INTEGER'] :
+        create_error(f'Conditional variable of "For" must be integer')
+    
+    new_quadruple = Quadruple(operator, right_operand, None, left_operand)
+    quadruples.append(new_quadruple)
+    # save position where the for starts... this will go on the GOTO at the end of the for
+    jumps.append(len(quadruples))
+    # add the variable of the for in the stacks
+    operands.append(left_operand)
+    types.append(Data_types['INTEGER'])
+
+def p_np_non_conditional_limit(p):
+    ''' np_non_conditional_limit : '''
+    global operators, operands, types, quadruples, jumps
+    result = operands.pop()
+    op_type = types.pop()
+
+    if op_type != Data_types['BOOLEAN']:
+        create_error('Invalid type in "For" statement, must be boolean')
+
+    new_quadruple = Quadruple('GOTOV', result, None, None)
+    quadruples.append(new_quadruple)
+    jumps.append(len(quadruples) - 1)
+    
+
+# for (PUNTO1 x=3)
+# for (x = 10 to PRIMERPUNTO-NEUTALGICO x == 15 AQUI-TAMOS by 1 OTRO-PUNTO) {blah blah} PUNTOFINAL
+#  AQUI-TAMOS --> gotoV -->  si condicion anterior es verdadera ir al PUNTOFINAL... entonces
+#   aqui mismo hacer un push en jumps
+#
+# OTRO-PUNTO --- pop de op
+
+def p_np_non_conditional_delta (p):
+    '''np_non_conditional_delta : '''
+    global operators, operands, types, quadruples
+    print ('Esta en el by del for, pero ahi dejo los operadores')
+    
+
+def p_np_non_conditional_end (p):
+    '''np_non_conditional_end : '''
+    global operators, operands, types, quadruples, program_scopes, current_scope, tempsCount
+    print ('Final del for')
+    delta_value = operands.pop()
+    delta_type = types.pop()
+    if delta_type != Data_types['INTEGER']:
+        create_error('Invalid type in "For" statement in delta, must be integer')
+    for_var_value = operands.pop()
+    for_var_type = types.pop()
+    res_type = Operation.getType('+', for_var_type, delta_type)
+    
+    if res_type == 'Error' or res_type != Data_types['INTEGER']:
+        create_error(f'Invalid type in "For" expression\n type mismatch on {for_var_type} and {delta_type} with a +')
+
+    current_scope_vars = program_scopes.get_vars_table(current_scope)
+    temp_var_name = f"_temp{tempsCount}"
+    tempsCount += 1
+    current_scope_vars.add_new_var(temp_var_name, res_type)
+
+    new_quadruple = Quadruple('+', for_var_value, delta_value, for_var_value)
+    quadruples.append(new_quadruple)
+
+    end_pos = jumps.pop()
+    return_pos = jumps.pop()
+    new_quadruple = Quadruple('GOTO', None, None, return_pos)
+    quadruples.append(new_quadruple)
+    # Update the GOTOV quadruple
+    old_quadruple = quadruples[end_pos]
+    old_quadruple.setResult(len(quadruples))
 
 def generate_new_quadruple(operator_to_check):
     global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount
@@ -487,7 +566,7 @@ def generate_new_quadruple(operator_to_check):
         res_type = Operation.getType(operator, right_type, left_type)
         
         if res_type == 'Error':
-            create_error('Invalid operation, type mismatch on {right_type} and {left_type} with a {operator}')
+            create_error(f'Invalid operation, type mismatch on {right_type} and {left_type} with a {operator}')
         # generate new temporal of type rest_type
         current_scope_vars = program_scopes.get_vars_table(current_scope)
         temp_var_name = f"_temp{tempsCount}"
@@ -524,7 +603,7 @@ def get_var(var_id):
 def create_error(message):
     print('====================================')
     print('\t Error:')
-    print('\t {message}')
+    print('\t', message)
     print('====================================')
     sys.exit()
 

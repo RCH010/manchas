@@ -15,5 +15,13 @@ let v3: int;
     v1 = v1 - 1;
   }
 
+  v1 = 0;
+  v2 = 4;
+
+  for (v1 = 1 to v1 == 10 by v2){
+    v3 = v3 + 1;
+  }
+  v3 = v1 + v2;
+
   print("Hello world");
 }
