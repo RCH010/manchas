@@ -191,9 +191,9 @@ def p_writing(p):
 
 def p_writing_1(p):
     '''writing_1 : expression COMMA writing_1
+        | CTESTRING COMMA writing_1
         | expression
-        | CTESTRING
-        | CTESTRING COMMA'''
+        | CTESTRING'''
 
 def p_reading(p):
     '''reading : READ LPAREN reading_1 RPAREN SEMI'''

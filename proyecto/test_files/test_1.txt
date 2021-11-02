@@ -20,6 +20,7 @@ let v3: int;
 
   for (v1 = 1 to v1 == 10 by v2){
     v3 = v3 + 1;
+    print("Hola mundo", v1*2);
   }
   v3 = v1 + v2;
 
