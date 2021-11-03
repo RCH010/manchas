@@ -190,10 +190,10 @@ def p_writing(p):
     '''writing : PRINT LPAREN writing_1 RPAREN SEMI'''
 
 def p_writing_1(p):
-    '''writing_1 : expression COMMA writing_1
-        | CTESTRING COMMA writing_1
-        | expression
-        | CTESTRING'''
+    '''writing_1 : expression np_add_print_quadruple_exp COMMA writing_1
+        | CTESTRING  np_add_print_quadruple_str COMMA writing_1
+        | expression np_add_print_quadruple_exp
+        | CTESTRING np_add_print_quadruple_str'''
 
 def p_reading(p):
     '''reading : READ LPAREN reading_1 RPAREN SEMI'''
@@ -212,7 +212,7 @@ def p_conditional_loop(p):
     '''conditional_loop : WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block'''
 
 def p_non_conditional_loop(p):
-    '''non_conditional_loop : FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression np_non_conditional_delta RPAREN block np_non_conditional_end'''
+    '''non_conditional_loop : FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end'''
 
 def p_return(p):
     '''return : RETURN expression SEMI'''
@@ -409,9 +409,7 @@ def p_np_assign_expression(p):
     if res_type == 'Error':
         print('Invalid operation, type mismatch on', right_type, 'and', left_type, 'with a', operator)
         sys.exit()
-    
-    new_quadruple = Quadruple(operator, right_operand, None, left_operand)
-    quadruples.append(new_quadruple)
+    set_new_quadruple(operator, right_operand, None, left_operand)
 
 def p_np_condition_gotof(p):
     '''np_condition_gotof : '''
@@ -421,8 +419,7 @@ def p_np_condition_gotof(p):
         print('Error, type mismatch on if')
         sys.exit()
     res_if = operands.pop()
-    new_quadruple = Quadruple('GOTOF', res_if, None, None)
-    quadruples.append(new_quadruple)
+    set_new_quadruple('GOTOF', res_if, None, None)
     jumps.append(len(quadruples) - 1)
 
 def p_np_condition_end_gotof(p):
@@ -435,8 +432,7 @@ def p_np_condition_end_gotof(p):
 
 def p_np_condition_goto_else(p):
     '''np_condition_goto_else : '''
-    new_quadruple = Quadruple('GOTO', None, None, None)
-    quadruples.append(new_quadruple)
+    set_new_quadruple('GOTO', None, None, None)
     jump_end_pos = jumps.pop()
     jumps.append(len(quadruples) - 1)
     old_quadruple = quadruples[jump_end_pos]
@@ -459,8 +455,7 @@ def p_np_while_expression (p):
         create_error('Type-mismatch on While expresion')
     exp_res = operands.pop()
     # Generate quadruple, the result reamins
-    new_quadruple = Quadruple('GOTOF', exp_res, None, None)
-    quadruples.append(new_quadruple)
+    set_new_quadruple('GOTOF', exp_res, None, None)
     jumps.append(len(quadruples) - 1)
 
 def p_np_while_end_block (p):
@@ -468,11 +463,21 @@ def p_np_while_end_block (p):
     end_pos = jumps.pop()
     return_pos = jumps.pop()
     # Generate quadruple, the result reamins
-    new_quadruple = Quadruple('GOTO', None, None, return_pos)
-    quadruples.append(new_quadruple)
+    set_new_quadruple('GOTO', None, None, return_pos)
     # Update the quadr
     old_quadruple = quadruples[end_pos]
     old_quadruple.setResult(len(quadruples))
+
+
+# --- FOR ---
+# FOR 
+# A regular non conditional expresion: for (myVar1 = 0 to myVar3 * 10 by 1) { _statements_ }
+# We add three neuralgic points, the first one: np_assign_expression_for
+# for (myVar1 = 0 np_assign_expression_for to myVar3 == myVar1 ... by 1) { _statements_ } ...
+# The second one:
+# for (myVar1 = 0 ... to myVar3 == myVar1 np_non_conditional_limit 10 by 1) { _statements_ } ...
+# and the third one:
+# for (myVar1 = 0 ... to myVar3 == myVar1 ... 10 by 1) { _statements_ } np_non_conditional_end
 
 def p_np_assign_expression_for(p):
     '''np_assign_expression_for : '''
@@ -486,9 +491,7 @@ def p_np_assign_expression_for(p):
     # In the case of the 'for' the type of the variable must be integer
     if right_type != Data_types['INTEGER'] or left_type != Data_types['INTEGER'] :
         create_error(f'Conditional variable of "For" must be integer')
-    
-    new_quadruple = Quadruple(operator, right_operand, None, left_operand)
-    quadruples.append(new_quadruple)
+    set_new_quadruple(operator, right_operand, None, left_operand)
     # save position where the for starts... this will go on the GOTO at the end of the for
     jumps.append(len(quadruples))
     # add the variable of the for in the stacks
@@ -503,23 +506,8 @@ def p_np_non_conditional_limit(p):
 
     if op_type != Data_types['BOOLEAN']:
         create_error('Invalid type in "For" statement, must be boolean')
-
-    new_quadruple = Quadruple('GOTOV', result, None, None)
-    quadruples.append(new_quadruple)
+    set_new_quadruple('GOTOV', result, None, None)
     jumps.append(len(quadruples) - 1)
-    
-
-# for (PUNTO1 x=3)
-# for (x = 10 to PRIMERPUNTO-NEUTALGICO x == 15 AQUI-TAMOS by 1 OTRO-PUNTO) {blah blah} PUNTOFINAL
-#  AQUI-TAMOS --> gotoV -->  si condicion anterior es verdadera ir al PUNTOFINAL... entonces
-#   aqui mismo hacer un push en jumps
-#
-# OTRO-PUNTO --- pop de op
-
-def p_np_non_conditional_delta (p):
-    '''np_non_conditional_delta : '''
-    global operators, operands, types, quadruples
-    print ('Esta en el by del for, pero ahi dejo los operadores')
     
 
 def p_np_non_conditional_end (p):
@@ -541,22 +529,47 @@ def p_np_non_conditional_end (p):
     temp_var_name = f"_temp{tempsCount}"
     tempsCount += 1
     current_scope_vars.add_new_var(temp_var_name, res_type)
-
-    new_quadruple = Quadruple('+', for_var_value, delta_value, for_var_value)
-    quadruples.append(new_quadruple)
+    set_new_quadruple('+', for_var_value, delta_value, for_var_value)
 
     end_pos = jumps.pop()
     return_pos = jumps.pop()
-    new_quadruple = Quadruple('GOTO', None, None, return_pos)
-    quadruples.append(new_quadruple)
+    set_new_quadruple('GOTO', None, None, return_pos)
+
     # Update the GOTOV quadruple
     old_quadruple = quadruples[end_pos]
     old_quadruple.setResult(len(quadruples))
 
+
+# ====================
+#           PRINT
+# ====================
+def p_np_add_print_quadruple_str(p):
+    '''np_add_print_quadruple_str : '''
+    value = p[-1]
+    set_new_quadruple('PRINT', None, None, value)
+
+def p_np_add_print_quadruple_exp(p):
+    '''np_add_print_quadruple_exp : '''
+    global quadruples,operands, types
+    value = operands.pop()
+    v_type = types.pop()
+    set_new_quadruple('PRINT', None, None, value)
+
+
+
+
+
+'''
+create a new quadruple for an expresion
+'''
 def generate_new_quadruple(operator_to_check):
     global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount
     if len(operators) > 0 and (operators[-1] in operator_to_check):
         # Get operator and operands from stacks
+        # For example: 
+        # operator = +    right_operand = 10.5  right_type = FLOAT
+        #                 left_operand = 10     left_type = INTEGER
+        # res_type should be FLOAT
         operator = operators.pop()
         right_operand = operands.pop()
         right_type = types.pop()
@@ -573,14 +586,16 @@ def generate_new_quadruple(operator_to_check):
         tempsCount += 1
         current_scope_vars.add_new_var(temp_var_name, res_type)
         # Append a new quadruple to the quadruples list
-        new_quadruple = Quadruple(operator, left_operand, right_operand, temp_var_name)
-        # new_quadruple.print()
-        quadruples.append(new_quadruple)
+        set_new_quadruple(operator, left_operand, right_operand, temp_var_name)
         # add to operands and types stacks the result
         operands.append(temp_var_name)
         types.append(res_type)
 
-
+'''
+Get the vars directory given the scope id
+First the directory is searched on the current scope
+If it's not found, then it is searched on the global scope
+'''
 def get_var(var_id):
     global program_scopes, current_scope
     scope_vars = program_scopes.get_vars_table(current_scope)
@@ -591,15 +606,21 @@ def get_var(var_id):
         directory_var = program_vars.get_one(var_id)
     
     if (directory_var == 'not_in_directory'):
-        print(var_id, 'not in scope or global directorues')
-        sys.exit();
+        create_error(f'{var_id} not found in current or global scope')
 
     return directory_var
 
+'''
+Create a new instance of the Quadruple class and append it to the quadruples list
+'''
+def set_new_quadruple(first, second, third, fourth):
+    new_quadruple = Quadruple(first, second, third, fourth)
+    quadruples.append(new_quadruple)
 
-# tempName = f"temp{cont}"
-# cont += 1
 
+'''
+Create print an error message and exit the program
+'''
 def create_error(message):
     print('====================================')
     print('\t Error:')
