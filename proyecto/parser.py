@@ -33,8 +33,8 @@ tempsCount = 0
 
 # PROGRAM
 def p_program(p):
-    '''program : PROGRAM ID np_create_global SEMI vars program_1
-        |  PROGRAM ID np_create_global SEMI program_1'''
+    '''program : PROGRAM ID np_create_global SEMI vars program_1 np_end_program
+        |  PROGRAM ID np_create_global SEMI program_1 np_end_program'''
     p[0] = 'correct'
 
 def p_program_1(p):
@@ -70,10 +70,10 @@ def p_type_1(p):
         | epsilon'''
 
 def p_function(p):
-    '''function : FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN block
-        | FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN block
-        | FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars block
-        | FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars block'''
+    '''function : FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN np_set_func_start_point block np_end_function
+        | FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN np_set_func_start_point block np_end_function
+        | FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars np_set_func_start_point block np_end_function
+        | FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars np_set_func_start_point block np_end_function'''
     p[0] = None
 
 def p_main_block(p):
@@ -89,17 +89,17 @@ def p_return_type(p):
     p[0] = p[1]
 
 def p_params(p):
-    '''params : ID COLON type np_add_vars COMMA params
-        | ID COLON type np_add_vars'''
+    '''params : ID COLON type np_add_vars np_add_params_type COMMA params
+        | ID COLON type np_add_vars np_add_params_type'''
 
 def p_statements(p):
-    '''statements : assignment statements1
+    '''statements : function_call statements1
+        | assignment statements1
         | condition statements1
         | writing statements1
         | reading statements1
         | repetition statements1
         | return statements1
-        | function_call statements1
         | expression statements1
         | special_functions statements1'''
     p[0] = (p[1], p[2])
@@ -218,10 +218,10 @@ def p_return(p):
     '''return : RETURN expression SEMI'''
 
 def p_function_call(p):
-    '''function_call : ID LPAREN RPAREN SEMI
-        | ID LPAREN function_call_1 RPAREN SEMI
-        | ID LPAREN function_call_1 RPAREN
-        | ID LPAREN RPAREN'''
+    '''function_call : ID LPAREN np_check_function_call  RPAREN SEMI
+        | ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
+        | ID LPAREN np_check_function_call function_call_1 RPAREN
+        | ID LPAREN np_check_function_call RPAREN'''
 
 def p_function_call_1(p):
     '''function_call_1 : expression
@@ -254,17 +254,33 @@ def p_error(token):
 
 
 # ======================================================================
-#                        Functions for scopes
+#                        NEURALGIC POINTS
 # ======================================================================
 
+'''
+Create the global scope on the program_scopes by the id of 'program'
+Create the 'goto' quadruple that will send the instruction pointer to
+the 'main' function
+'''
 def p_np_create_global(p):
     '''np_create_global : '''
-    global program_scopes, current_scope
+    global program_scopes, current_scope, jumps
     create_scope('program', Data_types['VOID'])
+    set_new_quadruple('GOTO', None, None, None)
+    jumps.append(len(quadruples) - 1)
 
+'''
+Create main scope on the program_scopes with the id of 'main'
+pop from the jumps stack and update the GOTO quadruple generated at
+the np_create_global
+'''
 def p_np_create_main_scope(p):
     '''np_create_main_scope : '''
+    global jumps
     create_scope('main', Data_types['VOID'])
+    main_quadruple_position = jumps.pop()
+    old_main_goto_quadruple = quadruples[main_quadruple_position]
+    old_main_goto_quadruple.setResult(len(quadruples))
 
 # p[-4]   p[-3]p[-2]  p[-1]     p[0]
 # FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN  block
@@ -276,14 +292,6 @@ def p_np_create_new_scope(p):
     function_id = p[-3]
     return_type = p[-1]
     create_scope(function_id, return_type)
-
-def create_scope(scope_id, return_type):
-      # Create the global scope
-    global program_scopes, current_scope
-    print('New Scope', scope_id)
-    program_scopes.add_new_scope(scope_id, return_type, Vars(scope_id))
-    current_scope = scope_id
-
 
 
 # For example
@@ -440,6 +448,7 @@ def p_np_condition_goto_else(p):
 
 # ======================================================================
 #                  Code generation non-linear statements
+#                               WHILE
 # ======================================================================
 
 # Where the while starts (before stop condition)
@@ -469,16 +478,20 @@ def p_np_while_end_block (p):
     old_quadruple.setResult(len(quadruples))
 
 
-# --- FOR ---
-# FOR 
-# A regular non conditional expresion: for (myVar1 = 0 to myVar3 * 10 by 1) { _statements_ }
-# We add three neuralgic points, the first one: np_assign_expression_for
-# for (myVar1 = 0 np_assign_expression_for to myVar3 == myVar1 ... by 1) { _statements_ } ...
-# The second one:
-# for (myVar1 = 0 ... to myVar3 == myVar1 np_non_conditional_limit 10 by 1) { _statements_ } ...
-# and the third one:
-# for (myVar1 = 0 ... to myVar3 == myVar1 ... 10 by 1) { _statements_ } np_non_conditional_end
+# ======================================================================
+#                  Code generation non-linear statements
+#                               FOR
+# ======================================================================
 
+'''
+A regular non conditional expresion: for (myVar1 = 0 to myVar3 * 10 by 1) { _statements_ }
+We add three neuralgic points, the first one: np_assign_expression_for
+for (myVar1 = 0 np_assign_expression_for to myVar3 == myVar1 ... by 1) { _statements_ } ...
+The second one:
+for (myVar1 = 0 ... to myVar3 == myVar1 np_non_conditional_limit 10 by 1) { _statements_ } ...
+and the third one:
+for (myVar1 = 0 ... to myVar3 == myVar1 ... 10 by 1) { _statements_ } np_non_conditional_end
+'''
 def p_np_assign_expression_for(p):
     '''np_assign_expression_for : '''
     global operators, operands, types, quadruples, jumps
@@ -513,7 +526,6 @@ def p_np_non_conditional_limit(p):
 def p_np_non_conditional_end (p):
     '''np_non_conditional_end : '''
     global operators, operands, types, quadruples, program_scopes, current_scope, tempsCount
-    print ('Final del for')
     delta_value = operands.pop()
     delta_type = types.pop()
     if delta_type != Data_types['INTEGER']:
@@ -556,7 +568,56 @@ def p_np_add_print_quadruple_exp(p):
     set_new_quadruple('PRINT', None, None, value)
 
 
+# =
+# Functions stuff
+# =
+def p_np_add_params_type(p):
+    '''np_add_params_type : '''
+    global program_scopes, current_scope
+    current_scope_params = program_scopes.get_params_table(current_scope)
+    current_scope_params.append(p[-2])
 
+def p_np_set_func_start_point(p):
+    '''np_set_func_start_point : '''
+    global program_scopes, current_scope, quadruples
+    program_scopes.set_func_cont(current_scope, len(quadruples))
+
+def p_np_end_function(p):
+    '''np_end_function : '''
+    global program_scopes, current_scope
+    set_new_quadruple('ENDFUNC', None, None, None)
+    # Calculate the memory that the function will use
+    program_scopes.calculate_function_size(current_scope)
+    
+
+def p_np_end_program(p):
+    '''np_end_program : '''
+    set_new_quadruple('END', None, None, None)
+
+
+def p_np_check_function_call(p):
+    '''np_check_function_call : '''
+    global program_scopes
+    print('IAAMMM HWEEEERE')
+    if not program_scopes.exists(p[-2]):
+        create_error(f'Function {p[-1]} is not defined')
+    else:
+        print('si funciono esot', p[-1])
+
+
+
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+'''
+Create a new scope
+'''
+def create_scope(scope_id, return_type):
+      # Create the global scope
+    global program_scopes, current_scope
+    program_scopes.add_new_scope(scope_id, return_type, Vars(scope_id))
+    current_scope = scope_id
 
 
 '''

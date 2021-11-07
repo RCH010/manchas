@@ -23,3 +23,7 @@ class Vars(Directory):
                 print('Error', 'return type:', type ,'is an invalid type for', id)
                 sys.exit()
         self.dic[id] = {'type': type, 'value': value}
+
+    def get_vars_dictionary(self):
+        return self.dic
+    

@@ -9,7 +9,9 @@ let siFunciona: float;
 {
   if(siFunciona == 2) {
     return true;
+    print("este es el verdader");
   } else {
+    print("este es el falso");
     return false;
   }
 }
@@ -23,6 +25,7 @@ let varSegundo: char;
 main () 
 let res: int;
 {
+  print("Inicio de main");
   if (strValue < 4) {
     print("Si funciona");
   } else {

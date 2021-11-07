@@ -23,4 +23,4 @@ class Directory():
 
     def print_directory(self):
         for key, value in self.dic.items():
-            print(key, '->',value)
+            print('---', key, '\t', value)
