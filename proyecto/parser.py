@@ -28,8 +28,11 @@ types = deque()
 # jups stack 
 jumps = deque()
 
-###
+# Temoral counter 
 tempsCount = 0
+# Parameters counter
+params_count = 0
+current_function_call_id = None
 
 # PROGRAM
 def p_program(p):
@@ -218,14 +221,14 @@ def p_return(p):
     '''return : RETURN expression np_add_return_quadruple SEMI'''
 
 def p_function_call(p):
-    '''function_call : ID LPAREN np_check_function_call  RPAREN SEMI
-        | ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-        | ID LPAREN np_check_function_call function_call_1 RPAREN
-        | ID LPAREN np_check_function_call RPAREN'''
+    '''function_call : ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+        | ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+        | ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+        | ID LPAREN np_check_function_call np_function_end_params RPAREN'''
 
 def p_function_call_1(p):
-    '''function_call_1 : expression
-        | expression COMMA function_call_1'''
+    '''function_call_1 : expression np_function_call_add_param
+        | expression np_function_call_add_param COMMA function_call_1'''
 
 def p_mean(p):
     '''mean : MEAN LPAREN expression RPAREN SEMI'''
@@ -590,7 +593,7 @@ def p_np_add_return_quadruple(p):
 def p_np_add_params_type(p):
     '''np_add_params_type : '''
     global program_scopes, current_scope
-    current_scope_params = program_scopes.get_params_table(current_scope)
+    current_scope_params = program_scopes.get_params_array(current_scope)
     current_scope_params.append(p[-2])
 
 def p_np_set_func_start_point(p):
@@ -613,10 +616,41 @@ def p_np_end_program(p):
 
 def p_np_check_function_call(p):
     '''np_check_function_call : '''
-    global program_scopes
-    if not program_scopes.exists(p[-2]):
-        create_error(f'Function {p[-2]} is not defined')
+    global program_scopes, params_count, current_scope, current_function_call_id
+    current_function_call_id = p[-2]
+    if not program_scopes.exists(current_function_call_id):
+        create_error(f'Function {current_function_call_id} is not defined')
+    params_count = 0
+    set_new_quadruple('ERA', None, None, current_function_call_id)
+
+def p_np_function_call_add_param(p):
+    '''np_function_call_add_param : '''
+    global types, operators, params_count, current_function_call_id, program_scopes
+    argument = operands.pop()
+    argument_type = types.pop()
     
+    function_call_params = program_scopes.get_params_array(current_function_call_id)
+    if(function_call_params[params_count] != argument_type):
+        create_error(f'''
+        The {params_count + 1}º argument of function {current_function_call_id}
+        should of type {function_call_params[params_count]} and you are giving a 
+        {argument_type}
+        ''')
+    set_new_quadruple('PARAM', argument, None, f'_param_{params_count}')
+    params_count += 1
+    
+def p_np_function_end_params(p):
+    '''np_function_end_params : '''
+    global current_function_call_id, params_count, program_scopes
+    function_call_params = program_scopes.get_params_array(current_function_call_id)
+    size_of_params = len(function_call_params)
+
+    if(size_of_params != params_count):
+        create_error(f'''The function {current_function_call_id}, expected {size_of_params} 
+            arguments, you gave {params_count} arguments''')
+    initial_function_addres = program_scopes.get_func_cont(current_function_call_id)
+    set_new_quadruple('GOSUB', current_function_call_id, None, initial_function_addres)
+
 
 # ==============================================================================
 # ==============================================================================

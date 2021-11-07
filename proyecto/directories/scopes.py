@@ -24,9 +24,15 @@ class Scopes_directory(Directory):
     def get_vars_table(self, id):
         return self.dic[id]['vars']
 
-    def get_params_table(self, id):
+    '''
+    get the params array of received function
+    '''
+    def get_params_array(self, id):
         return self.dic[id]['params']
 
+    '''
+    get the return type of the received function
+    '''
     def get_return_type(self, id):
         return self.dic[id]['return_type']
 
@@ -37,6 +43,8 @@ class Scopes_directory(Directory):
     def set_func_cont(self, id, cont):
         self.dic[id]['cont'] = cont
 
+    def get_func_cont(self, id):
+        return self.dic[id]['cont']
     
     '''
     Calculate the number of variables (per type) are used on the given scope. 

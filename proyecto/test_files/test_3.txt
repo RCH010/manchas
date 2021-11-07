@@ -16,7 +16,7 @@ function divideTwoNumbers: float(firstNumber:float, secondNumber: float) {
   return (firstNumber / secondNumber);
 }
 
-function sumFrom0ToN: int(givenLimit: bool, smth: int, algo: int, sdad:float)
+function sumFrom0ToN: int(givenLimit: bool, smth: int)
 let i, result: int;
 {
   for(i = 0 to givenLimit by 1) {
@@ -30,10 +30,14 @@ main ()
   let sumResult, multResult: int;
   let divResult: float;
   let aNumber: int;
+  let thisIsBool: bool;
 {  
   aNumber = 12;
   print("before function call");
-  sumFrom0ToN();
+  sumFrom0ToN(thisIsBool, 1 + 32);
   print("after function call");
+  sumFrom0ToN(false, 10);
+  sumFrom0ToN(false, 10);
   print("The result is: ", aNumber);
 }
+

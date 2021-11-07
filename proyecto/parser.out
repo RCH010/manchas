@@ -96,12 +96,12 @@ Rule 90    repetition -> conditional_loop
 Rule 91    conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block
 Rule 92    non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
 Rule 93    return -> RETURN expression np_add_return_quadruple SEMI
-Rule 94    function_call -> ID LPAREN np_check_function_call RPAREN SEMI
-Rule 95    function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-Rule 96    function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN
-Rule 97    function_call -> ID LPAREN np_check_function_call RPAREN
-Rule 98    function_call_1 -> expression
-Rule 99    function_call_1 -> expression COMMA function_call_1
+Rule 94    function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+Rule 95    function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+Rule 96    function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+Rule 97    function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN
+Rule 98    function_call_1 -> expression np_function_call_add_param
+Rule 99    function_call_1 -> expression np_function_call_add_param COMMA function_call_1
 Rule 100   mean -> MEAN LPAREN expression RPAREN SEMI
 Rule 101   median -> MEDIAN LPAREN expression RPAREN SEMI
 Rule 102   mode -> MODE LPAREN expression RPAREN SEMI
@@ -143,6 +143,8 @@ Rule 137   np_set_func_start_point -> <empty>
 Rule 138   np_end_function -> <empty>
 Rule 139   np_end_program -> <empty>
 Rule 140   np_check_function_call -> <empty>
+Rule 141   np_function_call_add_param -> <empty>
+Rule 142   np_function_end_params -> <empty>
 
 Terminals, with rules where they appear
 
@@ -251,6 +253,8 @@ np_create_main_scope : 20 21
 np_create_new_scope  : 16 17 18 19
 np_end_function      : 16 17 18 19
 np_end_program       : 1 2
+np_function_call_add_param : 98 99
+np_function_end_params : 94 95 96 97
 np_non_conditional_end : 92
 np_non_conditional_limit : 92
 np_pop_paren         : 66
@@ -744,10 +748,10 @@ state 39
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -867,10 +871,10 @@ state 48
     (33) statements -> . return statements1
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -1000,10 +1004,10 @@ state 50
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -1381,10 +1385,10 @@ state 59
 
 state 60
 
-    (94) function_call -> ID . LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> ID . LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> ID . LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> ID . LPAREN np_check_function_call RPAREN
+    (94) function_call -> ID . LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> ID . LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> ID . LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> ID . LPAREN np_check_function_call np_function_end_params RPAREN
     (73) varcte -> ID . np_add_id_quad
     (111) np_add_id_quad -> .
 
@@ -1788,10 +1792,10 @@ state 72
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -1962,10 +1966,10 @@ state 73
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -2081,10 +2085,10 @@ state 74
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -2200,10 +2204,10 @@ state 75
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -2319,10 +2323,10 @@ state 76
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -2438,10 +2442,10 @@ state 77
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -2557,10 +2561,10 @@ state 78
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -2678,10 +2682,10 @@ state 79
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -2799,10 +2803,10 @@ state 80
     (34) statements -> . expression statements1
     (35) statements -> . special_functions statements1
     (105) epsilon -> .
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> . ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> . ID LBRACKET expression RBRACKET EQUALS expression SEMI
     (45) condition -> . IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -2905,10 +2909,10 @@ state 80
 
 state 81
 
-    (94) function_call -> ID . LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> ID . LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> ID . LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> ID . LPAREN np_check_function_call RPAREN
+    (94) function_call -> ID . LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> ID . LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> ID . LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> ID . LPAREN np_check_function_call np_function_end_params RPAREN
     (43) assignment -> ID . np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
     (44) assignment -> ID . LBRACKET expression RBRACKET EQUALS expression SEMI
     (73) varcte -> ID . np_add_id_quad
@@ -3055,10 +3059,10 @@ state 87
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -3780,10 +3784,10 @@ state 120
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -3817,13 +3821,12 @@ state 120
 
 state 121
 
-    (94) function_call -> ID LPAREN . np_check_function_call RPAREN SEMI
-    (95) function_call -> ID LPAREN . np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> ID LPAREN . np_check_function_call function_call_1 RPAREN
-    (97) function_call -> ID LPAREN . np_check_function_call RPAREN
+    (94) function_call -> ID LPAREN . np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> ID LPAREN . np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> ID LPAREN . np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> ID LPAREN . np_check_function_call np_function_end_params RPAREN
     (140) np_check_function_call -> .
 
-    RPAREN          reduce using rule 140 (np_check_function_call -> .)
     LPAREN          reduce using rule 140 (np_check_function_call -> .)
     LBRACKET        reduce using rule 140 (np_check_function_call -> .)
     ID              reduce using rule 140 (np_check_function_call -> .)
@@ -3834,6 +3837,7 @@ state 121
     CTEC            reduce using rule 140 (np_check_function_call -> .)
     TRUE            reduce using rule 140 (np_check_function_call -> .)
     FALSE           reduce using rule 140 (np_check_function_call -> .)
+    RPAREN          reduce using rule 140 (np_check_function_call -> .)
 
     np_check_function_call         shift and go to state 173
 
@@ -4438,10 +4442,10 @@ state 147
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -4496,10 +4500,10 @@ state 148
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -4557,10 +4561,10 @@ state 149
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -4655,10 +4659,10 @@ state 154
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -4712,10 +4716,10 @@ state 155
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -4769,10 +4773,10 @@ state 156
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -4826,10 +4830,10 @@ state 157
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -4883,10 +4887,10 @@ state 158
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -4984,10 +4988,10 @@ state 160
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5041,10 +5045,10 @@ state 161
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5087,10 +5091,10 @@ state 162
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5130,10 +5134,10 @@ state 163
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5173,10 +5177,10 @@ state 164
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5216,10 +5220,10 @@ state 165
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5259,10 +5263,10 @@ state 166
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5302,10 +5306,10 @@ state 167
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5345,10 +5349,10 @@ state 168
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5388,10 +5392,10 @@ state 169
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5429,10 +5433,10 @@ state 170
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5469,10 +5473,10 @@ state 171
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5513,12 +5517,13 @@ state 172
 
 state 173
 
-    (94) function_call -> ID LPAREN np_check_function_call . RPAREN SEMI
-    (95) function_call -> ID LPAREN np_check_function_call . function_call_1 RPAREN SEMI
-    (96) function_call -> ID LPAREN np_check_function_call . function_call_1 RPAREN
-    (97) function_call -> ID LPAREN np_check_function_call . RPAREN
-    (98) function_call_1 -> . expression
-    (99) function_call_1 -> . expression COMMA function_call_1
+    (94) function_call -> ID LPAREN np_check_function_call . np_function_end_params RPAREN SEMI
+    (95) function_call -> ID LPAREN np_check_function_call . function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> ID LPAREN np_check_function_call . function_call_1 np_function_end_params RPAREN
+    (97) function_call -> ID LPAREN np_check_function_call . np_function_end_params RPAREN
+    (142) np_function_end_params -> .
+    (98) function_call_1 -> . expression np_function_call_add_param
+    (99) function_call_1 -> . expression np_function_call_add_param COMMA function_call_1
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -5538,10 +5543,10 @@ state 173
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -5552,7 +5557,7 @@ state 173
     (77) varcte -> . TRUE np_add_cte_bool
     (78) varcte -> . FALSE np_add_cte_bool
 
-    RPAREN          shift and go to state 207
+    RPAREN          reduce using rule 142 (np_function_end_params -> .)
     LPAREN          shift and go to state 57
     LBRACKET        shift and go to state 50
     ID              shift and go to state 60
@@ -5564,6 +5569,7 @@ state 173
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
+    np_function_end_params         shift and go to state 207
     function_call_1                shift and go to state 208
     expression                     shift and go to state 209
     exp                            shift and go to state 52
@@ -5756,10 +5762,10 @@ state 188
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -6364,72 +6370,36 @@ state 206
 
 state 207
 
-    (94) function_call -> ID LPAREN np_check_function_call RPAREN . SEMI
-    (97) function_call -> ID LPAREN np_check_function_call RPAREN .
+    (94) function_call -> ID LPAREN np_check_function_call np_function_end_params . RPAREN SEMI
+    (97) function_call -> ID LPAREN np_check_function_call np_function_end_params . RPAREN
 
-  ! shift/reduce conflict for SEMI resolved as shift
-    SEMI            shift and go to state 233
-    TIMES           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    DIVIDE          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    PLUS            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    MINUS           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    LT              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    LE              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    GT              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    GE              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    EQ              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    NE              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    RBRACKET        reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    AND             reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    OR              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    ID              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    IF              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    PRINT           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    READ            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    RETURN          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    FOR             reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    WHILE           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    MEAN            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    MEDIAN          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    MODE            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    VARIANCE        reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    STDEV           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    LPAREN          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    LBRACKET        reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    CTEI            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    CTEF            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    CTEC            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    TRUE            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    FALSE           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    RBRACE          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    RPAREN          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    COMMA           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    TO              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-    BY              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
-
-  ! SEMI            [ reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .) ]
+    RPAREN          shift and go to state 233
 
 
 state 208
 
-    (95) function_call -> ID LPAREN np_check_function_call function_call_1 . RPAREN SEMI
-    (96) function_call -> ID LPAREN np_check_function_call function_call_1 . RPAREN
+    (95) function_call -> ID LPAREN np_check_function_call function_call_1 . np_function_end_params RPAREN SEMI
+    (96) function_call -> ID LPAREN np_check_function_call function_call_1 . np_function_end_params RPAREN
+    (142) np_function_end_params -> .
 
-    RPAREN          shift and go to state 234
+    RPAREN          reduce using rule 142 (np_function_end_params -> .)
 
+    np_function_end_params         shift and go to state 234
 
 state 209
 
-    (98) function_call_1 -> expression .
-    (99) function_call_1 -> expression . COMMA function_call_1
+    (98) function_call_1 -> expression . np_function_call_add_param
+    (99) function_call_1 -> expression . np_function_call_add_param COMMA function_call_1
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
+    (141) np_function_call_add_param -> .
 
-    RPAREN          reduce using rule 98 (function_call_1 -> expression .)
-    COMMA           shift and go to state 235
     AND             shift and go to state 102
     OR              shift and go to state 103
+    COMMA           reduce using rule 141 (np_function_call_add_param -> .)
+    RPAREN          reduce using rule 141 (np_function_call_add_param -> .)
 
+    np_function_call_add_param     shift and go to state 235
 
 state 210
 
@@ -6501,10 +6471,10 @@ state 215
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -6620,10 +6590,10 @@ state 223
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -6782,155 +6752,68 @@ state 232
 
 state 233
 
-    (94) function_call -> ID LPAREN np_check_function_call RPAREN SEMI .
+    (94) function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN . SEMI
+    (97) function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .
 
-    TIMES           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    DIVIDE          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    PLUS            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    MINUS           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    LT              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    LE              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    GT              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    GE              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    EQ              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    NE              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    RBRACKET        reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    AND             reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    OR              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    ID              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    IF              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    PRINT           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    READ            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    RETURN          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    FOR             reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    WHILE           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    MEAN            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    MEDIAN          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    MODE            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    VARIANCE        reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    STDEV           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    LPAREN          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    LBRACKET        reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    CTEI            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    CTEF            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    CTEC            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    TRUE            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    FALSE           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    RBRACE          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    SEMI            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    RPAREN          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    COMMA           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    TO              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
-    BY              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
+  ! shift/reduce conflict for SEMI resolved as shift
+    SEMI            shift and go to state 257
+    TIMES           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    DIVIDE          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    PLUS            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    MINUS           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    LT              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    LE              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    GT              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    GE              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    EQ              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    NE              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    RBRACKET        reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    AND             reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    OR              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    ID              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    IF              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    PRINT           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    READ            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    RETURN          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    FOR             reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    WHILE           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    MEAN            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    MEDIAN          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    MODE            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    VARIANCE        reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    STDEV           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    LPAREN          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    LBRACKET        reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    CTEI            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    CTEF            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    CTEC            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    TRUE            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    FALSE           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    RBRACE          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    RPAREN          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    COMMA           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    TO              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+    BY              reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .)
+
+  ! SEMI            [ reduce using rule 97 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN .) ]
 
 
 state 234
 
-    (95) function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN . SEMI
-    (96) function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .
+    (95) function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params . RPAREN SEMI
+    (96) function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params . RPAREN
 
-  ! shift/reduce conflict for SEMI resolved as shift
-    SEMI            shift and go to state 257
-    TIMES           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    DIVIDE          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    PLUS            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    MINUS           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    LT              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    LE              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    GT              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    GE              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    EQ              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    NE              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    RBRACKET        reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    AND             reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    OR              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    ID              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    IF              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    PRINT           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    READ            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    RETURN          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    FOR             reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    WHILE           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    MEAN            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    MEDIAN          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    MODE            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    VARIANCE        reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    STDEV           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    LPAREN          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    LBRACKET        reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    CTEI            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    CTEF            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    CTEC            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    TRUE            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    FALSE           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    RBRACE          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    RPAREN          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    COMMA           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    TO              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-    BY              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
-
-  ! SEMI            [ reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .) ]
+    RPAREN          shift and go to state 258
 
 
 state 235
 
-    (99) function_call_1 -> expression COMMA . function_call_1
-    (98) function_call_1 -> . expression
-    (99) function_call_1 -> . expression COMMA function_call_1
-    (47) expression -> . exp
-    (48) expression -> . expression1 np_add_quadruple_logical
-    (49) expression -> . expression0 np_add_quadruple_or_and
-    (58) exp -> . term np_add_quadruple_sum_min
-    (59) exp -> . term exp_1
-    (52) expression1 -> . exp LT np_add_operator exp
-    (53) expression1 -> . exp LE np_add_operator exp
-    (54) expression1 -> . exp GT np_add_operator exp
-    (55) expression1 -> . exp GE np_add_operator exp
-    (56) expression1 -> . exp EQ np_add_operator exp
-    (57) expression1 -> . exp NE np_add_operator exp
-    (50) expression0 -> . expression AND np_add_operator expression
-    (51) expression0 -> . expression OR np_add_operator expression
-    (62) term -> . factor np_add_quadruple_times_div
-    (63) term -> . factor term_2
-    (66) factor -> . LPAREN np_add_paren expression RPAREN np_pop_paren
-    (67) factor -> . LBRACKET expression RBRACKET
-    (68) factor -> . function_call
-    (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
-    (70) factor_prima_1 -> . PLUS varcte
-    (71) factor_prima_1 -> . MINUS varcte
-    (72) factor_prima_1 -> . varcte
-    (73) varcte -> . ID np_add_id_quad
-    (74) varcte -> . CTEI np_add_cte_int
-    (75) varcte -> . CTEF np_add_cte_float
-    (76) varcte -> . CTEC np_add_cte_char
-    (77) varcte -> . TRUE np_add_cte_bool
-    (78) varcte -> . FALSE np_add_cte_bool
+    (98) function_call_1 -> expression np_function_call_add_param .
+    (99) function_call_1 -> expression np_function_call_add_param . COMMA function_call_1
 
-    LPAREN          shift and go to state 57
-    LBRACKET        shift and go to state 50
-    ID              shift and go to state 60
-    PLUS            shift and go to state 61
-    MINUS           shift and go to state 63
-    CTEI            shift and go to state 64
-    CTEF            shift and go to state 65
-    CTEC            shift and go to state 66
-    TRUE            shift and go to state 67
-    FALSE           shift and go to state 68
+    RPAREN          reduce using rule 98 (function_call_1 -> expression np_function_call_add_param .)
+    COMMA           shift and go to state 259
 
-    expression                     shift and go to state 209
-    function_call_1                shift and go to state 258
-    exp                            shift and go to state 52
-    expression1                    shift and go to state 53
-    expression0                    shift and go to state 54
-    term                           shift and go to state 55
-    factor                         shift and go to state 56
-    function_call                  shift and go to state 58
-    factor_prima_1                 shift and go to state 59
-    varcte                         shift and go to state 62
 
 state 236
 
@@ -6941,7 +6824,7 @@ state 236
     COMMA           reduce using rule 136 (np_add_params_type -> .)
     RPAREN          reduce using rule 136 (np_add_params_type -> .)
 
-    np_add_params_type             shift and go to state 259
+    np_add_params_type             shift and go to state 260
 
 state 237
 
@@ -6959,7 +6842,7 @@ state 238
     FUNCTION        reduce using rule 138 (np_end_function -> .)
     MAIN            reduce using rule 138 (np_end_function -> .)
 
-    np_end_function                shift and go to state 260
+    np_end_function                shift and go to state 261
 
 state 239
 
@@ -6969,7 +6852,7 @@ state 239
     FUNCTION        reduce using rule 138 (np_end_function -> .)
     MAIN            reduce using rule 138 (np_end_function -> .)
 
-    np_end_function                shift and go to state 261
+    np_end_function                shift and go to state 262
 
 state 240
 
@@ -6978,7 +6861,7 @@ state 240
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 262
+    block                          shift and go to state 263
 
 state 241
 
@@ -6991,7 +6874,7 @@ state 241
     OR              shift and go to state 103
     SEMI            reduce using rule 123 (np_assign_expression -> .)
 
-    np_assign_expression           shift and go to state 263
+    np_assign_expression           shift and go to state 264
 
 state 242
 
@@ -7015,10 +6898,10 @@ state 242
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -7040,7 +6923,7 @@ state 242
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 264
+    expression                     shift and go to state 265
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -7058,7 +6941,7 @@ state 243
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 265
+    block                          shift and go to state 266
 
 state 244
 
@@ -7114,10 +6997,10 @@ state 245
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -7141,7 +7024,7 @@ state 245
     FALSE           shift and go to state 68
 
     expression                     shift and go to state 182
-    writing_1                      shift and go to state 266
+    writing_1                      shift and go to state 267
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -7177,10 +7060,10 @@ state 246
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -7203,7 +7086,7 @@ state 246
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    writing_1                      shift and go to state 267
+    writing_1                      shift and go to state 268
     expression                     shift and go to state 182
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
@@ -7256,7 +7139,7 @@ state 249
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RBRACKET        shift and go to state 268
+    RBRACKET        shift and go to state 269
     AND             shift and go to state 102
     OR              shift and go to state 103
 
@@ -7277,7 +7160,7 @@ state 250
     TRUE            reduce using rule 116 (np_add_operator -> .)
     FALSE           reduce using rule 116 (np_add_operator -> .)
 
-    np_add_operator                shift and go to state 269
+    np_add_operator                shift and go to state 270
 
 state 251
 
@@ -7286,7 +7169,7 @@ state 251
 
     DO              reduce using rule 128 (np_while_expression -> .)
 
-    np_while_expression            shift and go to state 270
+    np_while_expression            shift and go to state 271
 
 state 252
 
@@ -7430,65 +7313,166 @@ state 256
 
 state 257
 
-    (95) function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .
+    (94) function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .
 
-    TIMES           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    DIVIDE          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    PLUS            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    MINUS           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    LT              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    LE              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    GT              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    GE              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    EQ              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    NE              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    RBRACKET        reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    AND             reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    OR              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    ID              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    IF              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    PRINT           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    READ            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    RETURN          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    FOR             reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    WHILE           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    MEAN            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    MEDIAN          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    MODE            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    VARIANCE        reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    STDEV           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    LPAREN          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    LBRACKET        reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    CTEI            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    CTEF            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    CTEC            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    TRUE            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    FALSE           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    RBRACE          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    SEMI            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    RPAREN          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    COMMA           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    TO              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
-    BY              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
+    TIMES           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    DIVIDE          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    PLUS            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    MINUS           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    LT              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    LE              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    GT              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    GE              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    EQ              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    NE              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    RBRACKET        reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    AND             reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    OR              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    ID              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    IF              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    PRINT           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    READ            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    RETURN          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    FOR             reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    WHILE           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    MEAN            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    MEDIAN          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    MODE            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    VARIANCE        reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    STDEV           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    LPAREN          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    LBRACKET        reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    CTEI            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    CTEF            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    CTEC            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    TRUE            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    FALSE           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    RBRACE          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    SEMI            reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    RPAREN          reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    COMMA           reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    TO              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
+    BY              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI .)
 
 
 state 258
 
-    (99) function_call_1 -> expression COMMA function_call_1 .
+    (95) function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN . SEMI
+    (96) function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .
 
-    RPAREN          reduce using rule 99 (function_call_1 -> expression COMMA function_call_1 .)
+  ! shift/reduce conflict for SEMI resolved as shift
+    SEMI            shift and go to state 272
+    TIMES           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    DIVIDE          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    PLUS            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    MINUS           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    LT              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    LE              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    GT              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    GE              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    EQ              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    NE              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    RBRACKET        reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    AND             reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    OR              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    ID              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    IF              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    PRINT           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    READ            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    RETURN          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    FOR             reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    WHILE           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    MEAN            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    MEDIAN          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    MODE            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    VARIANCE        reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    STDEV           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    LPAREN          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    LBRACKET        reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    CTEI            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    CTEF            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    CTEC            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    TRUE            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    FALSE           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    RBRACE          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    RPAREN          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    COMMA           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    TO              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+    BY              reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .)
+
+  ! SEMI            [ reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN .) ]
 
 
 state 259
 
+    (99) function_call_1 -> expression np_function_call_add_param COMMA . function_call_1
+    (98) function_call_1 -> . expression np_function_call_add_param
+    (99) function_call_1 -> . expression np_function_call_add_param COMMA function_call_1
+    (47) expression -> . exp
+    (48) expression -> . expression1 np_add_quadruple_logical
+    (49) expression -> . expression0 np_add_quadruple_or_and
+    (58) exp -> . term np_add_quadruple_sum_min
+    (59) exp -> . term exp_1
+    (52) expression1 -> . exp LT np_add_operator exp
+    (53) expression1 -> . exp LE np_add_operator exp
+    (54) expression1 -> . exp GT np_add_operator exp
+    (55) expression1 -> . exp GE np_add_operator exp
+    (56) expression1 -> . exp EQ np_add_operator exp
+    (57) expression1 -> . exp NE np_add_operator exp
+    (50) expression0 -> . expression AND np_add_operator expression
+    (51) expression0 -> . expression OR np_add_operator expression
+    (62) term -> . factor np_add_quadruple_times_div
+    (63) term -> . factor term_2
+    (66) factor -> . LPAREN np_add_paren expression RPAREN np_pop_paren
+    (67) factor -> . LBRACKET expression RBRACKET
+    (68) factor -> . function_call
+    (69) factor -> . factor_prima_1
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
+    (70) factor_prima_1 -> . PLUS varcte
+    (71) factor_prima_1 -> . MINUS varcte
+    (72) factor_prima_1 -> . varcte
+    (73) varcte -> . ID np_add_id_quad
+    (74) varcte -> . CTEI np_add_cte_int
+    (75) varcte -> . CTEF np_add_cte_float
+    (76) varcte -> . CTEC np_add_cte_char
+    (77) varcte -> . TRUE np_add_cte_bool
+    (78) varcte -> . FALSE np_add_cte_bool
+
+    LPAREN          shift and go to state 57
+    LBRACKET        shift and go to state 50
+    ID              shift and go to state 60
+    PLUS            shift and go to state 61
+    MINUS           shift and go to state 63
+    CTEI            shift and go to state 64
+    CTEF            shift and go to state 65
+    CTEC            shift and go to state 66
+    TRUE            shift and go to state 67
+    FALSE           shift and go to state 68
+
+    expression                     shift and go to state 209
+    function_call_1                shift and go to state 273
+    exp                            shift and go to state 52
+    expression1                    shift and go to state 53
+    expression0                    shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    function_call                  shift and go to state 58
+    factor_prima_1                 shift and go to state 59
+    varcte                         shift and go to state 62
+
+state 260
+
     (25) params -> ID COLON type np_add_vars np_add_params_type . COMMA params
     (26) params -> ID COLON type np_add_vars np_add_params_type .
 
-    COMMA           shift and go to state 271
+    COMMA           shift and go to state 274
     RPAREN          reduce using rule 26 (params -> ID COLON type np_add_vars np_add_params_type .)
 
 
-state 260
+state 261
 
     (18) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars np_set_func_start_point block np_end_function .
 
@@ -7496,7 +7480,7 @@ state 260
     MAIN            reduce using rule 18 (function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars np_set_func_start_point block np_end_function .)
 
 
-state 261
+state 262
 
     (17) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN np_set_func_start_point block np_end_function .
 
@@ -7504,7 +7488,7 @@ state 261
     MAIN            reduce using rule 17 (function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN np_set_func_start_point block np_end_function .)
 
 
-state 262
+state 263
 
     (19) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars np_set_func_start_point block . np_end_function
     (138) np_end_function -> .
@@ -7512,33 +7496,33 @@ state 262
     FUNCTION        reduce using rule 138 (np_end_function -> .)
     MAIN            reduce using rule 138 (np_end_function -> .)
 
-    np_end_function                shift and go to state 272
+    np_end_function                shift and go to state 275
 
-state 263
+state 264
 
     (43) assignment -> ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression . SEMI
 
-    SEMI            shift and go to state 273
+    SEMI            shift and go to state 276
 
 
-state 264
+state 265
 
     (44) assignment -> ID LBRACKET expression RBRACKET EQUALS expression . SEMI
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    SEMI            shift and go to state 274
+    SEMI            shift and go to state 277
     AND             shift and go to state 102
     OR              shift and go to state 103
 
 
-state 265
+state 266
 
     (45) condition -> IF LPAREN expression RPAREN np_condition_gotof block . np_condition_end_gotof
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block . ELSE np_condition_goto_else block np_condition_end_gotof
     (125) np_condition_end_gotof -> .
 
-    ELSE            shift and go to state 276
+    ELSE            shift and go to state 279
     ID              reduce using rule 125 (np_condition_end_gotof -> .)
     IF              reduce using rule 125 (np_condition_end_gotof -> .)
     PRINT           reduce using rule 125 (np_condition_end_gotof -> .)
@@ -7562,32 +7546,32 @@ state 265
     FALSE           reduce using rule 125 (np_condition_end_gotof -> .)
     RBRACE          reduce using rule 125 (np_condition_end_gotof -> .)
 
-    np_condition_end_gotof         shift and go to state 275
+    np_condition_end_gotof         shift and go to state 278
 
-state 266
+state 267
 
     (80) writing_1 -> expression np_add_print_quadruple_exp COMMA writing_1 .
 
     RPAREN          reduce using rule 80 (writing_1 -> expression np_add_print_quadruple_exp COMMA writing_1 .)
 
 
-state 267
+state 268
 
     (81) writing_1 -> CTESTRING np_add_print_quadruple_str COMMA writing_1 .
 
     RPAREN          reduce using rule 81 (writing_1 -> CTESTRING np_add_print_quadruple_str COMMA writing_1 .)
 
 
-state 268
+state 269
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET . COMMA reading_1
     (88) reading_1 -> ID LBRACKET expression RBRACKET .
 
-    COMMA           shift and go to state 277
+    COMMA           shift and go to state 280
     RPAREN          reduce using rule 88 (reading_1 -> ID LBRACKET expression RBRACKET .)
 
 
-state 269
+state 270
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator . expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (47) expression -> . exp
@@ -7609,10 +7593,10 @@ state 269
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -7634,7 +7618,7 @@ state 269
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 278
+    expression                     shift and go to state 281
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -7644,14 +7628,65 @@ state 269
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
-state 270
+state 271
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression . DO block np_while_end_block
 
-    DO              shift and go to state 279
+    DO              shift and go to state 282
 
 
-state 271
+state 272
+
+    (95) function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .
+
+    TIMES           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    DIVIDE          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    PLUS            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    MINUS           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    LT              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    LE              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    GT              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    GE              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    EQ              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    NE              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    RBRACKET        reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    AND             reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    OR              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    ID              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    IF              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    PRINT           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    READ            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    RETURN          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    FOR             reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    WHILE           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    MEAN            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    MEDIAN          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    MODE            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    VARIANCE        reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    STDEV           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    LPAREN          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    LBRACKET        reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    CTEI            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    CTEF            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    CTEC            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    TRUE            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    FALSE           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    RBRACE          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    SEMI            reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    RPAREN          reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    COMMA           reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    TO              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+    BY              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI .)
+
+
+state 273
+
+    (99) function_call_1 -> expression np_function_call_add_param COMMA function_call_1 .
+
+    RPAREN          reduce using rule 99 (function_call_1 -> expression np_function_call_add_param COMMA function_call_1 .)
+
+
+state 274
 
     (25) params -> ID COLON type np_add_vars np_add_params_type COMMA . params
     (25) params -> . ID COLON type np_add_vars np_add_params_type COMMA params
@@ -7659,9 +7694,9 @@ state 271
 
     ID              shift and go to state 131
 
-    params                         shift and go to state 280
+    params                         shift and go to state 283
 
-state 272
+state 275
 
     (19) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars np_set_func_start_point block np_end_function .
 
@@ -7669,7 +7704,7 @@ state 272
     MAIN            reduce using rule 19 (function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars np_set_func_start_point block np_end_function .)
 
 
-state 273
+state 276
 
     (43) assignment -> ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI .
 
@@ -7697,7 +7732,7 @@ state 273
     RBRACE          reduce using rule 43 (assignment -> ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI .)
 
 
-state 274
+state 277
 
     (44) assignment -> ID LBRACKET expression RBRACKET EQUALS expression SEMI .
 
@@ -7725,7 +7760,7 @@ state 274
     RBRACE          reduce using rule 44 (assignment -> ID LBRACKET expression RBRACKET EQUALS expression SEMI .)
 
 
-state 275
+state 278
 
     (45) condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .
 
@@ -7753,16 +7788,16 @@ state 275
     RBRACE          reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
 
 
-state 276
+state 279
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE . np_condition_goto_else block np_condition_end_gotof
     (126) np_condition_goto_else -> .
 
     LBRACE          reduce using rule 126 (np_condition_goto_else -> .)
 
-    np_condition_goto_else         shift and go to state 281
+    np_condition_goto_else         shift and go to state 284
 
-state 277
+state 280
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET COMMA . reading_1
     (85) reading_1 -> . ID COMMA reading_1
@@ -7772,9 +7807,9 @@ state 277
 
     ID              shift and go to state 185
 
-    reading_1                      shift and go to state 282
+    reading_1                      shift and go to state 285
 
-state 278
+state 281
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression . np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (50) expression0 -> expression . AND np_add_operator expression
@@ -7785,48 +7820,48 @@ state 278
     OR              shift and go to state 103
     TO              reduce using rule 130 (np_assign_expression_for -> .)
 
-    np_assign_expression_for       shift and go to state 283
+    np_assign_expression_for       shift and go to state 286
 
-state 279
+state 282
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO . block np_while_end_block
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 284
+    block                          shift and go to state 287
 
-state 280
+state 283
 
     (25) params -> ID COLON type np_add_vars np_add_params_type COMMA params .
 
     RPAREN          reduce using rule 25 (params -> ID COLON type np_add_vars np_add_params_type COMMA params .)
 
 
-state 281
+state 284
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else . block np_condition_end_gotof
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 285
+    block                          shift and go to state 288
 
-state 282
+state 285
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET COMMA reading_1 .
 
     RPAREN          reduce using rule 86 (reading_1 -> ID LBRACKET expression RBRACKET COMMA reading_1 .)
 
 
-state 283
+state 286
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for . TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
 
-    TO              shift and go to state 286
+    TO              shift and go to state 289
 
 
-state 284
+state 287
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block . np_while_end_block
     (129) np_while_end_block -> .
@@ -7854,9 +7889,9 @@ state 284
     FALSE           reduce using rule 129 (np_while_end_block -> .)
     RBRACE          reduce using rule 129 (np_while_end_block -> .)
 
-    np_while_end_block             shift and go to state 287
+    np_while_end_block             shift and go to state 290
 
-state 285
+state 288
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block . np_condition_end_gotof
     (125) np_condition_end_gotof -> .
@@ -7884,9 +7919,9 @@ state 285
     FALSE           reduce using rule 125 (np_condition_end_gotof -> .)
     RBRACE          reduce using rule 125 (np_condition_end_gotof -> .)
 
-    np_condition_end_gotof         shift and go to state 288
+    np_condition_end_gotof         shift and go to state 291
 
-state 286
+state 289
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO . expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (47) expression -> . exp
@@ -7908,143 +7943,10 @@ state 286
     (67) factor -> . LBRACKET expression RBRACKET
     (68) factor -> . function_call
     (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
-    (70) factor_prima_1 -> . PLUS varcte
-    (71) factor_prima_1 -> . MINUS varcte
-    (72) factor_prima_1 -> . varcte
-    (73) varcte -> . ID np_add_id_quad
-    (74) varcte -> . CTEI np_add_cte_int
-    (75) varcte -> . CTEF np_add_cte_float
-    (76) varcte -> . CTEC np_add_cte_char
-    (77) varcte -> . TRUE np_add_cte_bool
-    (78) varcte -> . FALSE np_add_cte_bool
-
-    LPAREN          shift and go to state 57
-    LBRACKET        shift and go to state 50
-    ID              shift and go to state 60
-    PLUS            shift and go to state 61
-    MINUS           shift and go to state 63
-    CTEI            shift and go to state 64
-    CTEF            shift and go to state 65
-    CTEC            shift and go to state 66
-    TRUE            shift and go to state 67
-    FALSE           shift and go to state 68
-
-    expression                     shift and go to state 289
-    exp                            shift and go to state 52
-    expression1                    shift and go to state 53
-    expression0                    shift and go to state 54
-    term                           shift and go to state 55
-    factor                         shift and go to state 56
-    function_call                  shift and go to state 58
-    factor_prima_1                 shift and go to state 59
-    varcte                         shift and go to state 62
-
-state 287
-
-    (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .
-
-    ID              reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    IF              reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    PRINT           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    READ            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    RETURN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    FOR             reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    WHILE           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    MEAN            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    MEDIAN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    MODE            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    VARIANCE        reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    STDEV           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    LPAREN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    LBRACKET        reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    PLUS            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    MINUS           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    CTEI            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    CTEF            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    CTEC            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    TRUE            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    FALSE           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-    RBRACE          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
-
-
-state 288
-
-    (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .
-
-    ID              reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    IF              reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    PRINT           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    READ            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    RETURN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    FOR             reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    WHILE           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    MEAN            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    MEDIAN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    MODE            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    VARIANCE        reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    STDEV           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    LPAREN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    LBRACKET        reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    PLUS            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    MINUS           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    CTEI            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    CTEF            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    CTEC            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    TRUE            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    FALSE           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-    RBRACE          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
-
-
-state 289
-
-    (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression . np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
-    (50) expression0 -> expression . AND np_add_operator expression
-    (51) expression0 -> expression . OR np_add_operator expression
-    (131) np_non_conditional_limit -> .
-
-    AND             shift and go to state 102
-    OR              shift and go to state 103
-    BY              reduce using rule 131 (np_non_conditional_limit -> .)
-
-    np_non_conditional_limit       shift and go to state 290
-
-state 290
-
-    (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit . BY expression RPAREN block np_non_conditional_end
-
-    BY              shift and go to state 291
-
-
-state 291
-
-    (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY . expression RPAREN block np_non_conditional_end
-    (47) expression -> . exp
-    (48) expression -> . expression1 np_add_quadruple_logical
-    (49) expression -> . expression0 np_add_quadruple_or_and
-    (58) exp -> . term np_add_quadruple_sum_min
-    (59) exp -> . term exp_1
-    (52) expression1 -> . exp LT np_add_operator exp
-    (53) expression1 -> . exp LE np_add_operator exp
-    (54) expression1 -> . exp GT np_add_operator exp
-    (55) expression1 -> . exp GE np_add_operator exp
-    (56) expression1 -> . exp EQ np_add_operator exp
-    (57) expression1 -> . exp NE np_add_operator exp
-    (50) expression0 -> . expression AND np_add_operator expression
-    (51) expression0 -> . expression OR np_add_operator expression
-    (62) term -> . factor np_add_quadruple_times_div
-    (63) term -> . factor term_2
-    (66) factor -> . LPAREN np_add_paren expression RPAREN np_pop_paren
-    (67) factor -> . LBRACKET expression RBRACKET
-    (68) factor -> . function_call
-    (69) factor -> . factor_prima_1
-    (94) function_call -> . ID LPAREN np_check_function_call RPAREN SEMI
-    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
-    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 RPAREN
-    (97) function_call -> . ID LPAREN np_check_function_call RPAREN
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
     (70) factor_prima_1 -> . PLUS varcte
     (71) factor_prima_1 -> . MINUS varcte
     (72) factor_prima_1 -> . varcte
@@ -8076,27 +7978,160 @@ state 291
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
+state 290
+
+    (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .
+
+    ID              reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    IF              reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    PRINT           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    READ            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    RETURN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    FOR             reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    WHILE           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    MEAN            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    MEDIAN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    MODE            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    VARIANCE        reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    STDEV           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    LPAREN          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    LBRACKET        reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    PLUS            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    MINUS           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    CTEI            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    CTEF            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    CTEC            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    TRUE            reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    FALSE           reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+    RBRACE          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
+
+
+state 291
+
+    (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .
+
+    ID              reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    IF              reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    PRINT           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    READ            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    RETURN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    FOR             reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    WHILE           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    MEAN            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    MEDIAN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    MODE            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    VARIANCE        reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    STDEV           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    LPAREN          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    LBRACKET        reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    PLUS            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    MINUS           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    CTEI            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    CTEF            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    CTEC            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    TRUE            reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    FALSE           reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+    RBRACE          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
+
+
 state 292
+
+    (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression . np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
+    (50) expression0 -> expression . AND np_add_operator expression
+    (51) expression0 -> expression . OR np_add_operator expression
+    (131) np_non_conditional_limit -> .
+
+    AND             shift and go to state 102
+    OR              shift and go to state 103
+    BY              reduce using rule 131 (np_non_conditional_limit -> .)
+
+    np_non_conditional_limit       shift and go to state 293
+
+state 293
+
+    (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit . BY expression RPAREN block np_non_conditional_end
+
+    BY              shift and go to state 294
+
+
+state 294
+
+    (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY . expression RPAREN block np_non_conditional_end
+    (47) expression -> . exp
+    (48) expression -> . expression1 np_add_quadruple_logical
+    (49) expression -> . expression0 np_add_quadruple_or_and
+    (58) exp -> . term np_add_quadruple_sum_min
+    (59) exp -> . term exp_1
+    (52) expression1 -> . exp LT np_add_operator exp
+    (53) expression1 -> . exp LE np_add_operator exp
+    (54) expression1 -> . exp GT np_add_operator exp
+    (55) expression1 -> . exp GE np_add_operator exp
+    (56) expression1 -> . exp EQ np_add_operator exp
+    (57) expression1 -> . exp NE np_add_operator exp
+    (50) expression0 -> . expression AND np_add_operator expression
+    (51) expression0 -> . expression OR np_add_operator expression
+    (62) term -> . factor np_add_quadruple_times_div
+    (63) term -> . factor term_2
+    (66) factor -> . LPAREN np_add_paren expression RPAREN np_pop_paren
+    (67) factor -> . LBRACKET expression RBRACKET
+    (68) factor -> . function_call
+    (69) factor -> . factor_prima_1
+    (94) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+    (95) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
+    (96) function_call -> . ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
+    (97) function_call -> . ID LPAREN np_check_function_call np_function_end_params RPAREN
+    (70) factor_prima_1 -> . PLUS varcte
+    (71) factor_prima_1 -> . MINUS varcte
+    (72) factor_prima_1 -> . varcte
+    (73) varcte -> . ID np_add_id_quad
+    (74) varcte -> . CTEI np_add_cte_int
+    (75) varcte -> . CTEF np_add_cte_float
+    (76) varcte -> . CTEC np_add_cte_char
+    (77) varcte -> . TRUE np_add_cte_bool
+    (78) varcte -> . FALSE np_add_cte_bool
+
+    LPAREN          shift and go to state 57
+    LBRACKET        shift and go to state 50
+    ID              shift and go to state 60
+    PLUS            shift and go to state 61
+    MINUS           shift and go to state 63
+    CTEI            shift and go to state 64
+    CTEF            shift and go to state 65
+    CTEC            shift and go to state 66
+    TRUE            shift and go to state 67
+    FALSE           shift and go to state 68
+
+    expression                     shift and go to state 295
+    exp                            shift and go to state 52
+    expression1                    shift and go to state 53
+    expression0                    shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    function_call                  shift and go to state 58
+    factor_prima_1                 shift and go to state 59
+    varcte                         shift and go to state 62
+
+state 295
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression . RPAREN block np_non_conditional_end
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 293
+    RPAREN          shift and go to state 296
     AND             shift and go to state 102
     OR              shift and go to state 103
 
 
-state 293
+state 296
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN . block np_non_conditional_end
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 294
+    block                          shift and go to state 297
 
-state 294
+state 297
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block . np_non_conditional_end
     (132) np_non_conditional_end -> .
@@ -8124,9 +8159,9 @@ state 294
     FALSE           reduce using rule 132 (np_non_conditional_end -> .)
     RBRACE          reduce using rule 132 (np_non_conditional_end -> .)
 
-    np_non_conditional_end         shift and go to state 295
+    np_non_conditional_end         shift and go to state 298
 
-state 295
+state 298
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end .
 
@@ -8186,7 +8221,7 @@ WARNING: shift/reduce conflict for AND in state 194 resolved as shift
 WARNING: shift/reduce conflict for OR in state 194 resolved as shift
 WARNING: shift/reduce conflict for AND in state 195 resolved as shift
 WARNING: shift/reduce conflict for OR in state 195 resolved as shift
-WARNING: shift/reduce conflict for SEMI in state 207 resolved as shift
-WARNING: shift/reduce conflict for SEMI in state 234 resolved as shift
+WARNING: shift/reduce conflict for SEMI in state 233 resolved as shift
+WARNING: shift/reduce conflict for SEMI in state 258 resolved as shift
 WARNING: reduce/reduce conflict in state 72 resolved using rule (factor -> function_call)
 WARNING: rejected rule (epsilon -> <empty>) in state 72
