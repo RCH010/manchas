@@ -215,7 +215,7 @@ def p_non_conditional_loop(p):
     '''non_conditional_loop : FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end'''
 
 def p_return(p):
-    '''return : RETURN expression SEMI'''
+    '''return : RETURN expression np_add_return_quadruple SEMI'''
 
 def p_function_call(p):
     '''function_call : ID LPAREN np_check_function_call  RPAREN SEMI
@@ -567,6 +567,22 @@ def p_np_add_print_quadruple_exp(p):
     v_type = types.pop()
     set_new_quadruple('PRINT', None, None, value)
 
+
+# =========================
+#          RETURN
+# =========================
+'''
+Return must have a value to return
+'''
+def p_np_add_return_quadruple(p):
+    '''np_add_return_quadruple : '''
+    global current_scope, program_scopes, operands, types
+    func_return_type = program_scopes.get_return_type(current_scope)
+    value = operands.pop()
+    v_type = types.pop()
+    if (v_type != func_return_type):
+        create_error(f'Function {current_scope}, has a return type of {func_return_type}, and you are trying to return a {v_type}')
+    set_new_quadruple('RETURN', None, None, value)
 
 # =
 # Functions stuff

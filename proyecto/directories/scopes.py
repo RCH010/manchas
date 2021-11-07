@@ -27,6 +27,9 @@ class Scopes_directory(Directory):
     def get_params_table(self, id):
         return self.dic[id]['params']
 
+    def get_return_type(self, id):
+        return self.dic[id]['return_type']
+
     '''
     Set the CONT value on the scopes function directory. CONT --> is the quadruple
     counter where the specified function starts

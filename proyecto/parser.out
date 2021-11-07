@@ -95,7 +95,7 @@ Rule 89    repetition -> non_conditional_loop
 Rule 90    repetition -> conditional_loop
 Rule 91    conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block
 Rule 92    non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
-Rule 93    return -> RETURN expression SEMI
+Rule 93    return -> RETURN expression np_add_return_quadruple SEMI
 Rule 94    function_call -> ID LPAREN np_check_function_call RPAREN SEMI
 Rule 95    function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI
 Rule 96    function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN
@@ -137,11 +137,12 @@ Rule 131   np_non_conditional_limit -> <empty>
 Rule 132   np_non_conditional_end -> <empty>
 Rule 133   np_add_print_quadruple_str -> <empty>
 Rule 134   np_add_print_quadruple_exp -> <empty>
-Rule 135   np_add_params_type -> <empty>
-Rule 136   np_set_func_start_point -> <empty>
-Rule 137   np_end_function -> <empty>
-Rule 138   np_end_program -> <empty>
-Rule 139   np_check_function_call -> <empty>
+Rule 135   np_add_return_quadruple -> <empty>
+Rule 136   np_add_params_type -> <empty>
+Rule 137   np_set_func_start_point -> <empty>
+Rule 138   np_end_function -> <empty>
+Rule 139   np_end_program -> <empty>
+Rule 140   np_check_function_call -> <empty>
 
 Terminals, with rules where they appear
 
@@ -236,6 +237,7 @@ np_add_quadruple_logical : 48
 np_add_quadruple_or_and : 49
 np_add_quadruple_sum_min : 58
 np_add_quadruple_times_div : 62
+np_add_return_quadruple : 93
 np_add_satck_vars    : 9
 np_add_vars          : 8 25 26
 np_assign_expression : 43
@@ -372,9 +374,9 @@ state 6
 state 7
 
     (2) program -> PROGRAM ID np_create_global SEMI program_1 . np_end_program
-    (138) np_end_program -> .
+    (139) np_end_program -> .
 
-    $end            reduce using rule 138 (np_end_program -> .)
+    $end            reduce using rule 139 (np_end_program -> .)
 
     np_end_program                 shift and go to state 15
 
@@ -447,9 +449,9 @@ state 13
 state 14
 
     (1) program -> PROGRAM ID np_create_global SEMI vars program_1 . np_end_program
-    (138) np_end_program -> .
+    (139) np_end_program -> .
 
-    $end            reduce using rule 138 (np_end_program -> .)
+    $end            reduce using rule 139 (np_end_program -> .)
 
     np_end_program                 shift and go to state 21
 
@@ -877,7 +879,7 @@ state 48
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -1798,7 +1800,7 @@ state 72
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -1972,7 +1974,7 @@ state 73
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -2091,7 +2093,7 @@ state 74
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -2210,7 +2212,7 @@ state 75
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -2329,7 +2331,7 @@ state 76
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -2448,7 +2450,7 @@ state 77
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -2567,7 +2569,7 @@ state 78
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -2688,7 +2690,7 @@ state 79
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -2809,7 +2811,7 @@ state 80
     (84) reading -> . READ LPAREN reading_1 RPAREN SEMI
     (89) repetition -> . non_conditional_loop
     (90) repetition -> . conditional_loop
-    (93) return -> . RETURN expression SEMI
+    (93) return -> . RETURN expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -3033,7 +3035,7 @@ state 86
 
 state 87
 
-    (93) return -> RETURN . expression SEMI
+    (93) return -> RETURN . expression np_add_return_quadruple SEMI
     (47) expression -> . exp
     (48) expression -> . expression1 np_add_quadruple_logical
     (49) expression -> . expression0 np_add_quadruple_or_and
@@ -3819,19 +3821,19 @@ state 121
     (95) function_call -> ID LPAREN . np_check_function_call function_call_1 RPAREN SEMI
     (96) function_call -> ID LPAREN . np_check_function_call function_call_1 RPAREN
     (97) function_call -> ID LPAREN . np_check_function_call RPAREN
-    (139) np_check_function_call -> .
+    (140) np_check_function_call -> .
 
-    RPAREN          reduce using rule 139 (np_check_function_call -> .)
-    LPAREN          reduce using rule 139 (np_check_function_call -> .)
-    LBRACKET        reduce using rule 139 (np_check_function_call -> .)
-    ID              reduce using rule 139 (np_check_function_call -> .)
-    PLUS            reduce using rule 139 (np_check_function_call -> .)
-    MINUS           reduce using rule 139 (np_check_function_call -> .)
-    CTEI            reduce using rule 139 (np_check_function_call -> .)
-    CTEF            reduce using rule 139 (np_check_function_call -> .)
-    CTEC            reduce using rule 139 (np_check_function_call -> .)
-    TRUE            reduce using rule 139 (np_check_function_call -> .)
-    FALSE           reduce using rule 139 (np_check_function_call -> .)
+    RPAREN          reduce using rule 140 (np_check_function_call -> .)
+    LPAREN          reduce using rule 140 (np_check_function_call -> .)
+    LBRACKET        reduce using rule 140 (np_check_function_call -> .)
+    ID              reduce using rule 140 (np_check_function_call -> .)
+    PLUS            reduce using rule 140 (np_check_function_call -> .)
+    MINUS           reduce using rule 140 (np_check_function_call -> .)
+    CTEI            reduce using rule 140 (np_check_function_call -> .)
+    CTEF            reduce using rule 140 (np_check_function_call -> .)
+    CTEC            reduce using rule 140 (np_check_function_call -> .)
+    TRUE            reduce using rule 140 (np_check_function_call -> .)
+    FALSE           reduce using rule 140 (np_check_function_call -> .)
 
     np_check_function_call         shift and go to state 173
 
@@ -4245,12 +4247,12 @@ state 132
 
     (16) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN . np_set_func_start_point block np_end_function
     (18) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN . vars np_set_func_start_point block np_end_function
-    (136) np_set_func_start_point -> .
+    (137) np_set_func_start_point -> .
     (5) vars -> . vars_1
     (6) vars_1 -> . LET vars_prima_1 vars_1
     (7) vars_1 -> . LET vars_prima_1
 
-    LBRACE          reduce using rule 136 (np_set_func_start_point -> .)
+    LBRACE          reduce using rule 137 (np_set_func_start_point -> .)
     LET             shift and go to state 11
 
     np_set_func_start_point        shift and go to state 175
@@ -4606,14 +4608,16 @@ state 150
 
 state 151
 
-    (93) return -> RETURN expression . SEMI
+    (93) return -> RETURN expression . np_add_return_quadruple SEMI
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
+    (135) np_add_return_quadruple -> .
 
-    SEMI            shift and go to state 186
     AND             shift and go to state 102
     OR              shift and go to state 103
+    SEMI            reduce using rule 135 (np_add_return_quadruple -> .)
 
+    np_add_return_quadruple        shift and go to state 186
 
 state 152
 
@@ -5599,9 +5603,9 @@ state 175
 state 176
 
     (18) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars . np_set_func_start_point block np_end_function
-    (136) np_set_func_start_point -> .
+    (137) np_set_func_start_point -> .
 
-    LBRACE          reduce using rule 136 (np_set_func_start_point -> .)
+    LBRACE          reduce using rule 137 (np_set_func_start_point -> .)
 
     np_set_func_start_point        shift and go to state 212
 
@@ -5609,12 +5613,12 @@ state 177
 
     (17) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN . np_set_func_start_point block np_end_function
     (19) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN . vars np_set_func_start_point block np_end_function
-    (136) np_set_func_start_point -> .
+    (137) np_set_func_start_point -> .
     (5) vars -> . vars_1
     (6) vars_1 -> . LET vars_prima_1 vars_1
     (7) vars_1 -> . LET vars_prima_1
 
-    LBRACE          reduce using rule 136 (np_set_func_start_point -> .)
+    LBRACE          reduce using rule 137 (np_set_func_start_point -> .)
     LET             shift and go to state 11
 
     np_set_func_start_point        shift and go to state 213
@@ -5716,30 +5720,9 @@ state 185
 
 state 186
 
-    (93) return -> RETURN expression SEMI .
+    (93) return -> RETURN expression np_add_return_quadruple . SEMI
 
-    ID              reduce using rule 93 (return -> RETURN expression SEMI .)
-    IF              reduce using rule 93 (return -> RETURN expression SEMI .)
-    PRINT           reduce using rule 93 (return -> RETURN expression SEMI .)
-    READ            reduce using rule 93 (return -> RETURN expression SEMI .)
-    RETURN          reduce using rule 93 (return -> RETURN expression SEMI .)
-    FOR             reduce using rule 93 (return -> RETURN expression SEMI .)
-    WHILE           reduce using rule 93 (return -> RETURN expression SEMI .)
-    MEAN            reduce using rule 93 (return -> RETURN expression SEMI .)
-    MEDIAN          reduce using rule 93 (return -> RETURN expression SEMI .)
-    MODE            reduce using rule 93 (return -> RETURN expression SEMI .)
-    VARIANCE        reduce using rule 93 (return -> RETURN expression SEMI .)
-    STDEV           reduce using rule 93 (return -> RETURN expression SEMI .)
-    LPAREN          reduce using rule 93 (return -> RETURN expression SEMI .)
-    LBRACKET        reduce using rule 93 (return -> RETURN expression SEMI .)
-    PLUS            reduce using rule 93 (return -> RETURN expression SEMI .)
-    MINUS           reduce using rule 93 (return -> RETURN expression SEMI .)
-    CTEI            reduce using rule 93 (return -> RETURN expression SEMI .)
-    CTEF            reduce using rule 93 (return -> RETURN expression SEMI .)
-    CTEC            reduce using rule 93 (return -> RETURN expression SEMI .)
-    TRUE            reduce using rule 93 (return -> RETURN expression SEMI .)
-    FALSE           reduce using rule 93 (return -> RETURN expression SEMI .)
-    RBRACE          reduce using rule 93 (return -> RETURN expression SEMI .)
+    SEMI            shift and go to state 224
 
 
 state 187
@@ -5749,7 +5732,7 @@ state 187
 
     EQUALS          reduce using rule 111 (np_add_id_quad -> .)
 
-    np_add_id_quad                 shift and go to state 224
+    np_add_id_quad                 shift and go to state 225
 
 state 188
 
@@ -5798,7 +5781,7 @@ state 188
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 225
+    expression                     shift and go to state 226
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -5814,7 +5797,7 @@ state 189
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 226
+    RPAREN          shift and go to state 227
     AND             shift and go to state 102
     OR              shift and go to state 103
 
@@ -5825,7 +5808,7 @@ state 190
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 227
+    RPAREN          shift and go to state 228
     AND             shift and go to state 102
     OR              shift and go to state 103
 
@@ -5836,7 +5819,7 @@ state 191
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 228
+    RPAREN          shift and go to state 229
     AND             shift and go to state 102
     OR              shift and go to state 103
 
@@ -5847,7 +5830,7 @@ state 192
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 229
+    RPAREN          shift and go to state 230
     AND             shift and go to state 102
     OR              shift and go to state 103
 
@@ -5858,7 +5841,7 @@ state 193
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 230
+    RPAREN          shift and go to state 231
     AND             shift and go to state 102
     OR              shift and go to state 103
 
@@ -6377,7 +6360,7 @@ state 206
     TO              reduce using rule 118 (np_pop_paren -> .)
     BY              reduce using rule 118 (np_pop_paren -> .)
 
-    np_pop_paren                   shift and go to state 231
+    np_pop_paren                   shift and go to state 232
 
 state 207
 
@@ -6385,7 +6368,7 @@ state 207
     (97) function_call -> ID LPAREN np_check_function_call RPAREN .
 
   ! shift/reduce conflict for SEMI resolved as shift
-    SEMI            shift and go to state 232
+    SEMI            shift and go to state 233
     TIMES           reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
     DIVIDE          reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
     PLUS            reduce using rule 97 (function_call -> ID LPAREN np_check_function_call RPAREN .)
@@ -6432,7 +6415,7 @@ state 208
     (95) function_call -> ID LPAREN np_check_function_call function_call_1 . RPAREN SEMI
     (96) function_call -> ID LPAREN np_check_function_call function_call_1 . RPAREN
 
-    RPAREN          shift and go to state 233
+    RPAREN          shift and go to state 234
 
 
 state 209
@@ -6443,7 +6426,7 @@ state 209
     (51) expression0 -> expression . OR np_add_operator expression
 
     RPAREN          reduce using rule 98 (function_call_1 -> expression .)
-    COMMA           shift and go to state 234
+    COMMA           shift and go to state 235
     AND             shift and go to state 102
     OR              shift and go to state 103
 
@@ -6457,17 +6440,17 @@ state 210
     COMMA           reduce using rule 110 (np_add_vars -> .)
     RPAREN          reduce using rule 110 (np_add_vars -> .)
 
-    np_add_vars                    shift and go to state 235
+    np_add_vars                    shift and go to state 236
 
 state 211
 
     (16) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN np_set_func_start_point block . np_end_function
-    (137) np_end_function -> .
+    (138) np_end_function -> .
 
-    FUNCTION        reduce using rule 137 (np_end_function -> .)
-    MAIN            reduce using rule 137 (np_end_function -> .)
+    FUNCTION        reduce using rule 138 (np_end_function -> .)
+    MAIN            reduce using rule 138 (np_end_function -> .)
 
-    np_end_function                shift and go to state 236
+    np_end_function                shift and go to state 237
 
 state 212
 
@@ -6476,7 +6459,7 @@ state 212
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 237
+    block                          shift and go to state 238
 
 state 213
 
@@ -6485,16 +6468,16 @@ state 213
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 238
+    block                          shift and go to state 239
 
 state 214
 
     (19) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars . np_set_func_start_point block np_end_function
-    (136) np_set_func_start_point -> .
+    (137) np_set_func_start_point -> .
 
-    LBRACE          reduce using rule 136 (np_set_func_start_point -> .)
+    LBRACE          reduce using rule 137 (np_set_func_start_point -> .)
 
-    np_set_func_start_point        shift and go to state 239
+    np_set_func_start_point        shift and go to state 240
 
 state 215
 
@@ -6543,7 +6526,7 @@ state 215
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 240
+    expression                     shift and go to state 241
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -6557,7 +6540,7 @@ state 216
 
     (44) assignment -> ID LBRACKET expression RBRACKET . EQUALS expression SEMI
 
-    EQUALS          shift and go to state 241
+    EQUALS          shift and go to state 242
 
 
 state 217
@@ -6568,13 +6551,13 @@ state 217
 
     LBRACE          reduce using rule 124 (np_condition_gotof -> .)
 
-    np_condition_gotof             shift and go to state 242
+    np_condition_gotof             shift and go to state 243
 
 state 218
 
     (79) writing -> PRINT LPAREN writing_1 RPAREN . SEMI
 
-    SEMI            shift and go to state 243
+    SEMI            shift and go to state 244
 
 
 state 219
@@ -6582,7 +6565,7 @@ state 219
     (80) writing_1 -> expression np_add_print_quadruple_exp . COMMA writing_1
     (82) writing_1 -> expression np_add_print_quadruple_exp .
 
-    COMMA           shift and go to state 244
+    COMMA           shift and go to state 245
     RPAREN          reduce using rule 82 (writing_1 -> expression np_add_print_quadruple_exp .)
 
 
@@ -6591,7 +6574,7 @@ state 220
     (81) writing_1 -> CTESTRING np_add_print_quadruple_str . COMMA writing_1
     (83) writing_1 -> CTESTRING np_add_print_quadruple_str .
 
-    COMMA           shift and go to state 245
+    COMMA           shift and go to state 246
     RPAREN          reduce using rule 83 (writing_1 -> CTESTRING np_add_print_quadruple_str .)
 
 
@@ -6599,7 +6582,7 @@ state 221
 
     (84) reading -> READ LPAREN reading_1 RPAREN . SEMI
 
-    SEMI            shift and go to state 246
+    SEMI            shift and go to state 247
 
 
 state 222
@@ -6612,7 +6595,7 @@ state 222
 
     ID              shift and go to state 185
 
-    reading_1                      shift and go to state 247
+    reading_1                      shift and go to state 248
 
 state 223
 
@@ -6662,7 +6645,7 @@ state 223
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 248
+    expression                     shift and go to state 249
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -6674,58 +6657,86 @@ state 223
 
 state 224
 
-    (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad . EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
+    (93) return -> RETURN expression np_add_return_quadruple SEMI .
 
-    EQUALS          shift and go to state 249
+    ID              reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    IF              reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    PRINT           reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    READ            reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    RETURN          reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    FOR             reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    WHILE           reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    MEAN            reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    MEDIAN          reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    MODE            reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    VARIANCE        reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    STDEV           reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    LPAREN          reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    LBRACKET        reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    PLUS            reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    MINUS           reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    CTEI            reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    CTEF            reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    CTEC            reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    TRUE            reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    FALSE           reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
+    RBRACE          reduce using rule 93 (return -> RETURN expression np_add_return_quadruple SEMI .)
 
 
 state 225
+
+    (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad . EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
+
+    EQUALS          shift and go to state 250
+
+
+state 226
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression . RPAREN np_while_expression DO block np_while_end_block
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 250
+    RPAREN          shift and go to state 251
     AND             shift and go to state 102
     OR              shift and go to state 103
 
 
-state 226
-
-    (100) mean -> MEAN LPAREN expression RPAREN . SEMI
-
-    SEMI            shift and go to state 251
-
-
 state 227
 
-    (101) median -> MEDIAN LPAREN expression RPAREN . SEMI
+    (100) mean -> MEAN LPAREN expression RPAREN . SEMI
 
     SEMI            shift and go to state 252
 
 
 state 228
 
-    (102) mode -> MODE LPAREN expression RPAREN . SEMI
+    (101) median -> MEDIAN LPAREN expression RPAREN . SEMI
 
     SEMI            shift and go to state 253
 
 
 state 229
 
-    (103) variance -> VARIANCE LPAREN expression RPAREN . SEMI
+    (102) mode -> MODE LPAREN expression RPAREN . SEMI
 
     SEMI            shift and go to state 254
 
 
 state 230
 
-    (104) standard_deviation -> STDEV LPAREN expression RPAREN . SEMI
+    (103) variance -> VARIANCE LPAREN expression RPAREN . SEMI
 
     SEMI            shift and go to state 255
 
 
 state 231
+
+    (104) standard_deviation -> STDEV LPAREN expression RPAREN . SEMI
+
+    SEMI            shift and go to state 256
+
+
+state 232
 
     (66) factor -> LPAREN np_add_paren expression RPAREN np_pop_paren .
 
@@ -6769,7 +6780,7 @@ state 231
     BY              reduce using rule 66 (factor -> LPAREN np_add_paren expression RPAREN np_pop_paren .)
 
 
-state 232
+state 233
 
     (94) function_call -> ID LPAREN np_check_function_call RPAREN SEMI .
 
@@ -6813,13 +6824,13 @@ state 232
     BY              reduce using rule 94 (function_call -> ID LPAREN np_check_function_call RPAREN SEMI .)
 
 
-state 233
+state 234
 
     (95) function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN . SEMI
     (96) function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .
 
   ! shift/reduce conflict for SEMI resolved as shift
-    SEMI            shift and go to state 256
+    SEMI            shift and go to state 257
     TIMES           reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
     DIVIDE          reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
     PLUS            reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .)
@@ -6861,7 +6872,7 @@ state 233
   ! SEMI            [ reduce using rule 96 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN .) ]
 
 
-state 234
+state 235
 
     (99) function_call_1 -> expression COMMA . function_call_1
     (98) function_call_1 -> . expression
@@ -6911,7 +6922,7 @@ state 234
     FALSE           shift and go to state 68
 
     expression                     shift and go to state 209
-    function_call_1                shift and go to state 257
+    function_call_1                shift and go to state 258
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -6921,18 +6932,18 @@ state 234
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
-state 235
+state 236
 
     (25) params -> ID COLON type np_add_vars . np_add_params_type COMMA params
     (26) params -> ID COLON type np_add_vars . np_add_params_type
-    (135) np_add_params_type -> .
+    (136) np_add_params_type -> .
 
-    COMMA           reduce using rule 135 (np_add_params_type -> .)
-    RPAREN          reduce using rule 135 (np_add_params_type -> .)
+    COMMA           reduce using rule 136 (np_add_params_type -> .)
+    RPAREN          reduce using rule 136 (np_add_params_type -> .)
 
-    np_add_params_type             shift and go to state 258
+    np_add_params_type             shift and go to state 259
 
-state 236
+state 237
 
     (16) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN np_set_func_start_point block np_end_function .
 
@@ -6940,36 +6951,36 @@ state 236
     MAIN            reduce using rule 16 (function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN np_set_func_start_point block np_end_function .)
 
 
-state 237
-
-    (18) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars np_set_func_start_point block . np_end_function
-    (137) np_end_function -> .
-
-    FUNCTION        reduce using rule 137 (np_end_function -> .)
-    MAIN            reduce using rule 137 (np_end_function -> .)
-
-    np_end_function                shift and go to state 259
-
 state 238
 
-    (17) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN np_set_func_start_point block . np_end_function
-    (137) np_end_function -> .
+    (18) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars np_set_func_start_point block . np_end_function
+    (138) np_end_function -> .
 
-    FUNCTION        reduce using rule 137 (np_end_function -> .)
-    MAIN            reduce using rule 137 (np_end_function -> .)
+    FUNCTION        reduce using rule 138 (np_end_function -> .)
+    MAIN            reduce using rule 138 (np_end_function -> .)
 
     np_end_function                shift and go to state 260
 
 state 239
+
+    (17) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN np_set_func_start_point block . np_end_function
+    (138) np_end_function -> .
+
+    FUNCTION        reduce using rule 138 (np_end_function -> .)
+    MAIN            reduce using rule 138 (np_end_function -> .)
+
+    np_end_function                shift and go to state 261
+
+state 240
 
     (19) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars np_set_func_start_point . block np_end_function
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 261
+    block                          shift and go to state 262
 
-state 240
+state 241
 
     (43) assignment -> ID np_add_id_quad EQUALS np_add_operator expression . np_assign_expression SEMI
     (50) expression0 -> expression . AND np_add_operator expression
@@ -6980,9 +6991,9 @@ state 240
     OR              shift and go to state 103
     SEMI            reduce using rule 123 (np_assign_expression -> .)
 
-    np_assign_expression           shift and go to state 262
+    np_assign_expression           shift and go to state 263
 
-state 241
+state 242
 
     (44) assignment -> ID LBRACKET expression RBRACKET EQUALS . expression SEMI
     (47) expression -> . exp
@@ -7029,7 +7040,7 @@ state 241
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 263
+    expression                     shift and go to state 264
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -7039,7 +7050,7 @@ state 241
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
-state 242
+state 243
 
     (45) condition -> IF LPAREN expression RPAREN np_condition_gotof . block np_condition_end_gotof
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof . block ELSE np_condition_goto_else block np_condition_end_gotof
@@ -7047,9 +7058,9 @@ state 242
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 264
+    block                          shift and go to state 265
 
-state 243
+state 244
 
     (79) writing -> PRINT LPAREN writing_1 RPAREN SEMI .
 
@@ -7077,7 +7088,7 @@ state 243
     RBRACE          reduce using rule 79 (writing -> PRINT LPAREN writing_1 RPAREN SEMI .)
 
 
-state 244
+state 245
 
     (80) writing_1 -> expression np_add_print_quadruple_exp COMMA . writing_1
     (80) writing_1 -> . expression np_add_print_quadruple_exp COMMA writing_1
@@ -7130,7 +7141,7 @@ state 244
     FALSE           shift and go to state 68
 
     expression                     shift and go to state 182
-    writing_1                      shift and go to state 265
+    writing_1                      shift and go to state 266
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -7140,7 +7151,7 @@ state 244
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
-state 245
+state 246
 
     (81) writing_1 -> CTESTRING np_add_print_quadruple_str COMMA . writing_1
     (80) writing_1 -> . expression np_add_print_quadruple_exp COMMA writing_1
@@ -7192,7 +7203,7 @@ state 245
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    writing_1                      shift and go to state 266
+    writing_1                      shift and go to state 267
     expression                     shift and go to state 182
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
@@ -7203,7 +7214,7 @@ state 245
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
-state 246
+state 247
 
     (84) reading -> READ LPAREN reading_1 RPAREN SEMI .
 
@@ -7231,26 +7242,26 @@ state 246
     RBRACE          reduce using rule 84 (reading -> READ LPAREN reading_1 RPAREN SEMI .)
 
 
-state 247
+state 248
 
     (85) reading_1 -> ID COMMA reading_1 .
 
     RPAREN          reduce using rule 85 (reading_1 -> ID COMMA reading_1 .)
 
 
-state 248
+state 249
 
     (86) reading_1 -> ID LBRACKET expression . RBRACKET COMMA reading_1
     (88) reading_1 -> ID LBRACKET expression . RBRACKET
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RBRACKET        shift and go to state 267
+    RBRACKET        shift and go to state 268
     AND             shift and go to state 102
     OR              shift and go to state 103
 
 
-state 249
+state 250
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS . np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (116) np_add_operator -> .
@@ -7266,18 +7277,18 @@ state 249
     TRUE            reduce using rule 116 (np_add_operator -> .)
     FALSE           reduce using rule 116 (np_add_operator -> .)
 
-    np_add_operator                shift and go to state 268
+    np_add_operator                shift and go to state 269
 
-state 250
+state 251
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN . np_while_expression DO block np_while_end_block
     (128) np_while_expression -> .
 
     DO              reduce using rule 128 (np_while_expression -> .)
 
-    np_while_expression            shift and go to state 269
+    np_while_expression            shift and go to state 270
 
-state 251
+state 252
 
     (100) mean -> MEAN LPAREN expression RPAREN SEMI .
 
@@ -7305,7 +7316,7 @@ state 251
     RBRACE          reduce using rule 100 (mean -> MEAN LPAREN expression RPAREN SEMI .)
 
 
-state 252
+state 253
 
     (101) median -> MEDIAN LPAREN expression RPAREN SEMI .
 
@@ -7333,7 +7344,7 @@ state 252
     RBRACE          reduce using rule 101 (median -> MEDIAN LPAREN expression RPAREN SEMI .)
 
 
-state 253
+state 254
 
     (102) mode -> MODE LPAREN expression RPAREN SEMI .
 
@@ -7361,7 +7372,7 @@ state 253
     RBRACE          reduce using rule 102 (mode -> MODE LPAREN expression RPAREN SEMI .)
 
 
-state 254
+state 255
 
     (103) variance -> VARIANCE LPAREN expression RPAREN SEMI .
 
@@ -7389,7 +7400,7 @@ state 254
     RBRACE          reduce using rule 103 (variance -> VARIANCE LPAREN expression RPAREN SEMI .)
 
 
-state 255
+state 256
 
     (104) standard_deviation -> STDEV LPAREN expression RPAREN SEMI .
 
@@ -7417,7 +7428,7 @@ state 255
     RBRACE          reduce using rule 104 (standard_deviation -> STDEV LPAREN expression RPAREN SEMI .)
 
 
-state 256
+state 257
 
     (95) function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .
 
@@ -7461,23 +7472,23 @@ state 256
     BY              reduce using rule 95 (function_call -> ID LPAREN np_check_function_call function_call_1 RPAREN SEMI .)
 
 
-state 257
+state 258
 
     (99) function_call_1 -> expression COMMA function_call_1 .
 
     RPAREN          reduce using rule 99 (function_call_1 -> expression COMMA function_call_1 .)
 
 
-state 258
+state 259
 
     (25) params -> ID COLON type np_add_vars np_add_params_type . COMMA params
     (26) params -> ID COLON type np_add_vars np_add_params_type .
 
-    COMMA           shift and go to state 270
+    COMMA           shift and go to state 271
     RPAREN          reduce using rule 26 (params -> ID COLON type np_add_vars np_add_params_type .)
 
 
-state 259
+state 260
 
     (18) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars np_set_func_start_point block np_end_function .
 
@@ -7485,7 +7496,7 @@ state 259
     MAIN            reduce using rule 18 (function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN vars np_set_func_start_point block np_end_function .)
 
 
-state 260
+state 261
 
     (17) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN np_set_func_start_point block np_end_function .
 
@@ -7493,41 +7504,41 @@ state 260
     MAIN            reduce using rule 17 (function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN np_set_func_start_point block np_end_function .)
 
 
-state 261
+state 262
 
     (19) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars np_set_func_start_point block . np_end_function
-    (137) np_end_function -> .
+    (138) np_end_function -> .
 
-    FUNCTION        reduce using rule 137 (np_end_function -> .)
-    MAIN            reduce using rule 137 (np_end_function -> .)
+    FUNCTION        reduce using rule 138 (np_end_function -> .)
+    MAIN            reduce using rule 138 (np_end_function -> .)
 
-    np_end_function                shift and go to state 271
+    np_end_function                shift and go to state 272
 
-state 262
+state 263
 
     (43) assignment -> ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression . SEMI
 
-    SEMI            shift and go to state 272
+    SEMI            shift and go to state 273
 
 
-state 263
+state 264
 
     (44) assignment -> ID LBRACKET expression RBRACKET EQUALS expression . SEMI
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    SEMI            shift and go to state 273
+    SEMI            shift and go to state 274
     AND             shift and go to state 102
     OR              shift and go to state 103
 
 
-state 264
+state 265
 
     (45) condition -> IF LPAREN expression RPAREN np_condition_gotof block . np_condition_end_gotof
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block . ELSE np_condition_goto_else block np_condition_end_gotof
     (125) np_condition_end_gotof -> .
 
-    ELSE            shift and go to state 275
+    ELSE            shift and go to state 276
     ID              reduce using rule 125 (np_condition_end_gotof -> .)
     IF              reduce using rule 125 (np_condition_end_gotof -> .)
     PRINT           reduce using rule 125 (np_condition_end_gotof -> .)
@@ -7551,32 +7562,32 @@ state 264
     FALSE           reduce using rule 125 (np_condition_end_gotof -> .)
     RBRACE          reduce using rule 125 (np_condition_end_gotof -> .)
 
-    np_condition_end_gotof         shift and go to state 274
+    np_condition_end_gotof         shift and go to state 275
 
-state 265
+state 266
 
     (80) writing_1 -> expression np_add_print_quadruple_exp COMMA writing_1 .
 
     RPAREN          reduce using rule 80 (writing_1 -> expression np_add_print_quadruple_exp COMMA writing_1 .)
 
 
-state 266
+state 267
 
     (81) writing_1 -> CTESTRING np_add_print_quadruple_str COMMA writing_1 .
 
     RPAREN          reduce using rule 81 (writing_1 -> CTESTRING np_add_print_quadruple_str COMMA writing_1 .)
 
 
-state 267
+state 268
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET . COMMA reading_1
     (88) reading_1 -> ID LBRACKET expression RBRACKET .
 
-    COMMA           shift and go to state 276
+    COMMA           shift and go to state 277
     RPAREN          reduce using rule 88 (reading_1 -> ID LBRACKET expression RBRACKET .)
 
 
-state 268
+state 269
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator . expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (47) expression -> . exp
@@ -7623,7 +7634,7 @@ state 268
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 277
+    expression                     shift and go to state 278
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -7633,14 +7644,14 @@ state 268
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
-state 269
+state 270
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression . DO block np_while_end_block
 
-    DO              shift and go to state 278
+    DO              shift and go to state 279
 
 
-state 270
+state 271
 
     (25) params -> ID COLON type np_add_vars np_add_params_type COMMA . params
     (25) params -> . ID COLON type np_add_vars np_add_params_type COMMA params
@@ -7648,9 +7659,9 @@ state 270
 
     ID              shift and go to state 131
 
-    params                         shift and go to state 279
+    params                         shift and go to state 280
 
-state 271
+state 272
 
     (19) function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars np_set_func_start_point block np_end_function .
 
@@ -7658,7 +7669,7 @@ state 271
     MAIN            reduce using rule 19 (function -> FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN vars np_set_func_start_point block np_end_function .)
 
 
-state 272
+state 273
 
     (43) assignment -> ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI .
 
@@ -7686,7 +7697,7 @@ state 272
     RBRACE          reduce using rule 43 (assignment -> ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI .)
 
 
-state 273
+state 274
 
     (44) assignment -> ID LBRACKET expression RBRACKET EQUALS expression SEMI .
 
@@ -7714,7 +7725,7 @@ state 273
     RBRACE          reduce using rule 44 (assignment -> ID LBRACKET expression RBRACKET EQUALS expression SEMI .)
 
 
-state 274
+state 275
 
     (45) condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .
 
@@ -7742,16 +7753,16 @@ state 274
     RBRACE          reduce using rule 45 (condition -> IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof .)
 
 
-state 275
+state 276
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE . np_condition_goto_else block np_condition_end_gotof
     (126) np_condition_goto_else -> .
 
     LBRACE          reduce using rule 126 (np_condition_goto_else -> .)
 
-    np_condition_goto_else         shift and go to state 280
+    np_condition_goto_else         shift and go to state 281
 
-state 276
+state 277
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET COMMA . reading_1
     (85) reading_1 -> . ID COMMA reading_1
@@ -7761,9 +7772,9 @@ state 276
 
     ID              shift and go to state 185
 
-    reading_1                      shift and go to state 281
+    reading_1                      shift and go to state 282
 
-state 277
+state 278
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression . np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (50) expression0 -> expression . AND np_add_operator expression
@@ -7774,48 +7785,48 @@ state 277
     OR              shift and go to state 103
     TO              reduce using rule 130 (np_assign_expression_for -> .)
 
-    np_assign_expression_for       shift and go to state 282
+    np_assign_expression_for       shift and go to state 283
 
-state 278
+state 279
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO . block np_while_end_block
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 283
+    block                          shift and go to state 284
 
-state 279
+state 280
 
     (25) params -> ID COLON type np_add_vars np_add_params_type COMMA params .
 
     RPAREN          reduce using rule 25 (params -> ID COLON type np_add_vars np_add_params_type COMMA params .)
 
 
-state 280
+state 281
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else . block np_condition_end_gotof
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 284
+    block                          shift and go to state 285
 
-state 281
+state 282
 
     (86) reading_1 -> ID LBRACKET expression RBRACKET COMMA reading_1 .
 
     RPAREN          reduce using rule 86 (reading_1 -> ID LBRACKET expression RBRACKET COMMA reading_1 .)
 
 
-state 282
+state 283
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for . TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
 
-    TO              shift and go to state 285
+    TO              shift and go to state 286
 
 
-state 283
+state 284
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block . np_while_end_block
     (129) np_while_end_block -> .
@@ -7843,9 +7854,9 @@ state 283
     FALSE           reduce using rule 129 (np_while_end_block -> .)
     RBRACE          reduce using rule 129 (np_while_end_block -> .)
 
-    np_while_end_block             shift and go to state 286
+    np_while_end_block             shift and go to state 287
 
-state 284
+state 285
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block . np_condition_end_gotof
     (125) np_condition_end_gotof -> .
@@ -7873,9 +7884,9 @@ state 284
     FALSE           reduce using rule 125 (np_condition_end_gotof -> .)
     RBRACE          reduce using rule 125 (np_condition_end_gotof -> .)
 
-    np_condition_end_gotof         shift and go to state 287
+    np_condition_end_gotof         shift and go to state 288
 
-state 285
+state 286
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO . expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (47) expression -> . exp
@@ -7922,7 +7933,7 @@ state 285
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 288
+    expression                     shift and go to state 289
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -7932,7 +7943,7 @@ state 285
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
-state 286
+state 287
 
     (91) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .
 
@@ -7960,7 +7971,7 @@ state 286
     RBRACE          reduce using rule 91 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
 
 
-state 287
+state 288
 
     (46) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .
 
@@ -7988,7 +7999,7 @@ state 287
     RBRACE          reduce using rule 46 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
 
 
-state 288
+state 289
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression . np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (50) expression0 -> expression . AND np_add_operator expression
@@ -7999,16 +8010,16 @@ state 288
     OR              shift and go to state 103
     BY              reduce using rule 131 (np_non_conditional_limit -> .)
 
-    np_non_conditional_limit       shift and go to state 289
+    np_non_conditional_limit       shift and go to state 290
 
-state 289
+state 290
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit . BY expression RPAREN block np_non_conditional_end
 
-    BY              shift and go to state 290
+    BY              shift and go to state 291
 
 
-state 290
+state 291
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY . expression RPAREN block np_non_conditional_end
     (47) expression -> . exp
@@ -8055,7 +8066,7 @@ state 290
     TRUE            shift and go to state 67
     FALSE           shift and go to state 68
 
-    expression                     shift and go to state 291
+    expression                     shift and go to state 292
     exp                            shift and go to state 52
     expression1                    shift and go to state 53
     expression0                    shift and go to state 54
@@ -8065,27 +8076,27 @@ state 290
     factor_prima_1                 shift and go to state 59
     varcte                         shift and go to state 62
 
-state 291
+state 292
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression . RPAREN block np_non_conditional_end
     (50) expression0 -> expression . AND np_add_operator expression
     (51) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 292
+    RPAREN          shift and go to state 293
     AND             shift and go to state 102
     OR              shift and go to state 103
 
 
-state 292
+state 293
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN . block np_non_conditional_end
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 293
+    block                          shift and go to state 294
 
-state 293
+state 294
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block . np_non_conditional_end
     (132) np_non_conditional_end -> .
@@ -8113,9 +8124,9 @@ state 293
     FALSE           reduce using rule 132 (np_non_conditional_end -> .)
     RBRACE          reduce using rule 132 (np_non_conditional_end -> .)
 
-    np_non_conditional_end         shift and go to state 294
+    np_non_conditional_end         shift and go to state 295
 
-state 294
+state 295
 
     (92) non_conditional_loop -> FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end .
 
@@ -8176,6 +8187,6 @@ WARNING: shift/reduce conflict for OR in state 194 resolved as shift
 WARNING: shift/reduce conflict for AND in state 195 resolved as shift
 WARNING: shift/reduce conflict for OR in state 195 resolved as shift
 WARNING: shift/reduce conflict for SEMI in state 207 resolved as shift
-WARNING: shift/reduce conflict for SEMI in state 233 resolved as shift
+WARNING: shift/reduce conflict for SEMI in state 234 resolved as shift
 WARNING: reduce/reduce conflict in state 72 resolved using rule (factor -> function_call)
 WARNING: rejected rule (epsilon -> <empty>) in state 72
