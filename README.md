@@ -60,3 +60,8 @@ Durante esta semana, agregaré los puntos neurálgicos restantes y comenzaré a 
 
 ## Quinto Avance
 
+Este quinto avances tiene un gran progreso en cuando a la generación del código intermedio. Se añadieron los puntos neuralgicos para algunos estatutos líneales como el del main, return, entre otros. 
+
+Principalmente en este avance se trabajo con las funciones, y todo lo que implico. Se creo un arreglo para los parametros, y se modifica el directorio de funciones para añadir donde empieza, y la memoria. Por otro lado se añaden todos los puntos neuralgicos para la definición y utilización de las funciones.
+
+Finalmente comence a definir como estará estructurada la memoria para ya implementar esta ídea en la creación de código intermedio. Quedo pendiente empezar a trabajar con la maquina virtual para la ejecición de expresiones aritmeticas.
