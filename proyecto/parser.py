@@ -598,13 +598,9 @@ def p_np_end_program(p):
 def p_np_check_function_call(p):
     '''np_check_function_call : '''
     global program_scopes
-    print('IAAMMM HWEEEERE')
     if not program_scopes.exists(p[-2]):
-        create_error(f'Function {p[-1]} is not defined')
-    else:
-        print('si funciono esot', p[-1])
-
-
+        create_error(f'Function {p[-2]} is not defined')
+    
 
 # ==============================================================================
 # ==============================================================================

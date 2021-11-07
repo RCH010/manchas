@@ -35,7 +35,14 @@ class Scopes_directory(Directory):
         self.dic[id]['cont'] = cont
 
     
-
+    '''
+    Calculate the number of variables (per type) are used on the given scope. 
+    This function will create an array with the totals of variables per type
+    where the 1st position are the number of intergers, the 2nd the number of
+    floats, then the number of booleans and finally the number of chars.
+        [ INTS . FLOATS, BOOLS, CHARS ]
+    This array is saved of the given scope with the key of: types_counter
+    '''
     def calculate_function_size(self, id):
         vars_table = self.dic[id]['vars'].dic
         params = self.dic[id]['params']
@@ -55,7 +62,6 @@ class Scopes_directory(Directory):
             types_counter[data_type] += 1
 
         self.dic[id]['types_counter'] = types_counter
-        print('contador dde tipooos', types_counter)
         
 
 

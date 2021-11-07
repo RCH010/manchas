@@ -32,6 +32,8 @@ main ()
   let aNumber: int;
 {  
   aNumber = 12;
-  sumResult = sumTwoNumbers();
+  print("before function call");
+  sumFrom0ToN();
+  print("after function call");
   print("The result is: ", aNumber);
 }
