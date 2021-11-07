@@ -14,7 +14,8 @@ def main(argv):
         print(indx, end='') 
         quad.print()
         
-    program_scopes.print_directory()
+    # program_scopes.print_directory()
+    
     print(res)
 
 if __name__ == "__main__":

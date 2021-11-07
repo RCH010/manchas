@@ -6,13 +6,18 @@ function miSuperFuncion: bool(unvarParam:int)
 let varFuncion1: int;
 let varFuncion3: float;
 let siFunciona: float;
+let michar: char;
 {
+  michar = 'U';
   if(siFunciona == 2) {
     return true;
     print("este es el verdader");
   } else {
     print("este es el falso");
     return false;
+  }
+  if(michar == 'U') {
+    print("El char funciona", michar);
   }
 }
 

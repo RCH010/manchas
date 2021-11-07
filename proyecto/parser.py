@@ -5,7 +5,7 @@ from lexer import tokens, keywords
 from directories.scopes import Scopes_directory
 from directories.vars import Vars
 from operation import Operation
-from utils import Data_types
+from utils import Data_types, operators_id
 from quadruples import Quadruple
 
 # Program directory, this contains all functions and the main scope
@@ -359,7 +359,7 @@ def p_np_add_cte_char(p):
     global operands, types
     operands.append(p[-1])
     types.append(Data_types['CHARACTER'])
-    #print('np_add_cte_char: -->', p[-1])
+    print('np_add_cte_char: -->', p[-1])
 
 
 def p_np_add_cte_bool(p):
@@ -721,7 +721,8 @@ def get_var(var_id):
 Create a new instance of the Quadruple class and append it to the quadruples list
 '''
 def set_new_quadruple(first, second, third, fourth):
-    new_quadruple = Quadruple(first, second, third, fourth)
+    operator_id = operators_id[first]
+    new_quadruple = Quadruple(operator_id, second, third, fourth)
     quadruples.append(new_quadruple)
 
 
