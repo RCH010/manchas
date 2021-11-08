@@ -359,7 +359,7 @@ def p_np_add_cte_char(p):
     global operands, types
     operands.append(p[-1])
     types.append(Data_types['CHARACTER'])
-    print('np_add_cte_char: -->', p[-1])
+    # print('np_add_cte_char: -->', p[-1])
 
 
 def p_np_add_cte_bool(p):
