@@ -6,6 +6,8 @@ let algo: float;
 main ()
 let v1, v2: int;
 let v3: int;
+let f1, f2: float;
+let c1, c2: char;
 {
   v1 = 32 - (9 + 10 * 5);
   v2 = v3 * 1;
@@ -15,9 +17,15 @@ let v3: int;
     v1 = v1 - 1;
   }
 
-  v1 = 0;
-  v2 = 4;
-
+  v1 = 32;
+  v2 = 32;
+  v1 = 9;
+  f1 = 9.12;
+  f2 = 9.10;
+  f1 = 9.12;
+  c1 = 'a';
+  c2 = 'B';
+  c1 = 'a';
   for (v1 = 1 to v1 == 10 by v2){
     v3 = v3 + 1;
     print("Hola mundo", v1*2, 12);

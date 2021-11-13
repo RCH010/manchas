@@ -5,6 +5,8 @@ from lexer import tokens, keywords
 from directories.scopes import Scopes_directory
 from directories.vars import Vars
 from operation import Operation
+from memory import Memory
+from directories.directory import Directory
 from utils import Data_types, operators_id
 from quadruples import Quadruple
 
@@ -28,8 +30,12 @@ types = deque()
 # jups stack 
 jumps = deque()
 
+constants_table = {}
+# Counters for memory management
+memory_counters = Memory()
 # Temoral counter 
 tempsCount = 0
+
 # Parameters counter
 params_count = 0
 current_function_call_id = None
@@ -257,7 +263,11 @@ def p_error(token):
 
 
 # ======================================================================
+# ======================================================================
+# ======================================================================
 #                        NEURALGIC POINTS
+# ======================================================================
+# ======================================================================
 # ======================================================================
 
 '''
@@ -269,7 +279,7 @@ def p_np_create_global(p):
     '''np_create_global : '''
     global program_scopes, current_scope, jumps
     create_scope('program', Data_types['VOID'])
-    set_new_quadruple('GOTO', None, None, None)
+    set_new_quadruple('GOTO', -1, -1, -1)
     jumps.append(len(quadruples) - 1)
 
 '''
@@ -337,29 +347,53 @@ def p_np_add_id_quad(p):
     types.append(var_type)
     #print('np_add_var_quad: -->', p[-1])
 
-
+'''
+Add integer memory address on operands and types array
+- If not added, add the constant to constants table
+'''
 def p_np_add_cte_int(p):
     '''np_add_cte_int : '''
-    global operands, types
-    operands.append(p[-1])
+    global operands, types, memory_counters, constants_table
+    value = p[-1]
+    if value not in constants_table:    
+        new_mem_address = memory_counters.count_const_int
+        constants_table[value] = new_mem_address
+        memory_counters.count_const_int += 1
+    address_of_constant = constants_table[value]
+    operands.append(address_of_constant)
     types.append(Data_types['INTEGER'])
-    #print('np_add_cte_int: -->', p[-1])
 
-
+'''
+Add float memory address on operands and types array
+- If not added, add the constant to constants table
+'''
 def p_np_add_cte_float(p):
     '''np_add_cte_float : '''
-    global operands, types
-    operands.append(p[-1])
+    global operands, types, memory_counters, constants_table
+    value = p[-1]
+    if value not in constants_table:    
+        new_mem_address = memory_counters.count_const_float
+        constants_table[value] = new_mem_address
+        memory_counters.count_const_float += 1
+    address_of_constant = constants_table[value]
+    operands.append(address_of_constant)
     types.append(Data_types['FLOAT'])
-    #print('np_add_cte_float: -->', p[-1])
 
-
+'''
+Add char memory address on operands and types array
+- If not added, add the constant to constants table
+'''
 def p_np_add_cte_char(p):
     '''np_add_cte_char : '''
-    global operands, types
-    operands.append(p[-1])
+    global operands, types, memory_counters, constants_table
+    value = p[-1]
+    if value not in constants_table:    
+        new_mem_address = memory_counters.count_const_char
+        constants_table[value] = new_mem_address
+        memory_counters.count_const_char += 1
+    address_of_constant = constants_table[value]
+    operands.append(address_of_constant)
     types.append(Data_types['CHARACTER'])
-    # print('np_add_cte_char: -->', p[-1])
 
 
 def p_np_add_cte_bool(p):
@@ -430,7 +464,7 @@ def p_np_condition_gotof(p):
         print('Error, type mismatch on if')
         sys.exit()
     res_if = operands.pop()
-    set_new_quadruple('GOTOF', res_if, None, None)
+    set_new_quadruple('GOTOF', res_if, -1, -1)
     jumps.append(len(quadruples) - 1)
 
 def p_np_condition_end_gotof(p):
@@ -443,7 +477,7 @@ def p_np_condition_end_gotof(p):
 
 def p_np_condition_goto_else(p):
     '''np_condition_goto_else : '''
-    set_new_quadruple('GOTO', None, None, None)
+    set_new_quadruple('GOTO', -1, -1, -1)
     jump_end_pos = jumps.pop()
     jumps.append(len(quadruples) - 1)
     old_quadruple = quadruples[jump_end_pos]
@@ -467,7 +501,7 @@ def p_np_while_expression (p):
         create_error('Type-mismatch on While expresion')
     exp_res = operands.pop()
     # Generate quadruple, the result reamins
-    set_new_quadruple('GOTOF', exp_res, None, None)
+    set_new_quadruple('GOTOF', exp_res, -1, -1)
     jumps.append(len(quadruples) - 1)
 
 def p_np_while_end_block (p):
@@ -475,7 +509,7 @@ def p_np_while_end_block (p):
     end_pos = jumps.pop()
     return_pos = jumps.pop()
     # Generate quadruple, the result reamins
-    set_new_quadruple('GOTO', None, None, return_pos)
+    set_new_quadruple('GOTO', -1, -1, return_pos)
     # Update the quadr
     old_quadruple = quadruples[end_pos]
     old_quadruple.setResult(len(quadruples))
@@ -507,7 +541,7 @@ def p_np_assign_expression_for(p):
     # In the case of the 'for' the type of the variable must be integer
     if right_type != Data_types['INTEGER'] or left_type != Data_types['INTEGER'] :
         create_error(f'Conditional variable of "For" must be integer')
-    set_new_quadruple(operator, right_operand, None, left_operand)
+    set_new_quadruple(operator, right_operand, -1, left_operand)
     # save position where the for starts... this will go on the GOTO at the end of the for
     jumps.append(len(quadruples))
     # add the variable of the for in the stacks
@@ -522,7 +556,7 @@ def p_np_non_conditional_limit(p):
 
     if op_type != Data_types['BOOLEAN']:
         create_error('Invalid type in "For" statement, must be boolean')
-    set_new_quadruple('GOTOV', result, None, None)
+    set_new_quadruple('GOTOV', result, -1, -1)
     jumps.append(len(quadruples) - 1)
     
 
@@ -548,7 +582,7 @@ def p_np_non_conditional_end (p):
 
     end_pos = jumps.pop()
     return_pos = jumps.pop()
-    set_new_quadruple('GOTO', None, None, return_pos)
+    set_new_quadruple('GOTO', -1, -1, return_pos)
 
     # Update the GOTOV quadruple
     old_quadruple = quadruples[end_pos]
@@ -561,14 +595,14 @@ def p_np_non_conditional_end (p):
 def p_np_add_print_quadruple_str(p):
     '''np_add_print_quadruple_str : '''
     value = p[-1]
-    set_new_quadruple('PRINT', None, None, value)
+    set_new_quadruple('PRINT', -1, -1, value)
 
 def p_np_add_print_quadruple_exp(p):
     '''np_add_print_quadruple_exp : '''
     global quadruples,operands, types
     value = operands.pop()
     v_type = types.pop()
-    set_new_quadruple('PRINT', None, None, value)
+    set_new_quadruple('PRINT', -1, -1, value)
 
 
 # =========================
@@ -585,11 +619,11 @@ def p_np_add_return_quadruple(p):
     v_type = types.pop()
     if (v_type != func_return_type):
         create_error(f'Function {current_scope}, has a return type of {func_return_type}, and you are trying to return a {v_type}')
-    set_new_quadruple('RETURN', None, None, value)
+    set_new_quadruple('RETURN', -1, -1, value)
 
-# =
-# Functions stuff
-# =
+# =========================
+#       Functions stuff
+# =========================
 def p_np_add_params_type(p):
     '''np_add_params_type : '''
     global program_scopes, current_scope
@@ -604,14 +638,14 @@ def p_np_set_func_start_point(p):
 def p_np_end_function(p):
     '''np_end_function : '''
     global program_scopes, current_scope
-    set_new_quadruple('ENDFUNC', None, None, None)
+    set_new_quadruple('ENDFUNC', -1, -1, -1)
     # Calculate the memory that the function will use
     program_scopes.calculate_function_size(current_scope)
     
 
 def p_np_end_program(p):
     '''np_end_program : '''
-    set_new_quadruple('END', None, None, None)
+    set_new_quadruple('END', -1, -1, -1)
 
 
 def p_np_check_function_call(p):
@@ -621,7 +655,7 @@ def p_np_check_function_call(p):
     if not program_scopes.exists(current_function_call_id):
         create_error(f'Function {current_function_call_id} is not defined')
     params_count = 0
-    set_new_quadruple('ERA', None, None, current_function_call_id)
+    set_new_quadruple('ERA', -1, -1, current_function_call_id)
 
 def p_np_function_call_add_param(p):
     '''np_function_call_add_param : '''
@@ -636,7 +670,7 @@ def p_np_function_call_add_param(p):
         should of type {function_call_params[params_count]} and you are giving a 
         {argument_type}
         ''')
-    set_new_quadruple('PARAM', argument, None, f'_param_{params_count}')
+    set_new_quadruple('PARAM', argument, -1, f'_param_{params_count}')
     params_count += 1
     
 def p_np_function_end_params(p):
@@ -649,7 +683,7 @@ def p_np_function_end_params(p):
         create_error(f'''The function {current_function_call_id}, expected {size_of_params} 
             arguments, you gave {params_count} arguments''')
     initial_function_addres = program_scopes.get_func_cont(current_function_call_id)
-    set_new_quadruple('GOSUB', current_function_call_id, None, initial_function_addres)
+    set_new_quadruple('GOSUB', current_function_call_id, -1, initial_function_addres)
 
 
 # ==============================================================================
@@ -721,7 +755,7 @@ def get_var(var_id):
 Create a new instance of the Quadruple class and append it to the quadruples list
 '''
 def set_new_quadruple(first, second, third, fourth):
-    operator_id = operators_id[first]
+    operator_id = operators_id[first]       # convert the operator (GOTO, +, =, RETURN) to its id (number)
     new_quadruple = Quadruple(operator_id, second, third, fourth)
     quadruples.append(new_quadruple)
 
