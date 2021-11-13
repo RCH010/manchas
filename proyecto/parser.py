@@ -395,13 +395,22 @@ def p_np_add_cte_char(p):
     operands.append(address_of_constant)
     types.append(Data_types['CHARACTER'])
 
-
+'''
+Add bool memory address on operands and types array
+- If not added, add the constant to constants table
+'''
+# TODO: revisar si para bool no deberia ser algo más como preesatablecido
 def p_np_add_cte_bool(p):
     '''np_add_cte_bool : '''
-    global program_scopes, current_scope
-    operands.append(p[-1])
+    global program_scopes, current_scope, memory_counters, constants_table
+    value = p[-1]
+    if value not in constants_table:    
+        new_mem_address = memory_counters.count_const_bool
+        constants_table[value] = new_mem_address
+        memory_counters.count_const_bool += 1
+    address_of_constant = constants_table[value]
+    operands.append(address_of_constant)
     types.append(Data_types['BOOLEAN'])
-    #print('np_add_cte_bool: -->', p[-1])
 
 # Add operator to poper stack
 def p_np_add_operator(p):
