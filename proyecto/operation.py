@@ -25,7 +25,7 @@ class Operation:
             elif(symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('Invalid operation', type1, symbol, type2)
+                print('1- Invalid operation', type1, symbol, type2)
                 sys.exit()
         # int - float || floar - int || float - float
         if((type1 == Data_types['INTEGER'] or type1 == Data_types['FLOAT']) 
@@ -35,7 +35,7 @@ class Operation:
             elif(symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('Invalid operation', type1, symbol, type2)
+                print('2 - Invalid operation', type1, symbol, type2)
                 sys.exit()
         # Check if we want to chars to be added or smth like that
         # int - int would reach this case
@@ -49,7 +49,7 @@ class Operation:
             elif(symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('Invalid operation', type1, symbol, type2)
+                print('3 - Invalid operation', type1, symbol, type2)
                 sys.exit()
 
         # float - char || char - float
@@ -60,7 +60,7 @@ class Operation:
             elif(symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('Invalid operation', type1, symbol, type2)
+                print('4 - Invalid operation', type1, symbol, type2)
                 sys.exit()
         # bool-bool
         if(type1 == Data_types['BOOLEAN'] and type2 == Data_types['BOOLEAN']):
@@ -69,9 +69,9 @@ class Operation:
                 symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('Invalid operation', type1, symbol, type2)
+                print('5 - Invalid operation', type1, symbol, type2)
                 sys.exit()
         # any other is an invalid combination
-        print('Invalid operation', type1, symbol, type2)
+        print('6 - Invalid operation', type1, symbol, type2)
         sys.exit()
 

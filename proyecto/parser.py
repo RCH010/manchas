@@ -161,7 +161,7 @@ def p_expression1(p):
 
 def p_exp(p):
     '''exp : term np_add_quadruple_sum_min
-        | term exp_1'''
+        | term np_add_quadruple_sum_min exp_1'''
 
 def p_exp_1(p):
     '''exp_1 : PLUS np_add_operator exp
@@ -169,7 +169,7 @@ def p_exp_1(p):
 
 def p_term(p):
     '''term : factor np_add_quadruple_times_div
-        | factor term_2'''
+        | factor np_add_quadruple_times_div term_2'''
 
 def p_term_2(p):
     '''term_2 : TIMES np_add_operator term
@@ -330,10 +330,12 @@ def p_np_add_vars(p):
     while vars_stack:
         current_scope_vars = program_scopes.get_vars_table(current_scope)
         current_scope_vars.add_new_var(vars_stack[0], vars_type)
+        new_address = get_vars_new_address(vars_type)
+        current_scope_vars.set_address(vars_stack[0], new_address)
         vars_stack.popleft()
 
 # ======================================================================
-#                  Code generation linal statements
+#                  Code generation lineal statements
 # ======================================================================
 
 def p_np_add_id_quad(p):
@@ -341,11 +343,12 @@ def p_np_add_id_quad(p):
     global operands, types
     # Get var instance from vars table
     current_var = get_var(p[-1])
+    print('current_var',current_var)
     var_type = current_var['type']
     # Add number and type int to operands and types stacks
     operands.append(p[-1])
     types.append(var_type)
-    #print('np_add_var_quad: -->', p[-1])
+    print('np_add_var_quad: -->', p[-1])
 
 '''
 Add integer memory address on operands and types array
@@ -358,10 +361,11 @@ def p_np_add_cte_int(p):
     if value not in constants_table:    
         new_mem_address = memory_counters.count_const_int
         constants_table[value] = new_mem_address
-        memory_counters.count_const_int += 1
+        memory_counters.update_counter('const', Data_types['INTEGER'])
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['INTEGER'])
+    print('add const', 'INTEGER', value, address_of_constant)
 
 '''
 Add float memory address on operands and types array
@@ -374,10 +378,11 @@ def p_np_add_cte_float(p):
     if value not in constants_table:    
         new_mem_address = memory_counters.count_const_float
         constants_table[value] = new_mem_address
-        memory_counters.count_const_float += 1
+        memory_counters.update_counter('const', Data_types['FLOAT'])
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['FLOAT'])
+    print('add const', 'FLOAT', value, address_of_constant)
 
 '''
 Add char memory address on operands and types array
@@ -390,10 +395,11 @@ def p_np_add_cte_char(p):
     if value not in constants_table:    
         new_mem_address = memory_counters.count_const_char
         constants_table[value] = new_mem_address
-        memory_counters.count_const_char += 1
+        memory_counters.update_counter('const', Data_types['CHARACTER'])
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['CHARACTER'])
+    print('add const', 'char', value, address_of_constant)
 
 '''
 Add bool memory address on operands and types array
@@ -407,7 +413,7 @@ def p_np_add_cte_bool(p):
     if value not in constants_table:    
         new_mem_address = memory_counters.count_const_bool
         constants_table[value] = new_mem_address
-        memory_counters.count_const_bool += 1
+        memory_counters.update_counter('const', Data_types['BOOLEAN'])
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['BOOLEAN'])
@@ -416,13 +422,13 @@ def p_np_add_cte_bool(p):
 def p_np_add_operator(p):
     '''np_add_operator : '''
     global operators
-    #print('add operator', p[-1])
+    print('add operator', p[-1])
     operators.append(p[-1])
 
 def p_np_add_paren(p):
     '''np_add_paren : '''
     global operators
-    #print('add operator', p[-1])
+    print('add operator', p[-1])
     operators.append(p[-1])
 
 def p_np_pop_paren(p):
@@ -436,6 +442,7 @@ def p_np_pop_paren(p):
 
 def p_np_add_quadruple_sum_min(p):
     '''np_add_quadruple_sum_min : '''
+    print('Supuestamente va con mas o menos')
     generate_new_quadruple(['+', '-'])
 
 def p_np_add_quadruple_times_div(p):
@@ -453,13 +460,13 @@ def p_np_add_quadruple_or_and(p):
 def p_np_assign_expression(p):
     '''np_assign_expression : '''
     global operators, operands, types, quadruples
-    operator = operators.pop()
+    operator = operators.pop()          # = 
     right_operand = operands.pop()
     right_type = types.pop()
     left_operand = operands.pop()
     left_type = types.pop()
     res_type = Operation.getType(operator, right_type, left_type)
-
+    print('np_assign_expression', operator, operators, operands)
     if res_type == 'Error':
         print('Invalid operation, type mismatch on', right_type, 'and', left_type, 'with a', operator)
         sys.exit()
@@ -582,13 +589,8 @@ def p_np_non_conditional_end (p):
     
     if res_type == 'Error' or res_type != Data_types['INTEGER']:
         create_error(f'Invalid type in "For" expression\n type mismatch on {for_var_type} and {delta_type} with a +')
-
-    current_scope_vars = program_scopes.get_vars_table(current_scope)
-    temp_var_name = f"_temp{tempsCount}"
-    tempsCount += 1
-    current_scope_vars.add_new_var(temp_var_name, res_type)
+    
     set_new_quadruple('+', for_var_value, delta_value, for_var_value)
-
     end_pos = jumps.pop()
     return_pos = jumps.pop()
     set_new_quadruple('GOTO', -1, -1, return_pos)
@@ -646,10 +648,14 @@ def p_np_set_func_start_point(p):
 
 def p_np_end_function(p):
     '''np_end_function : '''
-    global program_scopes, current_scope
+    global program_scopes, current_scope, memory_counters
     set_new_quadruple('ENDFUNC', -1, -1, -1)
     # Calculate the memory that the function will use
     program_scopes.calculate_function_size(current_scope)
+    # Reset temp, local and pointers values
+    # TODO: pointers
+    memory_counters.reset_local_counters()
+    memory_counters.reset_temp_counters()
     
 
 def p_np_end_program(p):
@@ -714,6 +720,7 @@ create a new quadruple for an expresion
 '''
 def generate_new_quadruple(operator_to_check):
     global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount
+    print('operators[-1]', operators[-1], 'operands', operands[-1], operator_to_check)
     if len(operators) > 0 and (operators[-1] in operator_to_check):
         # Get operator and operands from stacks
         # For example: 
@@ -726,6 +733,7 @@ def generate_new_quadruple(operator_to_check):
         left_operand = operands.pop()
         left_type = types.pop()
         # Get the resulting type of the operation
+        print('aqui esta tronando', right_operand, operator, left_operand)
         res_type = Operation.getType(operator, right_type, left_type)
         
         if res_type == 'Error':
@@ -734,12 +742,67 @@ def generate_new_quadruple(operator_to_check):
         current_scope_vars = program_scopes.get_vars_table(current_scope)
         temp_var_name = f"_temp{tempsCount}"
         tempsCount += 1
+        
         current_scope_vars.add_new_var(temp_var_name, res_type)
+        new_address = get_vars_new_address(res_type, True)
+        current_scope_vars.set_address(temp_var_name, new_address)
         # Append a new quadruple to the quadruples list
+        # set_new_quadruple(operator, left_operand, right_operand, new_address)
+        print('F', operator, left_operand, right_operand, temp_var_name)
         set_new_quadruple(operator, left_operand, right_operand, temp_var_name)
         # add to operands and types stacks the result
         operands.append(temp_var_name)
         types.append(res_type)
+
+def get_global_types_map(memory_counters):
+    global_types_map = {
+        Data_types['INTEGER']: memory_counters.count_global_int,
+        Data_types['FLOAT']: memory_counters.count_global_float,
+        Data_types['CHARACTER']: memory_counters.count_global_char,
+        Data_types['BOOLEAN']: memory_counters.count_global_bool,
+    }
+    return global_types_map
+
+
+def get_local_types_map(memory_counters):
+    local_types_map = {
+        Data_types['INTEGER']: memory_counters.count_local_int,
+        Data_types['FLOAT']: memory_counters.count_local_float,
+        Data_types['CHARACTER']: memory_counters.count_local_char,
+        Data_types['BOOLEAN']: memory_counters.count_local_bool,
+    }
+    return local_types_map
+
+def get_temporal_types_map(memory_counters):
+    local_types_map = {
+        Data_types['INTEGER']: memory_counters.count_temp_int,
+        Data_types['FLOAT']: memory_counters.count_temp_float,
+        Data_types['CHARACTER']: memory_counters.count_temp_char,
+        Data_types['BOOLEAN']: memory_counters.count_temp_bool,
+    }
+    return local_types_map
+
+
+'''
+Get a new memory address for a new variable
+'''    
+def get_vars_new_address(var_type, is_temporal = False):
+    global current_scope, memory_counters
+    if is_temporal:
+        temporal_types_map = get_temporal_types_map(memory_counters)
+        new_mem_address = temporal_types_map[var_type]
+        memory_counters.update_counter('temp', var_type)
+        return new_mem_address
+    if(current_scope == 'program'):
+        global_types_map = get_global_types_map(memory_counters)
+        new_mem_address = global_types_map[var_type]
+        memory_counters.update_counter('global', var_type)
+        return new_mem_address
+    local_types_map = get_local_types_map(memory_counters)
+    new_mem_address = local_types_map[var_type]
+    memory_counters.update_counter('local', var_type)
+    return new_mem_address
+
 
 '''
 Get the vars directory given the scope id

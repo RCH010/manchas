@@ -1,9 +1,15 @@
 program test2;
 let valorNumerico:int;
 let strValue:int;
+let i1, i2, i3: int;
+let b1, b2, b3, b4: bool;
 
 function miSuperFuncion: bool(unvarParam:int)
 let varFuncion1: int;
+let f1a1: int;
+let f1a2: int;
+let f1a3: int;
+let f1a4: int;
 let varFuncion3: float;
 let siFunciona: float;
 let michar: char;
@@ -23,6 +29,10 @@ let michar: char;
 
 function segundafuncion: int()
 let varSegundo: char;
+let f2a1: int;
+let f2a2: int;
+let f2a3: int;
+let f2a4: int;
 {
   print("Hola mundo");
 }

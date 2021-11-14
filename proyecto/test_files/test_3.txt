@@ -7,12 +7,19 @@ function sumTwoNumbers: int(firstNumber: int, secondNumber: int) {
 
 function multiplyTwoNumbers: int(firstNumber: int, secondNumber: int)
 let result: int;
+let num1, num2, num3: int;
 {
+  num1 = num2 + num3 + num1 * 3 + num2;
+  num2 = num1 - 10 + num3;
   result = firstNumber * secondNumber;
   return result;
 }
 
-function divideTwoNumbers: float(firstNumber:float, secondNumber: float) {
+function divideTwoNumbers: float(firstNumber:float, secondNumber: float)
+let num1, num2, num3: int;
+{
+  num1 = 10 + 5 + 12 * 12 + 12 + num3;
+  print(num1);
   return (firstNumber / secondNumber);
 }
 

@@ -22,8 +22,11 @@ class Vars(Directory):
         if type not in Data_types.values() or type == Data_types['VOID']:
                 print('Error', 'return type:', type ,'is an invalid type for', id)
                 sys.exit()
-        self.dic[id] = {'type': type, 'value': value}
-
+        self.dic[id] = {'type': type ,'value': value, 'address': None}
+    
+    def set_address(self, id, address):
+        self.dic[id]['address'] = address
+    
     def get_vars_dictionary(self):
         return self.dic
     
