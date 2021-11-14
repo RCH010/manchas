@@ -343,12 +343,12 @@ def p_np_add_id_quad(p):
     global operands, types
     # Get var instance from vars table
     current_var = get_var(p[-1])
-    print('current_var',current_var)
     var_type = current_var['type']
-    # Add number and type int to operands and types stacks
-    operands.append(p[-1])
+    var_address = current_var['address']
+    # Add number(virtual address) and type int to operands and types stacks
+    operands.append(var_address)
     types.append(var_type)
-    print('np_add_var_quad: -->', p[-1])
+    # print('np_add_var_quad: -->', p[-1])
 
 '''
 Add integer memory address on operands and types array
@@ -365,7 +365,7 @@ def p_np_add_cte_int(p):
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['INTEGER'])
-    print('add const', 'INTEGER', value, address_of_constant)
+    # print('add const', 'INTEGER', value, address_of_constant)
 
 '''
 Add float memory address on operands and types array
@@ -382,7 +382,7 @@ def p_np_add_cte_float(p):
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['FLOAT'])
-    print('add const', 'FLOAT', value, address_of_constant)
+    # print('add const', 'FLOAT', value, address_of_constant)
 
 '''
 Add char memory address on operands and types array
@@ -399,7 +399,7 @@ def p_np_add_cte_char(p):
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['CHARACTER'])
-    print('add const', 'char', value, address_of_constant)
+    # print('add const', 'char', value, address_of_constant)
 
 '''
 Add bool memory address on operands and types array
@@ -422,13 +422,13 @@ def p_np_add_cte_bool(p):
 def p_np_add_operator(p):
     '''np_add_operator : '''
     global operators
-    print('add operator', p[-1])
+    # print('add operator', p[-1])
     operators.append(p[-1])
 
 def p_np_add_paren(p):
     '''np_add_paren : '''
     global operators
-    print('add operator', p[-1])
+    # print('add operator', p[-1])
     operators.append(p[-1])
 
 def p_np_pop_paren(p):
@@ -442,7 +442,6 @@ def p_np_pop_paren(p):
 
 def p_np_add_quadruple_sum_min(p):
     '''np_add_quadruple_sum_min : '''
-    print('Supuestamente va con mas o menos')
     generate_new_quadruple(['+', '-'])
 
 def p_np_add_quadruple_times_div(p):
@@ -466,11 +465,10 @@ def p_np_assign_expression(p):
     left_operand = operands.pop()
     left_type = types.pop()
     res_type = Operation.getType(operator, right_type, left_type)
-    print('np_assign_expression', operator, operators, operands)
     if res_type == 'Error':
         print('Invalid operation, type mismatch on', right_type, 'and', left_type, 'with a', operator)
         sys.exit()
-    set_new_quadruple(operator, right_operand, None, left_operand)
+    set_new_quadruple(operator, right_operand, -1, left_operand)
 
 def p_np_condition_gotof(p):
     '''np_condition_gotof : '''
@@ -720,7 +718,6 @@ create a new quadruple for an expresion
 '''
 def generate_new_quadruple(operator_to_check):
     global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount
-    print('operators[-1]', operators[-1], 'operands', operands[-1], operator_to_check)
     if len(operators) > 0 and (operators[-1] in operator_to_check):
         # Get operator and operands from stacks
         # For example: 
@@ -733,7 +730,6 @@ def generate_new_quadruple(operator_to_check):
         left_operand = operands.pop()
         left_type = types.pop()
         # Get the resulting type of the operation
-        print('aqui esta tronando', right_operand, operator, left_operand)
         res_type = Operation.getType(operator, right_type, left_type)
         
         if res_type == 'Error':
@@ -742,16 +738,16 @@ def generate_new_quadruple(operator_to_check):
         current_scope_vars = program_scopes.get_vars_table(current_scope)
         temp_var_name = f"_temp{tempsCount}"
         tempsCount += 1
-        
+        # Create temp var on table of vars
         current_scope_vars.add_new_var(temp_var_name, res_type)
+        # Ger address of this temporal var, and set it on the vars table of temp_var_name
         new_address = get_vars_new_address(res_type, True)
         current_scope_vars.set_address(temp_var_name, new_address)
         # Append a new quadruple to the quadruples list
         # set_new_quadruple(operator, left_operand, right_operand, new_address)
-        print('F', operator, left_operand, right_operand, temp_var_name)
-        set_new_quadruple(operator, left_operand, right_operand, temp_var_name)
+        set_new_quadruple(operator, left_operand, right_operand, new_address)
         # add to operands and types stacks the result
-        operands.append(temp_var_name)
+        operands.append(new_address)
         types.append(res_type)
 
 def get_global_types_map(memory_counters):

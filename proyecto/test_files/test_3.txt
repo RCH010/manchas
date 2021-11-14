@@ -43,7 +43,7 @@ main ()
   print("before function call");
   sumFrom0ToN(thisIsBool, 1 + 32);
   print("after function call");
-  sumFrom0ToN(false, 10);
+  sumFrom0ToN(false, valorNumerico);
   sumFrom0ToN(false, 10);
   print("The result is: ", aNumber);
 }

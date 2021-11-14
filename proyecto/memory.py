@@ -77,7 +77,6 @@ class Memory():
                 self.count_const_bool = self.count_const_bool + 1
             
     def reset_local_counters(self):
-        print('reseting')
         self.count_local_int = 210000
         self.count_local_float = 220000
         self.count_local_char = 230000
