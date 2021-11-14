@@ -1,14 +1,14 @@
 import ply.yacc as yacc
 import sys
 from collections import deque
-from lexer import tokens, keywords
-from directories.scopes import Scopes_directory
-from directories.vars import Vars
-from operation import Operation
-from memory import Memory
-from directories.directory import Directory
-from utils import Data_types, operators_id
-from quadruples import Quadruple
+from compiler.lexer import tokens, keywords
+from compiler.directories.scopes import Scopes_directory
+from compiler.directories.vars import Vars
+from compiler.operation import Operation
+from compiler.memory import Memory
+from compiler.directories.directory import Directory
+from compiler.utils import Data_types, operators_id
+from compiler.quadruples import Quadruple
 
 # Program directory, this contains all functions and the main scope
 program_scopes = Scopes_directory()

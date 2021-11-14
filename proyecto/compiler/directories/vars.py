@@ -1,6 +1,6 @@
 import sys
-from utils import Data_types
-from directories.directory import Directory
+from compiler.utils import Data_types
+from compiler.directories.directory import Directory
 
 '''
 Vars directory, is used to manage all variables from a specific scope

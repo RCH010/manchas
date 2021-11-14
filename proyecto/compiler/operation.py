@@ -1,5 +1,5 @@
 import sys
-from utils import Relation_operators, Data_types
+from compiler.utils import Relation_operators, Data_types
 class Operation:
     
     def getType(symbol, type1, type2):

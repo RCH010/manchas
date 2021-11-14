@@ -13,7 +13,7 @@ all float's are         --> 2
 all char's are          --> 3
 all bool's are          --> 4
 '''
-from utils import Data_types
+from compiler.utils import Data_types
 
 
 class Memory():
