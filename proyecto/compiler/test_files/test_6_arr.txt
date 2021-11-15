@@ -2,7 +2,16 @@ program programaDeArreglos;
 
 main ()
 let f1: int[10];
+let arrInts1, arrInts2: int[12];
+let arrFloats: float[15];
+let v1, v2, v3: int;
+let arrChars: char[10];
+let miChar: char;
 {
   f1[123] = 1 * 2;
+  miChar = 'c';
+  arrChars[1] = miChar; 
+  v1 = v3 * 12 + 15;
+  arrInts1[12]= arrInts2[v1 * 12] + 15;
   print("Hello world");
 }

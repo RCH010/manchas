@@ -731,7 +731,7 @@ def p_np_check_is_array(p):
     array_id_assignment = p[-3]
     if(array_id is None):
         array_id = array_id_assignment
-    print('el ID: ', array_id, array_id_assignment)
+    
     # Get var instance from vars table for the array
     current_var = get_var(array_id)
     var_type = current_var['type']
@@ -740,8 +740,6 @@ def p_np_check_is_array(p):
     if (not is_array):
         create_error(f'{array_id} is not defined as an array.')
     # Add number(virtual address) and type to operands and types stacks
-    print('address del arre', var_address)
-    print('type del arre', var_type)
     operands.append(var_address)
     types.append(var_type)
     # ADD FAKE BOTTOM so expression of accessing array is contained
@@ -766,13 +764,12 @@ def p_np_verify_array_dim(p):
     # the accessing_array_val is  the virtual addres of th expression: x+1
     # the array_inferior_limit is 0 (for this language, all arrays start at 0)
     # the array_superior_limit is the defined size of the array (let myArray: int[10]) --> 10 in v address
-    print('VERIFY', accessing_array_val, array_inferior_limit, array_superior_limit, p[-1])
+    # print('VERIFY', accessing_array_val, array_inferior_limit, array_superior_limit, p[-1])
     set_new_quadruple('VERIFY', accessing_array_val, array_inferior_limit, array_superior_limit)
     
 def p_np_get_array_address(p):
     '''np_get_array_address : '''
     global operands, types, constants_table
-    print('SI ESTA LLEGANDOA QUI')
     accessing_array_value = operands.pop()  #La posición del arreglo que se quiere (como dir de memoria)
     accessing_array_type = types.pop()      # tipo de eseo
     array_initial_address = operands.pop()  # dirreción del arreglo
@@ -784,7 +781,7 @@ def p_np_get_array_address(p):
     array_init_address_const_address = create_constat_int_address(array_initial_address)
     pointer_address = create_new_pointer_address()
     
-    print('+', accessing_array_value, array_init_address_const_address, pointer_address)
+    # print('+', accessing_array_value, array_init_address_const_address, pointer_address)
     set_new_quadruple('+', accessing_array_value, array_init_address_const_address, pointer_address)
     operators.pop() # Remove fake bottom
     operands.append(pointer_address)
