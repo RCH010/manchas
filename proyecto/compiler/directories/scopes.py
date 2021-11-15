@@ -78,15 +78,15 @@ class Scopes_directory(Directory):
 
     def print_directory(self):
         for key, value in self.dic.items():
-            print()
-            print('SCOPE:', key)
+            print('\n\n\n')
+            print(f'------------------- SCOPE {key} -------------------')
             for k, v in value.items():
                 if k == 'vars':
-                    print('=====VARS======')
+                    print(f'________________Vars table of {key}________________')
                     v.print_directory()
-                    print('===============')
+                    print('--------------------------------------------------------')
                 else:
-                    print(k, ' -->', v)
+                    print(k, ':\t\t -->', v)
             print()
 
 # TODO: remove this... when int, float etc,are now numbers
