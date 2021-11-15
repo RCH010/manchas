@@ -56,7 +56,6 @@ def p_program_1(p):
         | main_block'''
     p[0] = None
 
-
 # VARS
 def p_vars(p):
     '''vars : vars_1'''
@@ -83,14 +82,14 @@ def p_type_1(p):
     '''type_1 : LBRACKET CTEI RBRACKET
         | epsilon'''
     global operands, types, memory_counters, constants_table, is_array, array_size
-    print('-->',p[1])
     if (p[1] == '['):
         is_array = True
         array_size = p[2]
-        if array_size not in constants_table:    
-            new_mem_address = memory_counters.count_const_int
-            constants_table[array_size] = new_mem_address
-            memory_counters.update_counter('const', Data_types['INTEGER'])
+        
+        if array_size < 1:
+            create_error(f'You are trying to create an array of size: {array_size}\n\t Arrays must be defined with a value grater than 1')
+        create_constat_int_address(array_size)
+
     else:
         is_array = False
         array_size = None
@@ -118,6 +117,7 @@ def p_params(p):
     '''params : ID COLON type np_add_vars np_add_params_type COMMA params
         | ID COLON type np_add_vars np_add_params_type'''
 
+
 def p_statements(p):
     '''statements : function_call statements1
         | assignment statements1
@@ -126,7 +126,6 @@ def p_statements(p):
         | reading statements1
         | repetition statements1
         | return statements1
-        | expression statements1
         | special_functions statements1'''
     p[0] = (p[1], p[2])
 
@@ -143,13 +142,8 @@ def p_statements1(p):
     p[0] = p[1]
 
 def p_assignment(p):
-    '''assignment : ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression SEMI
-        | ID LBRACKET expression RBRACKET EQUALS expression SEMI''' #TODO: ARREGLOS
-    if(len(p) == 5):
-        p[0] = ('equals', p[1], p[3])
-    else:
-        # TODO Asignación de arrelgos
-        p[0] = ('equals-array', p[1], p[3], p[6])
+    '''assignment : ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address EQUALS np_add_operator expression np_assign_expression SEMI
+        | ID np_add_id EQUALS np_add_operator expression np_assign_expression SEMI'''
 
 def p_condition(p):
     '''condition : IF LPAREN expression RPAREN np_condition_gotof block np_condition_end_gotof
@@ -194,7 +188,7 @@ def p_term_2(p):
 
 def p_factor(p):
     '''factor : LPAREN np_add_paren expression RPAREN np_pop_paren 
-        | LBRACKET expression RBRACKET
+        | ID LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address
         | function_call
         | factor_prima_1'''
 
@@ -204,7 +198,7 @@ def p_factor_prima_1(p):
         | varcte'''
 
 def p_varcte(p):
-    '''varcte : ID np_add_id_quad
+    '''varcte : ID np_add_id
         | CTEI np_add_cte_int
         | CTEF np_add_cte_float
         | CTEC np_add_cte_char
@@ -238,7 +232,7 @@ def p_conditional_loop(p):
     '''conditional_loop : WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block'''
 
 def p_non_conditional_loop(p):
-    '''non_conditional_loop : FOR LPAREN ID np_add_id_quad EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end'''
+    '''non_conditional_loop : FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end'''
 
 def p_return(p):
     '''return : RETURN expression np_add_return_quadruple SEMI'''
@@ -298,6 +292,8 @@ def p_np_create_global(p):
     create_scope('program', Data_types['VOID'])
     set_new_quadruple('GOTO', -1, -1, -1)
     jumps.append(len(quadruples) - 1)
+    # Create an addres for 0, in constants table
+    create_constat_int_address(0)
 
 '''
 Create main scope on the program_scopes with the id of 'main'
@@ -358,9 +354,12 @@ def p_np_add_vars(p):
 # ======================================================================
 #                  Code generation lineal statements
 # ======================================================================
-
-def p_np_add_id_quad(p):
-    '''np_add_id_quad : '''
+'''
+add ID to operands and types stack
+this np is used on the _expression_ and on the for delcaration
+'''
+def p_np_add_id(p):
+    '''np_add_id : '''
     global operands, types
     # Get var instance from vars table
     current_var = get_var(p[-1])
@@ -618,10 +617,10 @@ def p_np_non_conditional_end (p):
     old_quadruple = quadruples[end_pos]
     old_quadruple.setResult(len(quadruples))
 
+# ======================================================================
+#                               PRINT
+# ======================================================================
 
-# ====================
-#           PRINT
-# ====================
 def p_np_add_print_quadruple_str(p):
     '''np_add_print_quadruple_str : '''
     value = p[-1]
@@ -635,9 +634,10 @@ def p_np_add_print_quadruple_exp(p):
     set_new_quadruple('PRINT', -1, -1, value)
 
 
-# =========================
-#          RETURN
-# =========================
+# ======================================================================
+#                               RETURN
+# ======================================================================
+
 '''
 Return must have a value to return
 '''
@@ -651,9 +651,10 @@ def p_np_add_return_quadruple(p):
         create_error(f'Function {current_scope}, has a return type of {func_return_type}, and you are trying to return a {v_type}')
     set_new_quadruple('RETURN', -1, -1, value)
 
-# =========================
-#       Functions stuff
-# =========================
+# ======================================================================
+#                               Functions stuff
+# ======================================================================
+
 def p_np_add_params_type(p):
     '''np_add_params_type : '''
     global program_scopes, current_scope
@@ -719,6 +720,75 @@ def p_np_function_end_params(p):
     initial_function_addres = program_scopes.get_func_cont(current_function_call_id)
     set_new_quadruple('GOSUB', current_function_call_id, -1, initial_function_addres)
 
+# ======================================================================
+#                               Array stuff
+# ======================================================================
+
+def p_np_check_is_array(p):
+    '''np_check_is_array : '''
+    global operands, types, operators
+    array_id = p[-2]
+    array_id_assignment = p[-3]
+    if(array_id is None):
+        array_id = array_id_assignment
+    print('el ID: ', array_id, array_id_assignment)
+    # Get var instance from vars table for the array
+    current_var = get_var(array_id)
+    var_type = current_var['type']
+    var_address = current_var['address']
+    is_array = current_var['is_array']
+    if (not is_array):
+        create_error(f'{array_id} is not defined as an array.')
+    # Add number(virtual address) and type to operands and types stacks
+    print('address del arre', var_address)
+    print('type del arre', var_type)
+    operands.append(var_address)
+    types.append(var_type)
+    # ADD FAKE BOTTOM so expression of accessing array is contained
+    operators.append('|')
+
+def p_np_verify_array_dim(p):
+    '''np_verify_array_dim : '''
+    global operands, constants_table, types
+    accessing_array_val = operands[-1]
+    accessing_array_type = types[-1]
+    array_id = p[-4]
+    array_id_assignment = p[-5]
+    if (array_id is None): 
+        array_id = array_id_assignment
+    current_var = get_var(array_id)
+    array_defined_size = current_var['array_size']
+    array_inferior_limit = constants_table[0]
+    array_superior_limit = constants_table[array_defined_size]
+    if (accessing_array_type != Data_types['INTEGER']):
+        create_error(f'You are trying to access {array_id} with an {accessing_array_type} value. This must be an integer')
+    # For example: myArray[x+1]
+    # the accessing_array_val is  the virtual addres of th expression: x+1
+    # the array_inferior_limit is 0 (for this language, all arrays start at 0)
+    # the array_superior_limit is the defined size of the array (let myArray: int[10]) --> 10 in v address
+    print('VERIFY', accessing_array_val, array_inferior_limit, array_superior_limit, p[-1])
+    set_new_quadruple('VERIFY', accessing_array_val, array_inferior_limit, array_superior_limit)
+    
+def p_np_get_array_address(p):
+    '''np_get_array_address : '''
+    global operands, types, constants_table
+    print('SI ESTA LLEGANDOA QUI')
+    accessing_array_value = operands.pop()  #La posición del arreglo que se quiere (como dir de memoria)
+    accessing_array_type = types.pop()      # tipo de eseo
+    array_initial_address = operands.pop()  # dirreción del arreglo
+    # array_type = types.pop()                # tipo del arreglo
+    
+    # The accessing address is set on the constants address, beacause
+    # we are going to sum that address with the offset (to get the address
+    # in which the n element of the array is)
+    array_init_address_const_address = create_constat_int_address(array_initial_address)
+    pointer_address = create_new_pointer_address()
+    
+    print('+', accessing_array_value, array_init_address_const_address, pointer_address)
+    set_new_quadruple('+', accessing_array_value, array_init_address_const_address, pointer_address)
+    operators.pop() # Remove fake bottom
+    operands.append(pointer_address)
+    
 
 # ==============================================================================
 # ==============================================================================
@@ -770,7 +840,22 @@ def generate_new_quadruple(operator_to_check):
         # add to operands and types stacks the result
         operands.append(new_address)
         types.append(res_type)
+        
+def create_constat_int_address(value):
+    global memory_counters, constants_table
+    if value not in constants_table:
+        new_mem_address = memory_counters.count_const_int
+        constants_table[value] = new_mem_address
+        memory_counters.update_counter('const', Data_types['INTEGER'])
+        return new_mem_address
+    return constants_table[value]
 
+def create_new_pointer_address():
+    global memory_counters
+    new_pointer_address = memory_counters.count_pointers
+    memory_counters.update_counter('pointer', None)
+    return new_pointer_address
+    
 def get_global_types_map(memory_counters):
     global_types_map = {
         Data_types['INTEGER']: memory_counters.count_global_int,
@@ -836,7 +921,7 @@ def get_var(var_id):
         directory_var = program_vars.get_one(var_id)
     
     if (directory_var == 'not_in_directory'):
-        create_error(f'{var_id} not found in current or global scope')
+        create_error(f'{var_id} not found in current or global scope \n in get_var function')
 
     return directory_var
 

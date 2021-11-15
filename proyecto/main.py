@@ -1,6 +1,6 @@
 import sys
 from compiler.lexer import lexer
-from compiler.parser import parser, program_scopes, quadruples
+from compiler.parser import parser, program_scopes, quadruples, constants_table
 from virtual_machine import execute
 
 def print_quadruples():
@@ -17,6 +17,12 @@ def print_scopes():
     print('======================================================')
     program_scopes.print_directory()
 
+def print_constants():
+    print('======================================================')
+    print('\t\tConstants Directory')
+    print('======================================================')
+    for indx, const in enumerate(constants_table):
+        print(indx, '\t\t', const, '\t\t', constants_table[const])
 
 def main(argv):
     f = open(f"{argv[1]}", "r")
@@ -25,8 +31,9 @@ def main(argv):
     
     print(res)
     print_quadruples()
-    print_scopes()
-    execute()
+    print_constants()
+    # print_scopes()
+    # execute()
     
 if __name__ == "__main__":
     main(sys.argv)

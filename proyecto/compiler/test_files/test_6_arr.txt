@@ -1,14 +1,8 @@
 program programaDeArreglos;
-let varGlobal: int;
-
 
 main ()
-let v1: int;
 let f1: int[10];
-let myBoolArray: bool[100];
-let myBoolArray1, myBoolArray2: bool[15];
-let v2: int;
 {
-  v1 = 12 * 10;  
+  f1[123] = 1 * 2;
   print("Hello world");
 }

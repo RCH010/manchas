@@ -62,4 +62,5 @@ operators_id = {
 
     'RETURN': 30,   # For return of a function
     'PRINT': 31,    # For print statements
+    'VERIFY': 32    # For array checking accessing value
 }
