@@ -36,6 +36,11 @@ memory_counters = Memory()
 # Temoral counter 
 tempsCount = 0
 
+# This indicates if we are dealing with an array at the moment
+# of defition: `let myArr : int[8]``
+is_array = False
+array_size = 0
+
 # Parameters counter
 params_count = 0
 current_function_call_id = None
@@ -60,8 +65,8 @@ def p_vars(p):
 def p_vars_1(p):
     '''vars_1 : LET vars_prima_1 vars_1
         | LET vars_prima_1'''
-# var_1, var_2 : int;
 # var_1 : int;
+# var_1, var_2 : int;
 def p_vars_prima_1(p):
     '''vars_prima_1 : ID COLON type np_add_vars SEMI
         | ID  np_add_satck_vars COMMA vars_prima_1'''
@@ -75,8 +80,20 @@ def p_type(p):
     p[0] = p[1]
 
 def p_type_1(p):
-    '''type_1 : LBRACKET expression RBRACKET
+    '''type_1 : LBRACKET CTEI RBRACKET
         | epsilon'''
+    global operands, types, memory_counters, constants_table, is_array, array_size
+    print('-->',p[1])
+    if (p[1] == '['):
+        is_array = True
+        array_size = p[2]
+        if array_size not in constants_table:    
+            new_mem_address = memory_counters.count_const_int
+            constants_table[array_size] = new_mem_address
+            memory_counters.update_counter('const', Data_types['INTEGER'])
+    else:
+        is_array = False
+        array_size = None
 
 def p_function(p):
     '''function : FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN np_set_func_start_point block np_end_function
@@ -321,17 +338,21 @@ def p_np_add_satck_vars (p):
 # Here is adding to stack my_last_var
 def p_np_add_vars(p):
     '''np_add_vars : '''
-    global program_scopes, current_scope, vars_stack
+    global program_scopes, current_scope, vars_stack, is_array, array_size
     # Add the last var to stack o the var
     var_id = p[-3]
     vars_stack.append(p[-3])
     vars_type = p[-1]
-
+    if (array_size is None):
+        memory_space_to_save = 1
+    else: 
+        memory_space_to_save = array_size
     while vars_stack:
         current_scope_vars = program_scopes.get_vars_table(current_scope)
         current_scope_vars.add_new_var(vars_stack[0], vars_type)
-        new_address = get_vars_new_address(vars_type)
+        new_address = get_vars_new_address(vars_type, False, memory_space_to_save)
         current_scope_vars.set_address(vars_stack[0], new_address)
+        current_scope_vars.set_arrray_values(vars_stack[0], is_array, array_size)
         vars_stack.popleft()
 
 # ======================================================================
@@ -782,21 +803,21 @@ def get_temporal_types_map(memory_counters):
 '''
 Get a new memory address for a new variable
 '''    
-def get_vars_new_address(var_type, is_temporal = False):
+def get_vars_new_address(var_type, is_temporal = False, space_to_save = 1):
     global current_scope, memory_counters
     if is_temporal:
         temporal_types_map = get_temporal_types_map(memory_counters)
         new_mem_address = temporal_types_map[var_type]
-        memory_counters.update_counter('temp', var_type)
+        memory_counters.update_counter('temp', var_type, space_to_save)
         return new_mem_address
     if(current_scope == 'program'):
         global_types_map = get_global_types_map(memory_counters)
         new_mem_address = global_types_map[var_type]
-        memory_counters.update_counter('global', var_type)
+        memory_counters.update_counter('global', var_type, space_to_save)
         return new_mem_address
     local_types_map = get_local_types_map(memory_counters)
     new_mem_address = local_types_map[var_type]
-    memory_counters.update_counter('local', var_type)
+    memory_counters.update_counter('local', var_type, space_to_save)
     return new_mem_address
 
 

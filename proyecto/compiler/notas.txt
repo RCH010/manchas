@@ -1,0 +1,11 @@
+
+
+La declaración de arreglos
+es por línea, y solo se inicia con enteros
+
+de que:
+
+let miArray : int[10]
+  Se declara un arreglo de enteros de 10 espacios
+let datosA, datosB: int[8]
+  Se declara un arreglo `datosA` y `datosB` de enteros de 8 espacios

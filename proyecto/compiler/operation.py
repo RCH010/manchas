@@ -1,5 +1,6 @@
 import sys
 from compiler.utils import Relation_operators, Data_types
+
 class Operation:
     
     def getType(symbol, type1, type2):
@@ -14,7 +15,11 @@ class Operation:
             Relation_operators.DIFFERENT,
         ]
         if(symbol == Relation_operators.EQUALS):
-            return type1 == type2
+            if type1 == type2:
+                return True
+            else:
+                print(f'Invalid assignment operation, trying to asign a {type1} to a {type2}')
+                sys.exit()
 
         # int-int
         if(type1 == Data_types['INTEGER'] and type2 == Data_types['INTEGER']):
