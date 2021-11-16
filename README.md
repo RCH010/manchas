@@ -65,3 +65,16 @@ Este quinto avances tiene un gran progreso en cuando a la generación del códig
 Principalmente en este avance se trabajo con las funciones, y todo lo que implico. Se creo un arreglo para los parametros, y se modifica el directorio de funciones para añadir donde empieza, y la memoria. Por otro lado se añaden todos los puntos neuralgicos para la definición y utilización de las funciones.
 
 Finalmente comence a definir como estará estructurada la memoria para ya implementar esta ídea en la creación de código intermedio. Quedo pendiente empezar a trabajar con la maquina virtual para la ejecición de expresiones aritmeticas.
+
+
+<br>
+
+## Sexto Avance
+
+Para este avance me enfrenté con varios problemas que no me había dado cuenta, problemas que había estado acarreando desde entregas pasadas. Lo cual implicó cambios en la gramática y algunas refactorizaciones en todo el proyecto.
+
+Para este avance se definió como se estaría trabajando con la memoria y se hicieron los cambios necesarios para que el código intermedio fuera totalmente escrito con direcciones de memoria. Cambios como, la tabla de constantes y validaciones de la memoria a la que se accedía.
+
+Además, se añadieron los puntos neurálgicos para la definición de y uso de arreglos, y se crearon sus cuádruplos correspondientes.
+
+Finalmente, se estuvo trabajando en la máquina virtual, ya se tienen todas las operaciones aritméticas y booleanas, y además los condicionales y ciclos.
