@@ -6,11 +6,36 @@ let varGlobal: int;
 main ()
 let v1, v2: int;
 let f1: float;
+let b1, b2: bool;
 {
-  f1 = 12 * 4.0; 
-  v1 = 10 + 20 + 30 -5;
-  print(f1, v1);
-  print("");
-  print(v1 + f1);
-  print("Hello world");
+  v1 = 5;
+  v2 = 11;
+  b1 = false;
+
+  if(v1 > v2) {
+    print("No funciona");
+    b1 = true;
+  }else {
+    print("Si funciona");
+    b2 = false;
+  }
+
+  if (b1) {
+    print("No se deberia imprimir esto");
+    print(b1);
+  }
+
+
+  while (v1 < 10) do {
+    print(v1);
+    v1 = v1 + 1;
+  }
+
+  v2 = 2;
+  for (v1 = 1 to v1 >= 10 by v2){
+    print("Estee es el for");
+    print(v1);
+  }
+
+  print("-FIN-");
 }

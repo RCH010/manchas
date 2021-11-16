@@ -41,14 +41,17 @@ operators_id = {
     '-': 2,         # SUBSTRACTION
     '/': 3,         # DIVISION
     '*': 4,         # MULTIPLICATION
+    
     '<': 5,         # LESS THAN
     '<=': 6,        # LESS EQUAL THAN
     '>': 7,         # GREATER THAN
     '>=': 8,        # GREATER EQUAL THAN
     '==': 9,        # EQUAL
     '!=': 10,       # DIFFERENT
+    
     '&&': 11,       # AND
     '||': 12,       # OR
+    
     '=': 13,        # EQUALS
     
     'GOTO': 20,     # Go To

@@ -32,7 +32,7 @@ def main(argv):
     print(res)
     print_quadruples()
     print_constants()
-    # print_scopes()
+    print_scopes()
     execute()
     
 if __name__ == "__main__":
