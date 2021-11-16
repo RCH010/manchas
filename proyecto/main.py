@@ -32,8 +32,8 @@ def main(argv):
     print(res)
     print_quadruples()
     print_constants()
-    print_scopes()
-    # execute()
+    # print_scopes()
+    execute()
     
 if __name__ == "__main__":
     main(sys.argv)

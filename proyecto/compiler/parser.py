@@ -306,7 +306,7 @@ def p_np_create_main_scope(p):
     create_scope('main', Data_types['VOID'])
     main_quadruple_position = jumps.pop()
     old_main_goto_quadruple = quadruples[main_quadruple_position]
-    old_main_goto_quadruple.setResult(len(quadruples))
+    old_main_goto_quadruple.set_result(len(quadruples))
 
 # p[-4]   p[-3]p[-2]  p[-1]     p[0]
 # FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN  block
@@ -506,7 +506,7 @@ def p_np_condition_end_gotof(p):
     global jumps, quadruples
     jump_end_pos = jumps.pop()
     old_quadruple = quadruples[jump_end_pos]
-    old_quadruple.setResult(len(quadruples))
+    old_quadruple.set_result(len(quadruples))
 
 
 def p_np_condition_goto_else(p):
@@ -515,7 +515,7 @@ def p_np_condition_goto_else(p):
     jump_end_pos = jumps.pop()
     jumps.append(len(quadruples) - 1)
     old_quadruple = quadruples[jump_end_pos]
-    old_quadruple.setResult(len(quadruples))
+    old_quadruple.set_result(len(quadruples))
 
 # ======================================================================
 #                  Code generation non-linear statements
@@ -546,7 +546,7 @@ def p_np_while_end_block (p):
     set_new_quadruple('GOTO', -1, -1, return_pos)
     # Update the quadr
     old_quadruple = quadruples[end_pos]
-    old_quadruple.setResult(len(quadruples))
+    old_quadruple.set_result(len(quadruples))
 
 
 # ======================================================================
@@ -615,7 +615,7 @@ def p_np_non_conditional_end (p):
 
     # Update the GOTOV quadruple
     old_quadruple = quadruples[end_pos]
-    old_quadruple.setResult(len(quadruples))
+    old_quadruple.set_result(len(quadruples))
 
 # ======================================================================
 #                               PRINT

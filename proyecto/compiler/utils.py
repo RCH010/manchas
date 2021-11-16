@@ -38,9 +38,9 @@ class Relation_operators(metaclass=MetaTypes):
 '''
 operators_id = {
     '+': 1,         # SUM
-    '-': 2,         # MINUS
+    '-': 2,         # SUBSTRACTION
     '/': 3,         # DIVISION
-    '*': 4,         # TIMES
+    '*': 4,         # MULTIPLICATION
     '<': 5,         # LESS THAN
     '<=': 6,        # LESS EQUAL THAN
     '>': 7,         # GREATER THAN

@@ -8,22 +8,22 @@ class Quadruple():
         self.right_operand = right_operand
         self.result = result
 
-    def getQuadruple(self):
+    def get_quadruple(self):
         return [self.operator, self.left_operand, self.right_operand, self.result]
 
-    def getOperator(self):
+    def get_operator(self):
         return self.operator
 
-    def getLeftOperand(self):
+    def get_left_operand(self):
         return self.left_operand
 
-    def getRightOperand(self):
+    def get_right_operand(self):
         return self.right_operand
 
-    def getResult(self):
+    def get_result(self):
         return self.result
 
-    def setResult(self, new_result):
+    def set_result(self, new_result):
         self.result = new_result
 
     def print(self):
