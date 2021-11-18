@@ -93,7 +93,7 @@ def p_type_1(p):
     else:
         is_array = False
         array_size = None
-
+# 4 variations, with or without params, and with or without vars
 def p_function(p):
     '''function : FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN np_set_func_start_point block np_end_function
         | FUNCTION ID COLON return_type np_create_new_scope LPAREN params RPAREN np_set_func_start_point block np_end_function
@@ -308,6 +308,11 @@ def p_np_create_main_scope(p):
     old_main_goto_quadruple = quadruples[main_quadruple_position]
     old_main_goto_quadruple.set_result(len(quadruples))
 
+'''
+Create a new scope when a new function is created
+Additionally, create a global variable with the same name and type
+used for assignment when function is called
+'''
 # p[-4]   p[-3]p[-2]  p[-1]     p[0]
 # FUNCTION ID COLON return_type np_create_new_scope LPAREN RPAREN  block
 #  p[-4]  p[-3] p[-2]  p[-1]    p[0]
@@ -318,6 +323,14 @@ def p_np_create_new_scope(p):
     function_id = p[-3]
     return_type = p[-1]
     create_scope(function_id, return_type)
+    # Create a global variable with the name of the function, and type
+    # This is used for assigning a value when the function is called
+    if return_type != Data_types['VOID']:
+        global_scope_vars = program_scopes.get_vars_table('program')
+        global_scope_vars.add_new_var(function_id, return_type)
+        new_address = get_vars_new_address(return_type, False, 1, 'program')
+        global_scope_vars.set_address(function_id, new_address)
+        global_scope_vars.set_arrray_values(function_id, is_array, array_size)
 
 
 # For example
@@ -654,7 +667,11 @@ def p_np_add_return_quadruple(p):
 # ======================================================================
 #                               Functions stuff
 # ======================================================================
-
+'''
+Add the type of the current parameter to the params array of the function
+Used on function declaration
+Used for creating the function signature
+'''
 def p_np_add_params_type(p):
     '''np_add_params_type : '''
     global program_scopes, current_scope
@@ -710,7 +727,7 @@ def p_np_function_call_add_param(p):
     
 def p_np_function_end_params(p):
     '''np_function_end_params : '''
-    global current_function_call_id, params_count, program_scopes
+    global current_function_call_id, params_count, program_scopes, current_scope, tempsCount
     function_call_params = program_scopes.get_params_array(current_function_call_id)
     size_of_params = len(function_call_params)
 
@@ -719,6 +736,22 @@ def p_np_function_end_params(p):
             arguments, you gave {params_count} arguments''')
     initial_function_addres = program_scopes.get_func_cont(current_function_call_id)
     set_new_quadruple('GOSUB', current_function_call_id, -1, initial_function_addres)
+    
+    fun_return_type = program_scopes.get_return_type(current_function_call_id)
+    if fun_return_type != Data_types['VOID']:
+        current_scope_vars = program_scopes.get_vars_table(current_scope)
+        temp_var_name = f"_temp{tempsCount}"
+        tempsCount += 1
+        # Create temp var on table of vars
+        current_scope_vars.add_new_var(temp_var_name, fun_return_type)
+        # Ger address of this temporal var, and set it on the vars table of temp_var_name
+        new_address = get_vars_new_address(fun_return_type, True)
+        current_scope_vars.set_address(temp_var_name, new_address)
+        # Append a new quadruple to the quadruples list
+        set_new_quadruple('=', current_function_call_id, -1, new_address)
+        # add to operands and types stacks the result
+        operands.append(new_address)
+        types.append(fun_return_type)
 
 # ======================================================================
 #                               Array stuff
@@ -885,14 +918,18 @@ def get_temporal_types_map(memory_counters):
 '''
 Get a new memory address for a new variable
 '''    
-def get_vars_new_address(var_type, is_temporal = False, space_to_save = 1):
+def get_vars_new_address(var_type, is_temporal = False, space_to_save = 1, other_scope = None):
     global current_scope, memory_counters
+    if other_scope is None:
+        scope = current_scope
+    else:
+        scope = other_scope
     if is_temporal:
         temporal_types_map = get_temporal_types_map(memory_counters)
         new_mem_address = temporal_types_map[var_type]
         memory_counters.update_counter('temp', var_type, space_to_save)
         return new_mem_address
-    if(current_scope == 'program'):
+    if(scope == 'program'):
         global_types_map = get_global_types_map(memory_counters)
         new_mem_address = global_types_map[var_type]
         memory_counters.update_counter('global', var_type, space_to_save)

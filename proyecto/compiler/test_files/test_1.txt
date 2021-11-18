@@ -10,12 +10,13 @@ let f1, f2: float;
 let c1, c2: char;
 let b1, b2: bool;
 {
-  v1 = 32 - (9 + 10 * 5);
+  v1 = 5 + (0 - 5);
+  v3 = 5;
   v2 = v3 * 1;
-  v1 = v1 + v2;
 
   while (v1 < 10) do {
-    v1 = v1 - 1;
+    print(v1);
+    v1 = v1 + 1;
   }
   b1 = true;
   b2 = false;
@@ -29,6 +30,7 @@ let b1, b2: bool;
   c1 = 'a';
   c2 = 'B';
   c1 = 'a';
+  v2 = 1;
   for (v1 = 1 to v1 == 10 by v2){
     print("Hola mundo", v1*2, 12);
   }
