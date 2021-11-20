@@ -1,0 +1,19 @@
+program factorialRecursive;
+
+function multiply:int (number : int) 
+{
+  if (number <= 1) {
+    return 1;
+  }else {
+    return (number * multiply(number - 1));
+  }
+}
+
+main()
+let sum, x: int;
+{
+  x = 5;
+  
+  sum = multiply(x);
+  print("Resultado", sum);
+}

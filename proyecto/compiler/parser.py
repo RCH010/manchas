@@ -191,8 +191,8 @@ def p_term_2(p):
 def p_factor(p):
     '''factor : LPAREN np_add_paren expression RPAREN np_pop_paren 
         | ID LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address
-        | function_call
-        | factor_prima_1'''
+        | factor_prima_1
+        | function_call'''
 
 def p_factor_prima_1(p):
     '''factor_prima_1 : PLUS varcte
@@ -714,13 +714,15 @@ def p_np_end_program(p):
 
 def p_np_check_function_call(p):
     '''np_check_function_call : '''
-    global program_scopes, params_counts, current_scope, current_function_call_id, function_call_id_stack
+    global program_scopes, params_counts, current_scope, current_function_call_id, function_call_id_stack, operators
     current_function_call_id = p[-2]
     if not program_scopes.exists(current_function_call_id):
         create_error(f'Function {current_function_call_id} is not defined')
     params_counts.append(0)
     function_call_id_stack.append(current_function_call_id)
     set_new_quadruple('ERA', -1, -1, current_function_call_id)
+    # Add fake buttom
+    operators.append('~')
 
 def p_np_function_call_add_param(p):
     '''np_function_call_add_param : '''
@@ -743,12 +745,13 @@ def p_np_function_call_add_param(p):
     
 def p_np_function_end_params(p):
     '''np_function_end_params : '''
-    global params_counts, program_scopes, current_scope, tempsCount, function_call_id_stack
+    global params_counts, program_scopes, current_scope, tempsCount, function_call_id_stack, operators
     params_count = params_counts.pop()
     current_function_call_id = function_call_id_stack.pop()
     function_call_params = program_scopes.get_params_array(current_function_call_id)
     size_of_params = len(function_call_params)
-    
+    # POP fake buttom
+    operators.pop()
     if(size_of_params != params_count):
         create_error(f'''The function {current_function_call_id}, expected {size_of_params} 
             arguments, you gave {params_count} arguments''')

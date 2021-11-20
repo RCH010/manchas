@@ -1,0 +1,13 @@
+program factorialCyclic;
+
+main() 
+let sum, i, x :int;
+{
+  sum = 1;
+  x = 5;
+
+  for ( i = 1 to i > x by 1) {
+    sum = sum * i;
+  }
+  print("Resultado", sum);
+}

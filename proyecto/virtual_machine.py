@@ -5,7 +5,7 @@ from compiler.parser import program_scopes, quadruples, constants_table
 from compiler.utils import Data_types
 
 # This var, indicates the amount of available spaces in memory
-memory_size = 10000
+memory_size = 1000
 
 class Memory:
     def __init__(self):
