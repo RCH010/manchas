@@ -19,7 +19,8 @@ class Scopes_directory(Directory):
             print('Error', 'return type:', return_type ,'is an invalid type for', id)
             sys.exit()
         params = []
-        self.dic[id] = { 'vars': vars_table, 'return_type': return_type, 'params': params, 'cont': None }
+        params_ids = []
+        self.dic[id] = { 'vars': vars_table, 'return_type': return_type, 'params': params, 'params_ids': params_ids,  'cont': None }
 
     def get_vars_table(self, id):
         return self.dic[id]['vars']
@@ -29,6 +30,12 @@ class Scopes_directory(Directory):
     '''
     def get_params_array(self, id):
         return self.dic[id]['params']
+    
+    '''
+    get the params array of received function
+    '''
+    def get_params_ids_array(self, id):
+        return self.dic[id]['params_ids']
 
     '''
     get the return type of the received function
@@ -57,24 +64,22 @@ class Scopes_directory(Directory):
     def calculate_function_size(self, id):
         vars_table = self.dic[id]['vars'].dic
         params = self.dic[id]['params']
-        # TODO: cuando pase los tipos a un int, esto se accedera directamente
-        # [# of INTS,       # of FLOATS,        # of BOOLS,     # of CHARS]
-        types_counter = [0] * 4
-
-        # cuando haga lo de que los tipos sean numero esto deberá ser:
-        # types_counter[param] += 1
-        for param in params:
-            data_type = TYPES[param]
-            types_counter[data_type] += 1
-        
+        types_counter = [0] * 4 # Starts array with 0's
+        total_size = 0
         for key, value in vars_table.items():
             var_type = value['type']
+            item_size = 1
+            if ('is_array' in value.keys() and value['is_array']):
+                item_size = value['array_size']
             data_type = TYPES[var_type]
-            types_counter[data_type] += 1
+            types_counter[data_type] += item_size
+            total_size += item_size
 
         self.dic[id]['types_counter'] = types_counter
+        self.dic[id]['total_vars'] = total_size
         
-
+    def get_total_size(self, id):
+        return self.dic[id]['total_vars']
 
     def print_directory(self):
         for key, value in self.dic.items():

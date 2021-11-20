@@ -1,0 +1,15 @@
+program programaDeArreglos;
+
+main ()
+let f1: int[10];
+let arrFloats: float[15];
+let v1: int;
+let arrChars: char[10];
+let miChar: char;
+{
+  f1[123] = 1 * 2;
+  miChar = 'c';
+  arrChars[1] = miChar; 
+  v1 = 12 + 15;
+  print("Hello world");
+}

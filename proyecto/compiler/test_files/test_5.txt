@@ -19,7 +19,8 @@ let b1, b2: bool;
     print("Si funciona");
     b2 = false;
   }
-
+  varGlobal = 10;
+  print(varGlobal);
   if (b1) {
     print("No se deberia imprimir esto");
     print(b1);
@@ -27,7 +28,7 @@ let b1, b2: bool;
 
 
   while (v1 < 10) do {
-    print(v1);
+    print(v1);  
     v1 = v1 + 1;
   }
 

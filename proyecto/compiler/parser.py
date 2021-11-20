@@ -102,8 +102,8 @@ def p_function(p):
     p[0] = None
 
 def p_main_block(p):
-    '''main_block : MAIN np_create_main_scope LPAREN RPAREN block
-        | MAIN np_create_main_scope LPAREN RPAREN vars block'''
+    '''main_block : MAIN np_create_main_scope LPAREN RPAREN block np_end_main
+        | MAIN np_create_main_scope LPAREN RPAREN vars block np_end_main'''
 
 def p_block(p):
     '''block : LBRACE statements RBRACE'''
@@ -119,7 +119,7 @@ def p_params(p):
 
 
 def p_statements(p):
-    '''statements : function_call statements1
+    '''statements : void_function_call statements1
         | assignment statements1
         | condition statements1
         | writing statements1
@@ -238,10 +238,12 @@ def p_return(p):
     '''return : RETURN expression np_add_return_quadruple SEMI'''
 
 def p_function_call(p):
-    '''function_call : ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
-        | ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
-        | ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN
-        | ID LPAREN np_check_function_call np_function_end_params RPAREN'''
+    '''function_call : ID LPAREN np_check_function_call np_function_end_params RPAREN
+        | ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN'''
+
+def p_void_function_call(p):
+    '''void_function_call :  ID LPAREN np_check_function_call np_function_end_params RPAREN SEMI
+        | ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI'''
 
 def p_function_call_1(p):
     '''function_call_1 : expression np_function_call_add_param
@@ -676,6 +678,8 @@ def p_np_add_params_type(p):
     '''np_add_params_type : '''
     global program_scopes, current_scope
     current_scope_params = program_scopes.get_params_array(current_scope)
+    current_scope_ids_params = program_scopes.get_params_ids_array(current_scope)
+    current_scope_ids_params.append(p[-4])
     current_scope_params.append(p[-2])
 
 def p_np_set_func_start_point(p):
@@ -694,6 +698,12 @@ def p_np_end_function(p):
     memory_counters.reset_local_counters()
     memory_counters.reset_temp_counters()
     
+def p_np_end_main(p):
+    '''np_end_main : '''
+    global program_scopes, current_scope
+    program_scopes.calculate_function_size(current_scope)
+    program_scopes.calculate_function_size('program')
+
 
 def p_np_end_program(p):
     '''np_end_program : '''
@@ -748,7 +758,11 @@ def p_np_function_end_params(p):
         new_address = get_vars_new_address(fun_return_type, True)
         current_scope_vars.set_address(temp_var_name, new_address)
         # Append a new quadruple to the quadruples list
-        set_new_quadruple('=', current_function_call_id, -1, new_address)
+        # Parche Guadalupano
+        global_vars = program_scopes.get_vars_table('program')
+        directory_var = global_vars.get_one(current_function_call_id)
+        function_var_address = directory_var['address']
+        set_new_quadruple('=', function_var_address, -1, new_address)
         # add to operands and types stacks the result
         operands.append(new_address)
         types.append(fun_return_type)

@@ -27,6 +27,9 @@ class Vars(Directory):
     def set_address(self, id, address):
         self.dic[id]['address'] = address
     
+    def get_address(self, id):
+        return self.dic[id]['address']
+    
     def set_arrray_values(self, id, is_array = False, array_size = None):
         self.dic[id]['is_array'] = is_array
         self.dic[id]['array_size'] = array_size

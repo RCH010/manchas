@@ -30,20 +30,14 @@ let michar: char;
 function segundafuncion: int()
 let varSegundo: char;
 let f2a1: int;
-let f2a2: int;
-let f2a3: int;
-let f2a4: int;
 {
-  print("Hola mundo");
+  f2a1 = 100;
+  return f2a1;
 }
 
 main () 
 let res: int;
 {
-  print("Inicio de main");
-  if (strValue < 4) {
-    print("Si funciona");
-  } else {
-    print("no, no funciona");
-  }
+  res = segundafuncion();
+  print(res);
 }

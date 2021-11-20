@@ -1,41 +1,86 @@
 import sys
 import operator
+from collections import deque
 from compiler.parser import program_scopes, quadruples, constants_table
+from compiler.utils import Data_types
+
+# This var, indicates the amount of available spaces in memory
+memory_size = 10000
+
+class Memory:
+    def __init__(self):
+        self.memory = {}
+
+types_values = {
+    1: Data_types['INTEGER'],
+    2: Data_types['FLOAT'],
+    3: Data_types['CHARACTER'],
+    4: Data_types['BOOLEAN'],
+}
 
 is_executing = True
 instruction_pointer = 0
-super_memory = {}
+
+# Cuando empiece tiene que ir directo al main
+# pero para eso tengo que crear una memoria
+
+super_memory = Memory()
+current_memory = None
+memory_stack = deque()
+
+params_queue = deque()
+instruction_pointer_stack = deque()
+id_function_calls = deque()
+
 
 '''
 print memory map
 '''
-
-
 def print_super_memory():
     global super_memory
-    for index, address in enumerate(super_memory):
-        print(index, '\t\t', address, '\t\t', super_memory[address])
+    for index, address in enumerate(super_memory.memory):
+        print(index, '\t\t', address, '\t\t', super_memory.memory[address])
+def print_current_memory():
+    global current_memory
+    for index, address in enumerate(current_memory.memory):
+        print(index, '\t\t', address, '\t\t', current_memory.memory[address])
 
-
+def check_and_update_memory(size, id):
+    global memory_size
+    if (size > memory_size):
+        create_error('This program cannot be executed due to lack of available memory', id)
+    memory_size -= size
+    # print(memory_size)
+    
+    
 '''
 On VM starts, this function is called
 This loads constants on super_memory
+and it checks for memory size
 '''
-
-
-def load_constats():
-    global constants_table, super_memory
+def start_super_memory():
+    global constants_table, super_memory, memory_size
+    # Load Constants
     for index, constant in enumerate(constants_table):
         address = constants_table[constant]
-        super_memory[address] = constant
+        super_memory.memory[address] = constant
+    global_size = len(constants_table)
+    global_size += program_scopes.get_total_size('program')
+    check_and_update_memory(global_size, 1)
+    
 
-
+def start_main_memory():
+    global memory_size, current_memory, memory_stack
+    main_size = program_scopes.get_total_size('main')
+    check_and_update_memory(main_size, 2)
+    # Create the memory for main scope
+    current_memory = Memory()
 '''
 Create print an error message and exit the program
 '''
-def create_error(message):
+def create_error(message, id = ''):
     print('====================================')
-    print('Error:\n')
+    print(f'Error:\t ID:{id}\n')
     print(message)
     print('====================================')
     sys.exit()
@@ -43,10 +88,16 @@ def create_error(message):
     
 
 def get_value(address):
-    global super_memory
-    if (address not in super_memory):
-        create_error(f'{address} hasnt been assigned')
-    value = super_memory[address]
+    global super_memory, current_memory
+        
+    value = None
+    if address in current_memory.memory:
+        value = current_memory.memory[address]
+    elif address in super_memory.memory:
+        value = super_memory.memory[address]
+    else:
+        create_error(f'{address} hasnt been assigned', 3)
+    
     if (value == 'true'):
         value = True
     if (value == 'false'):
@@ -55,16 +106,20 @@ def get_value(address):
 
 
 def save_value(address, value):
-    global super_memory
-    # TODO: ver que debo revisar
-    super_memory[address] = value
+    global super_memory, current_memory
+    memory_section = int(address / 100000)
+    is_global_var = lambda memory_section : memory_section is 1
+    if is_global_var(memory_section):
+        super_memory.memory[address] = value
+    else:
+        current_memory.memory[address] = value
     
 def update_instruction_pointer(new_position = None):
     global instruction_pointer
     if new_position is None:
         new_position = instruction_pointer + 1
     if (new_position > len(quadruples)):
-        create_error('Instruction pointer is trying to access {new_position}, that doesnt exits')
+        create_error('Instruction pointer is trying to access {new_position}, that doesnt exits', 4)
     instruction_pointer = new_position
     
 def generic_operation (first, second, address_to_save, operation):
@@ -85,9 +140,96 @@ def print_value(value):
         value_to_print = value[1:-1]
     print(value_to_print)
 
+def save_memory_for_function(function_id):
+    global program_scopes
+    if not program_scopes.exists(function_id):
+        create_error(f'{function_id} is not defined on this program', 5)
+    func_size = program_scopes.get_total_size(function_id)
+    # Save memory space for function
+    check_and_update_memory(func_size, 6)
+    
+def go_to_function(function_id, new_instruction_pomter):
+    global memory_stack, instruction_pointer_stack, program_scopes, instruction_pointer, current_memory, id_function_calls, params_queue
+    params_ids = program_scopes.get_params_ids_array(function_id)
+    # Create instance of memory for function
+    new_current_memory = Memory()
+    # If function should receive params
+    if len(params_ids) is not 0:
+        print('TODO, hay parametros')
+        for param_id in params_ids:
+            var_address = get_function_scope_var_address(function_id, param_id)
+            param_value = get_value(params_queue.popleft())
+            new_current_memory.memory[var_address] = param_value
+    # Save instruction pointer
+    # Add 1, so its after the gosub quadruple
+    instruction_pointer_stack.append(instruction_pointer + 1)
+    update_instruction_pointer(new_instruction_pomter)
+    # Save current memory (send it to bed) and set up the new one
+    memory_stack.append(current_memory)
+    current_memory = new_current_memory
+    # Save the id of the function
+    id_function_calls.append(function_id)
 
+
+
+def on_function_end():
+    global id_function_calls, program_scopes, instruction_pointer_stack, current_memory, memory_stack
+    # If this is the case, then the function must be void
+    function_id = id_function_calls.pop()
+    func_return_type = program_scopes.get_return_type(function_id)
+    if func_return_type != Data_types['VOID']:
+        create_error(f'Function {function_id}, must have a return statement, with a value of type {func_return_type}', 7)
+    # Wake up old current memory
+    new_current_memory = memory_stack.pop()
+    # Get old instruction pointer
+    new_instruction_pointer = instruction_pointer_stack.pop()
+    # change the current memory to the old one, the other is deleted (because Im using python)
+    current_memory = new_current_memory
+    update_instruction_pointer(new_instruction_pointer)
+    
+def get_function_global_var_address(function_id):
+    global program_scopes
+    global_vars = program_scopes.get_vars_table('program')
+    directory_var = global_vars.get_one(function_id)
+    return directory_var['address']
+
+def get_function_scope_var_address(scope_id, var_id):
+    global program_scopes
+    scope_vars = program_scopes.get_vars_table(scope_id)
+    directory_var = scope_vars.get_one(var_id)
+    return directory_var['address']
+
+
+def on_function_end_with_return(return_value_address):
+    global id_function_calls, program_scopes, instruction_pointer_stack, current_memory, memory_stack
+    # If this is the case, then the returned value must be of the type
+    # and parche guadalupano
+    function_id = id_function_calls.pop()
+    func_return_type = program_scopes.get_return_type(function_id)
+    type_return_value_number = str(return_value_address)[1]
+    if types_values[int(type_return_value_number)] != func_return_type:
+        create_error(f'Function {function_id} shoud be returning a {func_return_type}, instead it is being returned a {types_values[str(return_value_address)[1]]}', 8)
+    global_var_address = get_function_global_var_address(function_id)
+    returned_value = get_value(return_value_address)
+    save_value(global_var_address, returned_value)
+    # Wake up old current memory
+    new_current_memory = memory_stack.pop()
+    # Get old instruction pointer
+    new_instruction_pointer = instruction_pointer_stack.pop()
+    # change the current memory to the old one, the other is deleted (because Im using python)
+    current_memory = new_current_memory
+    update_instruction_pointer(new_instruction_pointer)
+    
+def add_param_for_function_call(value_address):
+    global params_queue
+    params_queue.append(value_address)
+    
+    
+    
+    
+    
 def check_quadruples():
-    global is_executing, instruction_pointer, super_memory
+    global is_executing, instruction_pointer
 
     while is_executing:
         operation = quadruples[instruction_pointer].get_operator()
@@ -184,6 +326,28 @@ def check_quadruples():
                 update_instruction_pointer()
             else:
                 update_instruction_pointer(result)
+        elif operation == 23:        # GOSUB
+            # quadruple structure:
+            # GOSUB, function_id, -, new_instruction_pointer
+            go_to_function(left_operand, result)
+        elif operation == 24:        # ERA
+            # quadruple structure:
+            # ERA, -, -, function_id
+            save_memory_for_function(result)
+            update_instruction_pointer()
+        elif operation == 25:        # PARAM
+            # quadruple structure:
+            # PARAM, value, -, _param_#
+            add_param_for_function_call(left_operand)
+            update_instruction_pointer()
+        elif operation == 26:        # ENDFUNC
+            # quadruple structure:
+            # ENDFUNC, -, -, -
+            on_function_end()
+        elif operation == 30:        # RETURN
+            # quadruple structure:
+            # RETURN, -, -, value
+            on_function_end_with_return(result)
         elif operation == 31:       # PRINT 
             # quadruple structure:
             # PRINT , -, -, value_to_print
@@ -197,7 +361,12 @@ def execute():
     print('======================================================')
     print('\t\tStarts virtual machine')
     print('======================================================')
-    load_constats()
+    start_super_memory()
+    start_main_memory()
     print('-Execution-starts-')
     check_quadruples()
-    # print_super_memory()
+    print('=global==')
+    print_super_memory()
+    print('=last current==')
+    print_current_memory()
+ 
