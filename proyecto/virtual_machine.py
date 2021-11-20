@@ -50,8 +50,6 @@ def check_and_update_memory(size, id):
     if (size > memory_size):
         create_error('This program cannot be executed due to lack of available memory', id)
     memory_size -= size
-    # print(memory_size)
-    
     
 '''
 On VM starts, this function is called
@@ -70,7 +68,7 @@ def start_super_memory():
     
 
 def start_main_memory():
-    global memory_size, current_memory, memory_stack
+    global current_memory, memory_stack
     main_size = program_scopes.get_total_size('main')
     check_and_update_memory(main_size, 2)
     # Create the memory for main scope
@@ -86,22 +84,25 @@ def create_error(message, id = ''):
     sys.exit()
 
     
-
-def get_value(address):
-    global super_memory, current_memory
-        
-    value = None
-    if address in current_memory.memory:
-        value = current_memory.memory[address]
-    elif address in super_memory.memory:
-        value = super_memory.memory[address]
+def find_address(pointer):
+    if pointer in current_memory.memory:
+        value = current_memory.memory[pointer]
+    elif pointer in super_memory.memory:
+        value = super_memory.memory[pointer]
     else:
-        create_error(f'{address} hasnt been assigned', 3)
-    
+        create_error(f'{pointer} hasnt been assigned', 3)
+        
     if (value == 'true'):
         value = True
     if (value == 'false'):
         value = False
+    return value
+
+def get_value(address):
+    global super_memory, current_memory
+    if (str(address)[0] == '5'):
+        address = find_address(address)
+    value = find_address(address)
     return value
 
 
@@ -129,9 +130,11 @@ def generic_operation (first, second, address_to_save, operation):
     save_value(address_to_save, result)
 
 def assing_value(value_address, address_to_save):
+    if (str(address_to_save)[0] == '5'):
+        address_to_save = find_address(address_to_save)
+    
     value = get_value(value_address)
     save_value(address_to_save, value)
-    # TODO: apuntadores de arreglos
 
 def print_value(value):
     if(type(value) is int): # is an address
@@ -172,7 +175,7 @@ def go_to_function(function_id, new_instruction_pomter):
 
 
 def on_function_end():
-    global id_function_calls, program_scopes, instruction_pointer_stack, current_memory, memory_stack
+    global id_function_calls, program_scopes, instruction_pointer_stack, current_memory, memory_stack, memory_size
     # If this is the case, then the function must be void
     function_id = id_function_calls.pop()
     func_return_type = program_scopes.get_return_type(function_id)
@@ -185,6 +188,9 @@ def on_function_end():
     # change the current memory to the old one, the other is deleted (because Im using python)
     current_memory = new_current_memory
     update_instruction_pointer(new_instruction_pointer)
+    # free memory space
+    func_size = program_scopes.get_total_size(function_id)
+    memory_size += func_size
     
 def get_function_global_var_address(function_id):
     global program_scopes
@@ -200,7 +206,7 @@ def get_function_scope_var_address(scope_id, var_id):
 
 
 def on_function_end_with_return(return_value_address):
-    global id_function_calls, program_scopes, instruction_pointer_stack, current_memory, memory_stack
+    global id_function_calls, program_scopes, instruction_pointer_stack, current_memory, memory_stack, memory_size
     # If this is the case, then the returned value must be of the type
     # and parche guadalupano
     function_id = id_function_calls.pop()
@@ -218,19 +224,31 @@ def on_function_end_with_return(return_value_address):
     # change the current memory to the old one, the other is deleted (because Im using python)
     current_memory = new_current_memory
     update_instruction_pointer(new_instruction_pointer)
+        # free memory space
+    func_size = program_scopes.get_total_size(function_id)
+    memory_size += func_size
     
 def add_param_for_function_call(value_address):
     global params_queue
     params_queue.append(value_address)
     
     
-    
+
+def verify_array_address_access(access_value, arr_inferior_limit, arr_upp_limit):
+    value = get_value(access_value)
+    inferior_limit = get_value(arr_inferior_limit)
+    upper_limit = get_value(arr_upp_limit)
+    if value < inferior_limit or value >= upper_limit:
+        create_error(f'Out of bounds\n Trying to acces value {value}, but limits are {inferior_limit} and {upper_limit}', 9)
+
+
     
     
 def check_quadruples():
     global is_executing, instruction_pointer
 
     while is_executing:
+        
         operation = quadruples[instruction_pointer].get_operator()
         left_operand = quadruples[instruction_pointer].get_left_operand()
         right_operand = quadruples[instruction_pointer].get_right_operand()
@@ -351,7 +369,12 @@ def check_quadruples():
             # quadruple structure:
             # PRINT , -, -, value_to_print
             print_value(result)
-            instruction_pointer += 1
+            update_instruction_pointer()
+        elif operation == 32:       # VERIFY 
+            # quadruple structure:
+            # VERIFY , access_value, arr_inferior_limit, arr_sup_limit
+            verify_array_address_access(left_operand, right_operand, result)
+            update_instruction_pointer()
         else:
             instruction_pointer += 1
 

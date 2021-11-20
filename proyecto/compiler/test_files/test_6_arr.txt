@@ -8,10 +8,12 @@ let v1, v2, v3: int;
 let arrChars: char[10];
 let miChar: char;
 {
-  f1[123] = 1 * 2;
+  f1[1] = 1 * 2;
   miChar = 'c';
   arrChars[1] = miChar; 
+  v3 = 1;
   v1 = v3 * 12 + 15;
-  arrInts1[12]= arrInts2[v1 * 12] + 15;
-  print("Hello world");
+  arrInts2[v3] = 5;
+  arrInts1[2]= arrInts2[v3] + v1;
+  print("Hello world", arrInts1[2]);
 }

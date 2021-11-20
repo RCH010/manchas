@@ -729,9 +729,8 @@ def p_np_function_call_add_param(p):
     argument_type = types.pop()
     params_count = params_counts.pop()
     current_function_call_id = function_call_id_stack[-1]
-    
     function_call_params = program_scopes.get_params_array(current_function_call_id)
-    print(function_call_params, params_count) # TODO: si hay función dentro funcion, esto no sirve accede a algo que no
+    
     if(function_call_params[params_count] != argument_type):
         create_error(f'''
         The {params_count + 1}º argument of function {current_function_call_id}
