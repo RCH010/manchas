@@ -155,7 +155,6 @@ def go_to_function(function_id, new_instruction_pomter):
     new_current_memory = Memory()
     # If function should receive params
     if len(params_ids) is not 0:
-        print('TODO, hay parametros')
         for param_id in params_ids:
             var_address = get_function_scope_var_address(function_id, param_id)
             param_value = get_value(params_queue.popleft())
@@ -365,8 +364,8 @@ def execute():
     start_main_memory()
     print('-Execution-starts-')
     check_quadruples()
-    print('=global==')
-    print_super_memory()
-    print('=last current==')
-    print_current_memory()
+    # print('=global==')
+    # print_super_memory()
+    # print('=last current==')
+    # print_current_memory()
  

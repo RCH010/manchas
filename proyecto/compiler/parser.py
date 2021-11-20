@@ -44,6 +44,8 @@ array_size = 0
 # Parameters counter
 params_count = 0
 current_function_call_id = None
+params_counts = deque()
+function_call_id_stack = deque()
 
 # PROGRAM
 def p_program(p):
@@ -712,20 +714,24 @@ def p_np_end_program(p):
 
 def p_np_check_function_call(p):
     '''np_check_function_call : '''
-    global program_scopes, params_count, current_scope, current_function_call_id
+    global program_scopes, params_counts, current_scope, current_function_call_id, function_call_id_stack
     current_function_call_id = p[-2]
     if not program_scopes.exists(current_function_call_id):
         create_error(f'Function {current_function_call_id} is not defined')
-    params_count = 0
+    params_counts.append(0)
+    function_call_id_stack.append(current_function_call_id)
     set_new_quadruple('ERA', -1, -1, current_function_call_id)
 
 def p_np_function_call_add_param(p):
     '''np_function_call_add_param : '''
-    global types, operators, params_count, current_function_call_id, program_scopes
+    global types, operators, params_counts, function_call_id_stack, program_scopes
     argument = operands.pop()
     argument_type = types.pop()
+    params_count = params_counts.pop()
+    current_function_call_id = function_call_id_stack[-1]
     
     function_call_params = program_scopes.get_params_array(current_function_call_id)
+    print(function_call_params, params_count) # TODO: si hay función dentro funcion, esto no sirve accede a algo que no
     if(function_call_params[params_count] != argument_type):
         create_error(f'''
         The {params_count + 1}º argument of function {current_function_call_id}
@@ -734,13 +740,16 @@ def p_np_function_call_add_param(p):
         ''')
     set_new_quadruple('PARAM', argument, -1, f'_param_{params_count}')
     params_count += 1
+    params_counts.append(params_count)
     
 def p_np_function_end_params(p):
     '''np_function_end_params : '''
-    global current_function_call_id, params_count, program_scopes, current_scope, tempsCount
+    global params_counts, program_scopes, current_scope, tempsCount, function_call_id_stack
+    params_count = params_counts.pop()
+    current_function_call_id = function_call_id_stack.pop()
     function_call_params = program_scopes.get_params_array(current_function_call_id)
     size_of_params = len(function_call_params)
-
+    
     if(size_of_params != params_count):
         create_error(f'''The function {current_function_call_id}, expected {size_of_params} 
             arguments, you gave {params_count} arguments''')
