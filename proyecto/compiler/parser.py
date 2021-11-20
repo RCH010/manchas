@@ -249,7 +249,7 @@ def p_function_call_1(p):
         | expression np_function_call_add_param COMMA function_call_1'''
 
 def p_mean(p):
-    '''mean : MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI'''
+    '''mean : MEAN LPAREN ID RPAREN np_add_mean_quadruple'''
 
 def p_median(p):
     '''median : MEDIAN LPAREN expression RPAREN SEMI'''
@@ -608,11 +608,7 @@ def p_np_non_conditional_limit(p):
 def p_np_non_conditional_end (p):
     '''np_non_conditional_end : '''
     global operators, operands, types, quadruples, program_scopes, current_scope, tempsCount
-        
-    print('JUSTO ANTES DE HACER LA SUMA DE I CON DELTA')
-    print(operands, operators, types)
-    print('SUpuesto delta', operands[-1])
-    print('SUpuesto var', operands[-2])
+
     delta_value = operands.pop()
     delta_type = types.pop()
     if delta_type != Data_types['INTEGER']:
@@ -786,7 +782,7 @@ def p_np_check_is_array(p):
     global operands, types, operators
     array_id = operands.pop()   
     type_array = types.pop()
-    print(operands, types)
+    
     array_id = p[-2]
     array_id_assignment = p[-3]
     if(array_id is None):
@@ -844,8 +840,7 @@ def p_np_get_array_address(p):
     # print('+', accessing_array_value, array_init_address_const_address, pointer_address)
     set_new_quadruple('+', accessing_array_value, array_init_address_const_address, pointer_address)
     operators.pop() # Remove fake bottom
-    print('pointeerrr address', pointer_address)
-    print(operands)
+
     operands.append(pointer_address)
     
 # ======================================================================
@@ -876,11 +871,11 @@ def p_np_add_mean_quadruple(p):
     # Get var instance from vars table
     current_var = get_var(p[-2])
     var_type = current_var['type']
-    var_address = current_var['address']
+    array_var_address = current_var['address']
     is_array = current_var['is_array']
     array_size = current_var['array_size']
-    # Validate the var is an array
-    if not is_array or var_type != Data_types['INTEGER'] or var_type != Data_types['FLOAT']:
+    # Validate the var is an array and of integer/float type
+    if (not is_array) or (var_type not in [Data_types['INTEGER'], Data_types['FLOAT']]):
         create_error('The mean function only accepts an array of floats or integers.')
     # Create a temporal variable, this is where the result will be saved
     result_address = define_new_temporal_address(Data_types['FLOAT'])
@@ -888,7 +883,7 @@ def p_np_add_mean_quadruple(p):
     operands.append(result_address)
     types.append(Data_types['FLOAT'])
     
-    set_new_quadruple('MEAN', array_size, var_address, result_address)
+    set_new_quadruple('MEAN', array_size, array_var_address, result_address)
     
 
 # ==============================================================================

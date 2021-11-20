@@ -268,7 +268,15 @@ def verify_array_address_access(access_value, arr_inferior_limit, arr_upp_limit)
         create_error(f'Out of bounds\n Trying to acces value {value}, but limits are {inferior_limit} and {upper_limit}', 9)
 
 
-    
+
+def calculate_mean_value(array_size, array_var_address, address_to_save_value):
+    sum_of_values = 0
+    for x in range(array_size):
+        value = find_address(array_var_address)
+        array_var_address += 1
+        sum_of_values += value
+    mean_value = sum_of_values / array_size
+    save_value(address_to_save_value, mean_value)
     
 def check_quadruples():
     global is_executing, instruction_pointer
@@ -405,6 +413,11 @@ def check_quadruples():
             # quadruple structure:
             # READ , -1, type, address_to_save_value
             save_value_on_input(result, right_operand)
+            update_instruction_pointer()
+        elif operation == 40:       # MEAN 
+            # quadruple structure:
+            # MEAN , array_size, array_var_address, address_to_save_value
+            calculate_mean_value(left_operand, right_operand, result)
             update_instruction_pointer()
         else:
             instruction_pointer += 1

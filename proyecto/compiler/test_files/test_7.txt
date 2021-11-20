@@ -11,9 +11,9 @@ let i, jump : int;
   for(i = 0 to i == 10 by 1) {
     edades[i] = i;
   }
+  result = mean(edades);
 
-  for(i = 0 to i == 10 by 1) {
-    print(edades[i]);
-  }
-
+  print("");
+  print("");
+  print("La media es", result);
 }

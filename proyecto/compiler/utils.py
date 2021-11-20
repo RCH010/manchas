@@ -74,4 +74,6 @@ operators_id = {
     'PRINT': 31,    # For print statements
     'VERIFY': 32,   # For array checking accessing value
     'READ': 33,     # For input/read statements
+    # SPECIAL FUNCTIONS
+    'MEAN': 40      # for mean calculations
 }

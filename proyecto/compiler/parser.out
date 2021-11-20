@@ -102,7 +102,7 @@ Rule 92    void_function_call -> ID LPAREN np_check_function_call np_function_en
 Rule 93    void_function_call -> ID LPAREN np_check_function_call function_call_1 np_function_end_params RPAREN SEMI
 Rule 94    function_call_1 -> expression np_function_call_add_param
 Rule 95    function_call_1 -> expression np_function_call_add_param COMMA function_call_1
-Rule 96    mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+Rule 96    mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple
 Rule 97    median -> MEDIAN LPAREN expression RPAREN SEMI
 Rule 98    variance -> VARIANCE LPAREN expression RPAREN SEMI
 Rule 99    standard_deviation -> STDEV LPAREN expression RPAREN SEMI
@@ -198,7 +198,7 @@ RBRACKET             : 14 40 64 84
 READ                 : 82
 RETURN               : 89
 RPAREN               : 16 17 18 19 20 21 42 43 63 77 82 87 88 90 91 92 93 96 97 98 99
-SEMI                 : 1 2 8 40 41 77 82 89 92 93 96 97 98 99
+SEMI                 : 1 2 8 40 41 77 82 89 92 93 97 98 99
 STDEV                : 99
 TIMES                : 61
 TO                   : 88
@@ -1364,7 +1364,7 @@ state 68
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -1615,7 +1615,7 @@ state 88
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -1691,7 +1691,7 @@ state 89
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -2274,7 +2274,7 @@ state 113
 
 state 114
 
-    (96) mean -> MEAN . LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> MEAN . LPAREN ID RPAREN np_add_mean_quadruple
 
     LPAREN          shift and go to state 157
 
@@ -2406,7 +2406,7 @@ state 124
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -2843,7 +2843,7 @@ state 146
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3122,7 +3122,7 @@ state 156
 
 state 157
 
-    (96) mean -> MEAN LPAREN . ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> MEAN LPAREN . ID RPAREN np_add_mean_quadruple
 
     ID              shift and go to state 198
 
@@ -3165,7 +3165,7 @@ state 158
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3237,7 +3237,7 @@ state 159
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3309,7 +3309,7 @@ state 160
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3390,7 +3390,7 @@ state 162
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3541,7 +3541,7 @@ state 171
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3613,7 +3613,7 @@ state 172
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3752,7 +3752,7 @@ state 180
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3824,7 +3824,7 @@ state 181
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3885,7 +3885,7 @@ state 182
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -3943,7 +3943,7 @@ state 183
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -4001,7 +4001,7 @@ state 184
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -4059,7 +4059,7 @@ state 185
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -4117,7 +4117,7 @@ state 186
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -4175,7 +4175,7 @@ state 187
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -4406,7 +4406,7 @@ state 196
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -4469,7 +4469,7 @@ state 197
 
 state 198
 
-    (96) mean -> MEAN LPAREN ID . RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> MEAN LPAREN ID . RPAREN np_add_mean_quadruple
 
     RPAREN          shift and go to state 236
 
@@ -4688,7 +4688,7 @@ state 216
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -4766,7 +4766,7 @@ state 217
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -4983,7 +4983,7 @@ state 228
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -5041,7 +5041,7 @@ state 229
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -5097,7 +5097,7 @@ state 230
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -5152,7 +5152,7 @@ state 231
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -5246,7 +5246,7 @@ state 233
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -5298,10 +5298,27 @@ state 235
 
 state 236
 
-    (96) mean -> MEAN LPAREN ID RPAREN . np_add_mean_quadruple SEMI
+    (96) mean -> MEAN LPAREN ID RPAREN . np_add_mean_quadruple
     (143) np_add_mean_quadruple -> .
 
+    TIMES           reduce using rule 143 (np_add_mean_quadruple -> .)
+    DIVIDE          reduce using rule 143 (np_add_mean_quadruple -> .)
+    PLUS            reduce using rule 143 (np_add_mean_quadruple -> .)
+    MINUS           reduce using rule 143 (np_add_mean_quadruple -> .)
+    LT              reduce using rule 143 (np_add_mean_quadruple -> .)
+    LE              reduce using rule 143 (np_add_mean_quadruple -> .)
+    GT              reduce using rule 143 (np_add_mean_quadruple -> .)
+    GE              reduce using rule 143 (np_add_mean_quadruple -> .)
+    EQ              reduce using rule 143 (np_add_mean_quadruple -> .)
+    NE              reduce using rule 143 (np_add_mean_quadruple -> .)
+    AND             reduce using rule 143 (np_add_mean_quadruple -> .)
+    OR              reduce using rule 143 (np_add_mean_quadruple -> .)
     SEMI            reduce using rule 143 (np_add_mean_quadruple -> .)
+    RPAREN          reduce using rule 143 (np_add_mean_quadruple -> .)
+    COMMA           reduce using rule 143 (np_add_mean_quadruple -> .)
+    RBRACKET        reduce using rule 143 (np_add_mean_quadruple -> .)
+    TO              reduce using rule 143 (np_add_mean_quadruple -> .)
+    BY              reduce using rule 143 (np_add_mean_quadruple -> .)
 
     np_add_mean_quadruple          shift and go to state 264
 
@@ -5452,7 +5469,7 @@ state 248
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -5585,7 +5602,7 @@ state 255
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -5773,9 +5790,26 @@ state 263
 
 state 264
 
-    (96) mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple . SEMI
+    (96) mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .
 
-    SEMI            shift and go to state 281
+    TIMES           reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    DIVIDE          reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    PLUS            reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    MINUS           reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    LT              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    LE              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    GT              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    GE              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    EQ              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    NE              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    AND             reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    OR              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    SEMI            reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    RPAREN          reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    COMMA           reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    RBRACKET        reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    TO              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
+    BY              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple .)
 
 
 state 265
@@ -5888,7 +5922,7 @@ state 268
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -5907,7 +5941,7 @@ state 268
     VARIANCE        shift and go to state 116
     STDEV           shift and go to state 117
 
-    expression                     shift and go to state 282
+    expression                     shift and go to state 281
     exp                            shift and go to state 92
     expression1                    shift and go to state 93
     expression0                    shift and go to state 94
@@ -5926,7 +5960,7 @@ state 269
 
     (87) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression . DO block np_while_end_block
 
-    DO              shift and go to state 283
+    DO              shift and go to state 282
 
 
 state 270
@@ -5937,7 +5971,7 @@ state 270
 
     ID              shift and go to state 72
 
-    params                         shift and go to state 284
+    params                         shift and go to state 283
 
 state 271
 
@@ -5975,7 +6009,7 @@ state 274
 
     EQUALS          reduce using rule 141 (np_get_array_address -> .)
 
-    np_get_array_address           shift and go to state 285
+    np_get_array_address           shift and go to state 284
 
 state 275
 
@@ -6012,7 +6046,7 @@ state 277
 
     LBRACE          reduce using rule 121 (np_condition_goto_else -> .)
 
-    np_condition_goto_else         shift and go to state 286
+    np_condition_goto_else         shift and go to state 285
 
 state 278
 
@@ -6025,13 +6059,13 @@ state 278
     OR              shift and go to state 135
     RBRACKET        reduce using rule 140 (np_verify_array_dim -> .)
 
-    np_verify_array_dim            shift and go to state 287
+    np_verify_array_dim            shift and go to state 286
 
 state 279
 
     (64) factor -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim . RBRACKET np_get_array_address
 
-    RBRACKET        shift and go to state 288
+    RBRACKET        shift and go to state 287
 
 
 state 280
@@ -6060,30 +6094,6 @@ state 280
 
 state 281
 
-    (96) mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .
-
-    TIMES           reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    DIVIDE          reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    PLUS            reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    MINUS           reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    LT              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    LE              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    GT              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    GE              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    EQ              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    NE              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    AND             reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    OR              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    SEMI            reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    RPAREN          reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    COMMA           reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    RBRACKET        reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    TO              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-    BY              reduce using rule 96 (mean -> MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI .)
-
-
-state 282
-
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression . np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (47) expression0 -> expression . AND np_add_operator expression
     (48) expression0 -> expression . OR np_add_operator expression
@@ -6093,48 +6103,48 @@ state 282
     OR              shift and go to state 135
     TO              reduce using rule 125 (np_assign_expression_for -> .)
 
-    np_assign_expression_for       shift and go to state 289
+    np_assign_expression_for       shift and go to state 288
 
-state 283
+state 282
 
     (87) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO . block np_while_end_block
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 290
+    block                          shift and go to state 289
 
-state 284
+state 283
 
     (25) params -> ID COLON type np_add_vars np_add_params_type COMMA params .
 
     RPAREN          reduce using rule 25 (params -> ID COLON type np_add_vars np_add_params_type COMMA params .)
 
 
-state 285
+state 284
 
     (40) assignment -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address . EQUALS np_add_operator expression np_assign_expression SEMI
 
-    EQUALS          shift and go to state 291
+    EQUALS          shift and go to state 290
 
 
-state 286
+state 285
 
     (43) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else . block np_condition_end_gotof
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 292
+    block                          shift and go to state 291
 
-state 287
+state 286
 
     (84) reading_1 -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim . RBRACKET np_get_array_address
 
-    RBRACKET        shift and go to state 293
+    RBRACKET        shift and go to state 292
 
 
-state 288
+state 287
 
     (64) factor -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET . np_get_array_address
     (141) np_get_array_address -> .
@@ -6158,16 +6168,16 @@ state 288
     TO              reduce using rule 141 (np_get_array_address -> .)
     BY              reduce using rule 141 (np_get_array_address -> .)
 
-    np_get_array_address           shift and go to state 294
+    np_get_array_address           shift and go to state 293
 
-state 289
+state 288
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for . TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
 
-    TO              shift and go to state 295
+    TO              shift and go to state 294
 
 
-state 290
+state 289
 
     (87) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block . np_while_end_block
     (124) np_while_end_block -> .
@@ -6181,9 +6191,9 @@ state 290
     WHILE           reduce using rule 124 (np_while_end_block -> .)
     RBRACE          reduce using rule 124 (np_while_end_block -> .)
 
-    np_while_end_block             shift and go to state 296
+    np_while_end_block             shift and go to state 295
 
-state 291
+state 290
 
     (40) assignment -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address EQUALS . np_add_operator expression np_assign_expression SEMI
     (111) np_add_operator -> .
@@ -6202,9 +6212,9 @@ state 291
     VARIANCE        reduce using rule 111 (np_add_operator -> .)
     STDEV           reduce using rule 111 (np_add_operator -> .)
 
-    np_add_operator                shift and go to state 297
+    np_add_operator                shift and go to state 296
 
-state 292
+state 291
 
     (43) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block . np_condition_end_gotof
     (120) np_condition_end_gotof -> .
@@ -6218,18 +6228,18 @@ state 292
     WHILE           reduce using rule 120 (np_condition_end_gotof -> .)
     RBRACE          reduce using rule 120 (np_condition_end_gotof -> .)
 
-    np_condition_end_gotof         shift and go to state 298
+    np_condition_end_gotof         shift and go to state 297
 
-state 293
+state 292
 
     (84) reading_1 -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET . np_get_array_address
     (141) np_get_array_address -> .
 
     RPAREN          reduce using rule 141 (np_get_array_address -> .)
 
-    np_get_array_address           shift and go to state 299
+    np_get_array_address           shift and go to state 298
 
-state 294
+state 293
 
     (64) factor -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address .
 
@@ -6253,7 +6263,7 @@ state 294
     BY              reduce using rule 64 (factor -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address .)
 
 
-state 295
+state 294
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO . expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (44) expression -> . exp
@@ -6291,7 +6301,7 @@ state 295
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -6310,7 +6320,7 @@ state 295
     VARIANCE        shift and go to state 116
     STDEV           shift and go to state 117
 
-    expression                     shift and go to state 300
+    expression                     shift and go to state 299
     exp                            shift and go to state 92
     expression1                    shift and go to state 93
     expression0                    shift and go to state 94
@@ -6325,7 +6335,7 @@ state 295
     variance                       shift and go to state 107
     standard_deviation             shift and go to state 108
 
-state 296
+state 295
 
     (87) conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .
 
@@ -6339,7 +6349,7 @@ state 296
     RBRACE          reduce using rule 87 (conditional_loop -> WHILE np_while_init LPAREN expression RPAREN np_while_expression DO block np_while_end_block .)
 
 
-state 297
+state 296
 
     (40) assignment -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address EQUALS np_add_operator . expression np_assign_expression SEMI
     (44) expression -> . exp
@@ -6377,7 +6387,7 @@ state 297
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -6396,7 +6406,7 @@ state 297
     VARIANCE        shift and go to state 116
     STDEV           shift and go to state 117
 
-    expression                     shift and go to state 301
+    expression                     shift and go to state 300
     exp                            shift and go to state 92
     expression1                    shift and go to state 93
     expression0                    shift and go to state 94
@@ -6411,7 +6421,7 @@ state 297
     variance                       shift and go to state 107
     standard_deviation             shift and go to state 108
 
-state 298
+state 297
 
     (43) condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .
 
@@ -6425,14 +6435,14 @@ state 298
     RBRACE          reduce using rule 43 (condition -> IF LPAREN expression RPAREN np_condition_gotof block ELSE np_condition_goto_else block np_condition_end_gotof .)
 
 
-state 299
+state 298
 
     (84) reading_1 -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address .
 
     RPAREN          reduce using rule 84 (reading_1 -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address .)
 
 
-state 300
+state 299
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO expression . np_non_conditional_limit BY expression RPAREN block np_non_conditional_end
     (47) expression0 -> expression . AND np_add_operator expression
@@ -6443,9 +6453,9 @@ state 300
     OR              shift and go to state 135
     BY              reduce using rule 126 (np_non_conditional_limit -> .)
 
-    np_non_conditional_limit       shift and go to state 302
+    np_non_conditional_limit       shift and go to state 301
 
-state 301
+state 300
 
     (40) assignment -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address EQUALS np_add_operator expression . np_assign_expression SEMI
     (47) expression0 -> expression . AND np_add_operator expression
@@ -6456,23 +6466,23 @@ state 301
     OR              shift and go to state 135
     SEMI            reduce using rule 118 (np_assign_expression -> .)
 
-    np_assign_expression           shift and go to state 303
+    np_assign_expression           shift and go to state 302
 
-state 302
+state 301
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit . BY expression RPAREN block np_non_conditional_end
 
-    BY              shift and go to state 304
+    BY              shift and go to state 303
 
 
-state 303
+state 302
 
     (40) assignment -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address EQUALS np_add_operator expression np_assign_expression . SEMI
 
-    SEMI            shift and go to state 305
+    SEMI            shift and go to state 304
 
 
-state 304
+state 303
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY . expression RPAREN block np_non_conditional_end
     (44) expression -> . exp
@@ -6510,7 +6520,7 @@ state 304
     (74) varcte -> . CTEC np_add_cte_char
     (75) varcte -> . TRUE np_add_cte_bool
     (76) varcte -> . FALSE np_add_cte_bool
-    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI
+    (96) mean -> . MEAN LPAREN ID RPAREN np_add_mean_quadruple
     (97) median -> . MEDIAN LPAREN expression RPAREN SEMI
     (98) variance -> . VARIANCE LPAREN expression RPAREN SEMI
     (99) standard_deviation -> . STDEV LPAREN expression RPAREN SEMI
@@ -6529,7 +6539,7 @@ state 304
     VARIANCE        shift and go to state 116
     STDEV           shift and go to state 117
 
-    expression                     shift and go to state 306
+    expression                     shift and go to state 305
     exp                            shift and go to state 92
     expression1                    shift and go to state 93
     expression0                    shift and go to state 94
@@ -6544,7 +6554,7 @@ state 304
     variance                       shift and go to state 107
     standard_deviation             shift and go to state 108
 
-state 305
+state 304
 
     (40) assignment -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address EQUALS np_add_operator expression np_assign_expression SEMI .
 
@@ -6558,27 +6568,27 @@ state 305
     RBRACE          reduce using rule 40 (assignment -> ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address EQUALS np_add_operator expression np_assign_expression SEMI .)
 
 
-state 306
+state 305
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression . RPAREN block np_non_conditional_end
     (47) expression0 -> expression . AND np_add_operator expression
     (48) expression0 -> expression . OR np_add_operator expression
 
-    RPAREN          shift and go to state 307
+    RPAREN          shift and go to state 306
     AND             shift and go to state 134
     OR              shift and go to state 135
 
 
-state 307
+state 306
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN . block np_non_conditional_end
     (22) block -> . LBRACE statements RBRACE
 
     LBRACE          shift and go to state 48
 
-    block                          shift and go to state 308
+    block                          shift and go to state 307
 
-state 308
+state 307
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block . np_non_conditional_end
     (127) np_non_conditional_end -> .
@@ -6592,9 +6602,9 @@ state 308
     WHILE           reduce using rule 127 (np_non_conditional_end -> .)
     RBRACE          reduce using rule 127 (np_non_conditional_end -> .)
 
-    np_non_conditional_end         shift and go to state 309
+    np_non_conditional_end         shift and go to state 308
 
-state 309
+state 308
 
     (88) non_conditional_loop -> FOR LPAREN ID np_add_id EQUALS np_add_operator expression np_assign_expression_for TO expression np_non_conditional_limit BY expression RPAREN block np_non_conditional_end .
 
