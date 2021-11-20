@@ -36,8 +36,10 @@ keywords={
     # === ESPECUAL FUNCTIONS ===
     'mean': 'MEAN',
     'median': 'MEDIAN',
-    'variance': 'VARIANCE',
-    'stdev': 'STDEV',
+    'pvariance': 'PVARIANCE',   # For Population variance of data
+    'pstdev': 'PSTDEV',         # For Population standard deviation of data
+    'variance': 'VARIANCE',     # For Sample variance of data
+    'stdev': 'STDEV',           # For Sample standard deviation of data
 }
 
 # =====================================

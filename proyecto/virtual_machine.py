@@ -289,6 +289,37 @@ def calculate_median_value(array_size, array_var_address, address_to_save_value)
         array_var_address += 1
     median_value = statistics.median(numbers)
     save_value(address_to_save_value, median_value)
+    
+def calculate_pvariance_value(array_size, array_var_address, address_to_save_value):
+    numbers = get_list_from_array_address(array_var_address, array_size)
+    pvariance = statistics.pvariance(numbers)
+    save_value(address_to_save_value, pvariance)
+
+def calculate_pstdev_value(array_size, array_var_address, address_to_save_value):
+    numbers = get_list_from_array_address(array_var_address, array_size)
+    pstdev = statistics.pstdev(numbers)
+    save_value(address_to_save_value, pstdev)
+
+def calculate_variance_value(array_size, array_var_address, address_to_save_value):
+    numbers = get_list_from_array_address(array_var_address, array_size)
+    variance = statistics.variance(numbers)
+    save_value(address_to_save_value, variance)
+
+def calculate_stdev_value(array_size, array_var_address, address_to_save_value):
+    numbers = get_list_from_array_address(array_var_address, array_size)
+    stdev = statistics.stdev(numbers)
+    save_value(address_to_save_value, stdev)
+
+def get_list_from_array_address(starting_address, array_size):
+    numbers = []
+    for x in range(array_size):
+        value = find_address(starting_address)
+        numbers.append(value)
+        starting_address += 1
+    return numbers
+
+
+
 
 def check_quadruples():
     global is_executing, instruction_pointer
@@ -436,13 +467,25 @@ def check_quadruples():
             # MEDIAN , array_size, array_var_address, address_to_save_value
             calculate_median_value(left_operand, right_operand, result)
             update_instruction_pointer()
-        elif operation == 42:       # VARIANCE 
+        elif operation == 42:       # PVARIANCE 
+            # quadruple structure:
+            # PVARIANCE , array_size, array_var_address, address_to_save_value
+            calculate_pvariance_value(left_operand, right_operand, result)
+            update_instruction_pointer()
+        elif operation == 43:       # PSTDEV
+            # quadruple structure:
+            # PSTDEV , array_size, array_var_address, address_to_save_value
+            calculate_pstdev_value(left_operand, right_operand, result)
+            update_instruction_pointer()
+        elif operation == 44:       # VARIANCE
             # quadruple structure:
             # VARIANCE , array_size, array_var_address, address_to_save_value
+            calculate_variance_value(left_operand, right_operand, result)
             update_instruction_pointer()
-        elif operation == 43:       # STANDARD DEVIATION 
+        elif operation == 45:       # STDEV
             # quadruple structure:
             # STDEV , array_size, array_var_address, address_to_save_value
+            calculate_stdev_value(left_operand, right_operand, result)
             update_instruction_pointer()
         else:
             instruction_pointer += 1

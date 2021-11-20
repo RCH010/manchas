@@ -77,6 +77,8 @@ operators_id = {
     # SPECIAL FUNCTIONS
     'MEAN': 40,     # for mean calculations
     'MEDIAN': 41,   # for median calculations
-    'VARIANCE': 42, # for variance calculations
-    'STDEV': 43,    # for Standard deviation
+    'PVARIANCE': 42, # for variance calculations
+    'PSTDEV': 43,    # for Standard deviation
+    'VARIANCE': 44, # for variance calculations
+    'STDEV': 45,    # for Standard deviation
 }

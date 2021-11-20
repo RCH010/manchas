@@ -19,3 +19,7 @@ es que le pasas la variable
 
 
 para media, mediana etc. habrá parche guadalupano
+
+
+Para la varianza y STDEV
+es de population no sample (osea es /n y no entre /n-1)

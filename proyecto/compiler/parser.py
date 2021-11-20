@@ -134,7 +134,9 @@ def p_special_functions(p):
     '''special_functions : mean
         | median
         | variance
-        | standard_deviation'''
+        | p_variance
+        | standard_deviation
+        | p_standard_deviation'''
 
 def p_statements1(p):
     '''statements1 : statements
@@ -255,10 +257,18 @@ def p_median(p):
     '''median : MEDIAN LPAREN ID RPAREN np_add_median_quadruple'''
 
 def p_variance(p):
-    '''variance : VARIANCE LPAREN expression RPAREN SEMI'''
+    '''variance : VARIANCE LPAREN ID RPAREN np_add_variance_quadruple'''
+
+def p_p_variance(p):
+    '''p_variance : PVARIANCE LPAREN ID RPAREN np_add_p_variance_quadruple'''
 
 def p_standard_deviation(p):
-    '''standard_deviation : STDEV LPAREN expression RPAREN SEMI'''
+    '''standard_deviation : STDEV LPAREN ID RPAREN np_add_stdev_quadruple'''
+    
+def p_p_standard_deviation(p):
+    '''p_standard_deviation : PSTDEV LPAREN ID RPAREN np_add_p_stdev_quadruple'''
+
+
 
 def p_epsilon(p):
     '''epsilon : '''
@@ -861,8 +871,6 @@ def p_np_add_read_quadruple(p):
 
 # ======================================================================
 #                          SPECIAL FUNCTIONS
-#
-#                               MEAN
 # ======================================================================
 
 def p_np_add_mean_quadruple(p):
@@ -873,6 +881,21 @@ def p_np_add_median_quadruple(p):
     '''np_add_median_quadruple : '''
     create_quadruple_special_array_functions(p[-2], 'MEDIAN')
     
+def p_np_add_variance_quadruple(p):
+    '''np_add_variance_quadruple : '''
+    create_quadruple_special_array_functions(p[-2], 'VARIANCE')
+    
+def p_np_add_p_variance_quadruple(p):
+    '''np_add_p_variance_quadruple : '''
+    create_quadruple_special_array_functions(p[-2], 'PVARIANCE')
+
+def p_np_add_stdev_quadruple(p):
+    '''np_add_stdev_quadruple : '''
+    create_quadruple_special_array_functions(p[-2], 'STDEV')
+
+def p_np_add_p_stdev_quadruple(p):
+    '''np_add_p_stdev_quadruple : '''
+    create_quadruple_special_array_functions(p[-2], 'PSTDEV')
 
 # ==============================================================================
 # ==============================================================================

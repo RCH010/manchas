@@ -23,5 +23,17 @@ let i, jump : int;
   print("");
   print("");
   print("La mediana es", median(edades));
+  print("");
+  print("");
+  print("La varianza de esto como poblacion es", pvariance(edades));
+  print("");
+  print("");
+  print("La desviación estandar de esto como poblacion es", pstdev(edades));
+  print("");
+  print("");
+  print("La variance de esto como muestra es", variance(edades));
+  print("");
+  print("");
+  print("La desviación estandar de esto como muestra es", stdev(edades));
 }
 
