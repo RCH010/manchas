@@ -7,7 +7,7 @@ from compiler.directories.vars import Vars
 from compiler.operation import Operation
 from compiler.memory import Memory
 from compiler.directories.directory import Directory
-from compiler.utils import Data_types, operators_id
+from compiler.utils import Data_types, operators_id, types_ID
 from compiler.quadruples import Quadruple
 
 # Program directory, this contains all functions and the main scope
@@ -127,14 +127,12 @@ def p_statements(p):
         | writing statements1
         | reading statements1
         | repetition statements1
-        | return statements1
-        | special_functions statements1'''
+        | return statements1'''
     p[0] = (p[1], p[2])
 
 def p_special_functions(p):
     '''special_functions : mean
         | median
-        | mode
         | variance
         | standard_deviation'''
 
@@ -190,9 +188,10 @@ def p_term_2(p):
 
 def p_factor(p):
     '''factor : LPAREN np_add_paren expression RPAREN np_pop_paren 
-        | ID LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address
+        | ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address
         | factor_prima_1
-        | function_call'''
+        | function_call
+        | special_functions'''
 
 def p_factor_prima_1(p):
     '''factor_prima_1 : PLUS varcte
@@ -218,13 +217,11 @@ def p_writing_1(p):
         | CTESTRING np_add_print_quadruple_str'''
 
 def p_reading(p):
-    '''reading : READ LPAREN reading_1 RPAREN SEMI'''
+    '''reading : READ LPAREN reading_1 RPAREN np_add_read_quadruple SEMI'''
 
 def p_reading_1(p):
-    '''reading_1 : ID COMMA reading_1
-        | ID LBRACKET expression RBRACKET COMMA reading_1
-        | ID
-        | ID LBRACKET expression RBRACKET'''
+    '''reading_1 : ID np_add_id
+        | ID np_add_id LBRACKET np_check_is_array expression np_verify_array_dim RBRACKET np_get_array_address'''
 
 def p_repetition(p):
     '''repetition : non_conditional_loop
@@ -252,13 +249,10 @@ def p_function_call_1(p):
         | expression np_function_call_add_param COMMA function_call_1'''
 
 def p_mean(p):
-    '''mean : MEAN LPAREN expression RPAREN SEMI'''
+    '''mean : MEAN LPAREN ID RPAREN np_add_mean_quadruple SEMI'''
 
 def p_median(p):
     '''median : MEDIAN LPAREN expression RPAREN SEMI'''
-
-def p_mode(p):
-    '''mode : MODE LPAREN expression RPAREN SEMI'''
 
 def p_variance(p):
     '''variance : VARIANCE LPAREN expression RPAREN SEMI'''
@@ -614,6 +608,11 @@ def p_np_non_conditional_limit(p):
 def p_np_non_conditional_end (p):
     '''np_non_conditional_end : '''
     global operators, operands, types, quadruples, program_scopes, current_scope, tempsCount
+        
+    print('JUSTO ANTES DE HACER LA SUMA DE I CON DELTA')
+    print(operands, operators, types)
+    print('SUpuesto delta', operands[-1])
+    print('SUpuesto var', operands[-2])
     delta_value = operands.pop()
     delta_type = types.pop()
     if delta_type != Data_types['INTEGER']:
@@ -645,7 +644,7 @@ def p_np_add_print_quadruple_str(p):
 
 def p_np_add_print_quadruple_exp(p):
     '''np_add_print_quadruple_exp : '''
-    global quadruples,operands, types
+    global operands, types
     value = operands.pop()
     v_type = types.pop()
     set_new_quadruple('PRINT', -1, -1, value)
@@ -785,6 +784,9 @@ def p_np_function_end_params(p):
 def p_np_check_is_array(p):
     '''np_check_is_array : '''
     global operands, types, operators
+    array_id = operands.pop()   
+    type_array = types.pop()
+    print(operands, types)
     array_id = p[-2]
     array_id_assignment = p[-3]
     if(array_id is None):
@@ -842,7 +844,51 @@ def p_np_get_array_address(p):
     # print('+', accessing_array_value, array_init_address_const_address, pointer_address)
     set_new_quadruple('+', accessing_array_value, array_init_address_const_address, pointer_address)
     operators.pop() # Remove fake bottom
+    print('pointeerrr address', pointer_address)
+    print(operands)
     operands.append(pointer_address)
+    
+# ======================================================================
+#                               READ
+# ======================================================================
+'''
+Create the read quadruple
+The structure for this one is
+# READ, -1, type, variable_to_set_read_value
+'''
+def p_np_add_read_quadruple(p):
+    '''np_add_read_quadruple : '''
+    global operands, types
+    var = operands.pop()
+    v_type = types.pop()
+    type_ID = types_ID[v_type]
+    set_new_quadruple('READ', -1, type_ID, var)
+
+# ======================================================================
+#                          SPECIAL FUNCTIONS
+#
+#                               MEAN
+# ======================================================================
+
+def p_np_add_mean_quadruple(p):
+    '''np_add_mean_quadruple : '''
+    global operands, types, program_scopes, current_scope, tempsCount
+    # Get var instance from vars table
+    current_var = get_var(p[-2])
+    var_type = current_var['type']
+    var_address = current_var['address']
+    is_array = current_var['is_array']
+    array_size = current_var['array_size']
+    # Validate the var is an array
+    if not is_array or var_type != Data_types['INTEGER'] or var_type != Data_types['FLOAT']:
+        create_error('The mean function only accepts an array of floats or integers.')
+    # Create a temporal variable, this is where the result will be saved
+    result_address = define_new_temporal_address(Data_types['FLOAT'])
+    # Add it to stacks so it can be used on a expression or else
+    operands.append(result_address)
+    types.append(Data_types['FLOAT'])
+    
+    set_new_quadruple('MEAN', array_size, var_address, result_address)
     
 
 # ==============================================================================
@@ -992,6 +1038,21 @@ def set_new_quadruple(first, second, third, fourth):
     new_quadruple = Quadruple(operator_id, second, third, fourth)
     quadruples.append(new_quadruple)
 
+
+def define_new_temporal_address(type):
+    global program_scopes, tempsCount, current_scope
+    current_scope_vars = program_scopes.get_vars_table(current_scope)
+    temp_var_name = f"_temp{tempsCount}"
+    tempsCount += 1
+    # Create temp var on table of vars
+    current_scope_vars.add_new_var(temp_var_name, Data_types['FLOAT'])
+    # Ger address of this temporal var, and set it on the vars table of temp_var_name
+    new_address = get_vars_new_address(type, True)
+    current_scope_vars.set_address(temp_var_name, new_address)
+    # Append a new quadruple to the quadruples list
+    # Parche Guadalupano v-2.0
+    # add to operands and types stacks the result
+    return new_address
 
 '''
 Create print an error message and exit the program

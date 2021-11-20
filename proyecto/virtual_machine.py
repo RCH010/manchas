@@ -232,6 +232,32 @@ def add_param_for_function_call(value_address):
     global params_queue
     params_queue.append(value_address)
     
+def save_value_on_input(address_to_save, type_to_read):
+    input_value = input()
+    try:
+        if type_to_read == 1:           # INT
+            input_value = int(input_value)
+        elif type_to_read == 2:         # FLOAT
+            input_value = float(input_value)
+        elif type_to_read == 3:         # CHARACTER
+            input_value = str(input_value)
+            if len(input_value) > 1:
+                create_error(f'The input value is not a valid type, for a character is must be of length 1. ', 10)
+        elif type_to_read == 4:         # BOOL
+            if input_value == 'true':
+                input_value = True
+            elif input_value == 'false':
+                input_value = False
+            else:
+                create_error(f'For boolean values, you must provide "false" or "true"', 11)
+    except:
+        create_error(f'The read statement expected a {types_values[type_to_read]}.', 12)
+    
+        
+    if (str(address_to_save)[0] == '5'):
+        address_to_save = find_address(address_to_save)
+    
+    save_value(address_to_save, input_value)
     
 
 def verify_array_address_access(access_value, arr_inferior_limit, arr_upp_limit):
@@ -374,6 +400,11 @@ def check_quadruples():
             # quadruple structure:
             # VERIFY , access_value, arr_inferior_limit, arr_sup_limit
             verify_array_address_access(left_operand, right_operand, result)
+            update_instruction_pointer()
+        elif operation == 33:       # READ 
+            # quadruple structure:
+            # READ , -1, type, address_to_save_value
+            save_value_on_input(result, right_operand)
             update_instruction_pointer()
         else:
             instruction_pointer += 1

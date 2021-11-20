@@ -10,6 +10,12 @@ let miArray : int[10]
 let datosA, datosB: int[8]
   Se declara un arreglo `datosA` y `datosB` de enteros de 8 espacios
 
+---
 
-  En el enfunc
-  - en el return/endfunc va asignar el valor que resuelve la función a la variable de ese nombre global
+Mi read no asigna
+
+es que le pasas la variable
+
+
+
+para media, mediana etc. habrá parche guadalupano

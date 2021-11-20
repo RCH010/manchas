@@ -12,6 +12,13 @@ Data_types = {
     'VOID': 'void',
 }
 
+types_ID = {
+    Data_types['INTEGER']: 1, 
+    Data_types['FLOAT']: 2, 
+    Data_types['CHARACTER']: 3, 
+    Data_types['BOOLEAN']: 4, 
+}
+
 class Relation_operators(metaclass=MetaTypes):
     # Arithmetic operators
     SUM = '+'
@@ -65,5 +72,6 @@ operators_id = {
 
     'RETURN': 30,   # For return of a function
     'PRINT': 31,    # For print statements
-    'VERIFY': 32    # For array checking accessing value
+    'VERIFY': 32,   # For array checking accessing value
+    'READ': 33,     # For input/read statements
 }

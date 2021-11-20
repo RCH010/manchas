@@ -2,11 +2,16 @@ program programaDeArreglos;
 
 main ()
 let temperaturas: int[10];
+let abool: float;
 {
   temperaturas[0] = 1;
   temperaturas[1] = 5;
   temperaturas[2] = (temperaturas[0] + temperaturas[1]) * 2;
   
-  
+  read(temperaturas[2]);
+  read(abool);
   print("La temperatura es", temperaturas[2]);
+  print(abool);
 }
+
+

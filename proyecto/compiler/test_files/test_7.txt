@@ -1,0 +1,19 @@
+program testSpecialFunctions;
+
+
+main()
+let edades: int[10];
+let result: float;
+let i, jump : int;
+{
+  jump = 1;
+
+  for(i = 0 to i == 10 by 1) {
+    edades[i] = i;
+  }
+
+  for(i = 0 to i == 10 by 1) {
+    print(edades[i]);
+  }
+
+}
