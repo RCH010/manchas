@@ -1,5 +1,7 @@
 import sys
 import operator
+import bisect
+import statistics
 from collections import deque
 from compiler.parser import program_scopes, quadruples, constants_table
 from compiler.utils import Data_types
@@ -277,7 +279,17 @@ def calculate_mean_value(array_size, array_var_address, address_to_save_value):
         sum_of_values += value
     mean_value = sum_of_values / array_size
     save_value(address_to_save_value, mean_value)
-    
+
+
+def calculate_median_value(array_size, array_var_address, address_to_save_value):
+    numbers = []
+    for x in range(array_size):
+        value = find_address(array_var_address)
+        bisect.insort(numbers, value)
+        array_var_address += 1
+    median_value = statistics.median(numbers)
+    save_value(address_to_save_value, median_value)
+
 def check_quadruples():
     global is_executing, instruction_pointer
 
@@ -418,6 +430,19 @@ def check_quadruples():
             # quadruple structure:
             # MEAN , array_size, array_var_address, address_to_save_value
             calculate_mean_value(left_operand, right_operand, result)
+            update_instruction_pointer()
+        elif operation == 41:       # MEDIAN 
+            # quadruple structure:
+            # MEDIAN , array_size, array_var_address, address_to_save_value
+            calculate_median_value(left_operand, right_operand, result)
+            update_instruction_pointer()
+        elif operation == 42:       # VARIANCE 
+            # quadruple structure:
+            # VARIANCE , array_size, array_var_address, address_to_save_value
+            update_instruction_pointer()
+        elif operation == 43:       # STANDARD DEVIATION 
+            # quadruple structure:
+            # STDEV , array_size, array_var_address, address_to_save_value
             update_instruction_pointer()
         else:
             instruction_pointer += 1

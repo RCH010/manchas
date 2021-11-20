@@ -36,7 +36,6 @@ keywords={
     # === ESPECUAL FUNCTIONS ===
     'mean': 'MEAN',
     'median': 'MEDIAN',
-    'mode': 'MODE',
     'variance': 'VARIANCE',
     'stdev': 'STDEV',
 }

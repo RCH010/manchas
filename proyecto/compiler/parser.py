@@ -252,7 +252,7 @@ def p_mean(p):
     '''mean : MEAN LPAREN ID RPAREN np_add_mean_quadruple'''
 
 def p_median(p):
-    '''median : MEDIAN LPAREN expression RPAREN SEMI'''
+    '''median : MEDIAN LPAREN ID RPAREN np_add_median_quadruple'''
 
 def p_variance(p):
     '''variance : VARIANCE LPAREN expression RPAREN SEMI'''
@@ -867,23 +867,11 @@ def p_np_add_read_quadruple(p):
 
 def p_np_add_mean_quadruple(p):
     '''np_add_mean_quadruple : '''
-    global operands, types, program_scopes, current_scope, tempsCount
-    # Get var instance from vars table
-    current_var = get_var(p[-2])
-    var_type = current_var['type']
-    array_var_address = current_var['address']
-    is_array = current_var['is_array']
-    array_size = current_var['array_size']
-    # Validate the var is an array and of integer/float type
-    if (not is_array) or (var_type not in [Data_types['INTEGER'], Data_types['FLOAT']]):
-        create_error('The mean function only accepts an array of floats or integers.')
-    # Create a temporal variable, this is where the result will be saved
-    result_address = define_new_temporal_address(Data_types['FLOAT'])
-    # Add it to stacks so it can be used on a expression or else
-    operands.append(result_address)
-    types.append(Data_types['FLOAT'])
-    
-    set_new_quadruple('MEAN', array_size, array_var_address, result_address)
+    create_quadruple_special_array_functions(p[-2], 'MEAN')
+
+def p_np_add_median_quadruple(p):
+    '''np_add_median_quadruple : '''
+    create_quadruple_special_array_functions(p[-2], 'MEDIAN')
     
 
 # ==============================================================================
@@ -1033,7 +1021,9 @@ def set_new_quadruple(first, second, third, fourth):
     new_quadruple = Quadruple(operator_id, second, third, fourth)
     quadruples.append(new_quadruple)
 
+'''
 
+'''
 def define_new_temporal_address(type):
     global program_scopes, tempsCount, current_scope
     current_scope_vars = program_scopes.get_vars_table(current_scope)
@@ -1044,10 +1034,31 @@ def define_new_temporal_address(type):
     # Ger address of this temporal var, and set it on the vars table of temp_var_name
     new_address = get_vars_new_address(type, True)
     current_scope_vars.set_address(temp_var_name, new_address)
-    # Append a new quadruple to the quadruples list
-    # Parche Guadalupano v-2.0
-    # add to operands and types stacks the result
     return new_address
+
+'''
+This function creates the quadruple used on some of the special functions
+(mean, median). It validates the array_id is an array and of integer/float
+type. Then creates a new temporal variable, that is added to the operands and
+types stack. So it can be used later. (the return of the function)
+'''
+def create_quadruple_special_array_functions(array_id, quadruple_str):
+    current_var = get_var(array_id)
+    var_type = current_var['type']
+    array_var_address = current_var['address']
+    is_array = current_var['is_array']
+    array_size = current_var['array_size']
+    # Validate the var is an array and of integer/float type
+    if (not is_array) or (var_type not in [Data_types['INTEGER'], Data_types['FLOAT']]):
+        create_error('The mean function only accepts an array of floats or integers.')
+    # Create a temporal variable, this is where the result will be saved
+    result_address = define_new_temporal_address(Data_types['FLOAT'])
+    # Add it to stacks so it can be used on a expression or else
+    operands.append(result_address)
+    types.append(Data_types['FLOAT'])
+    # Create special function quadruple
+    set_new_quadruple(quadruple_str, array_size, array_var_address, result_address)
+
 
 '''
 Create print an error message and exit the program

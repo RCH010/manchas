@@ -75,5 +75,8 @@ operators_id = {
     'VERIFY': 32,   # For array checking accessing value
     'READ': 33,     # For input/read statements
     # SPECIAL FUNCTIONS
-    'MEAN': 40      # for mean calculations
+    'MEAN': 40,     # for mean calculations
+    'MEDIAN': 41,   # for median calculations
+    'VARIANCE': 42, # for variance calculations
+    'STDEV': 43,    # for Standard deviation
 }

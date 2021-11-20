@@ -11,9 +11,17 @@ let i, jump : int;
   for(i = 0 to i == 10 by 1) {
     edades[i] = i;
   }
+  edades[1] = 90;
+  edades[3] = 9;
+  edades[6] = 12;
+  edades[9] = 2;
   result = mean(edades);
 
   print("");
   print("");
   print("La media es", result);
+  print("");
+  print("");
+  print("La mediana es", median(edades));
 }
+
