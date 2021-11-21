@@ -2,7 +2,9 @@ program test2;
 
 main () 
 let res: int;
+let algo: int[10];
 {
   res = (-1);
+  algo[12] = 14;
   print(res);
 }

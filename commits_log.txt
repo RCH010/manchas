@@ -1,0 +1,401 @@
+commit 9fe1f1a2621c246f23d61148e7f1589429451c7c
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 20 23:57:59 2021 -0600
+
+    Add test for array operations
+
+commit 4e5f4a860f1c3e63d30f47104d5528eec2d37792
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 20 23:23:17 2021 -0600
+
+    Add find program, Fix negatives on parser
+
+commit 0d7bf117cf9e35d329e9c9fe6ae7ce6ea94f2e89
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 20 17:31:49 2021 -0600
+
+    Add special functions variance and stdev
+
+commit a92879816c788d681f6a546908b1f6d219a658d8
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 20 16:26:44 2021 -0600
+
+    Add median function
+
+commit 2f86a15701162fec0b3e0fa02bc67ed7219afdd6
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 20 15:39:35 2021 -0600
+
+    Add mean functionality on vm
+
+commit 457faf3e696211112c089712641cb4afcfe6153e
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 20 14:44:17 2021 -0600
+
+    Fix arrays operands stack, add mean neuralgin point
+
+commit 63d7647904327eae819be67faba74e1d5bc9ca74
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Nov 19 22:40:40 2021 -0600
+
+    Fix function call for recursive functions, add factorial tests
+
+commit 20825deb14ff8a9d18f0829f61a18bc202fee069
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Nov 19 21:27:48 2021 -0600
+
+    Add arrays execution on vm
+
+commit 093671dd84e4f5701ad7100227b3e2184ae41735
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Nov 19 20:25:30 2021 -0600
+
+    Fix calling anidated function
+
+commit 9f201b792d9354851c6436f47a1e5688bad35e04
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Nov 19 18:39:43 2021 -0600
+
+    Add memory class on virtual machine, add operations for function on virtual machine
+
+commit a3d9650003d0e6ab4232e3a984e32bd24c208e9b
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Thu Nov 18 00:44:53 2021 -0600
+
+    Add asignment for functions on parser
+
+commit b9fc883972c536397a0be2b3cf606b78a8d37c75
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Wed Nov 17 21:39:30 2021 -0600
+
+    Start project documentation
+
+commit 9f54a21e93d45c0ffa501405d4f05be93871ed43
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 15 22:46:11 2021 -0600
+
+    Add documentation
+
+commit 988b88fbf84d465925d7234d3e2b0e7515965a3a
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 15 22:18:32 2021 -0600
+
+    Add execution for conditionals and loops
+
+commit 7694a0eb403cb74c5bd7f41b2cf126565f253204
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 15 19:56:58 2021 -0600
+
+    Add basic math operations to virtual machine
+
+commit ed9d240727301f27ec4c0bb1823b3862320725d8
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 15 17:54:18 2021 -0600
+
+    Fix array access
+
+commit 3d105ddf123a90519e5bfd1af86310b75cd8ab99
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 15 17:47:35 2021 -0600
+
+    Add arrays neralgic points for definición and access
+
+commit 1ca3fa47f5e697283d63c62b30ce079573bac54e
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 15 00:27:20 2021 -0600
+
+    Add array declaration
+
+commit 78b1f99acd59f1207295dfcdc9f266f85a98d3cf
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 14 22:22:43 2021 -0600
+
+    Change how info is print
+
+commit 65d2ba76fbf7c89ac64ca0b3fe305780d7dfa043
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 13 23:33:48 2021 -0600
+
+    Order files, and virtual machine creation
+
+commit 92380249eff157689ca79e1fde6251526b61e363
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 13 20:20:31 2021 -0600
+
+    Add addresses for temporal vars
+
+commit 1678b6ff9641d26ca4210b7ecdcb64ed46915610
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 13 19:45:36 2021 -0600
+
+    Fix grammar - operations hierarchy
+
+commit f2421ca685a4adfe973d80184a239f1df626b81f
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 13 14:44:57 2021 -0600
+
+    Add bools on constants
+
+commit 15d7739a1969be1a69a7850dd2565eab74772ce1
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 13 14:39:28 2021 -0600
+
+    Add integer, float and char constants to constants table and memory address
+
+commit 43ed46e11471570d4912aef20e5334dee76c30f4
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 7 18:05:17 2021 -0600
+
+    Add documentation
+
+commit 76917e9fc3cc635b7ed240675278ccefe0a3dd24
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 7 17:51:02 2021 -0600
+
+    Add 5th deliver summary
+
+commit bd28908b0bab6f77eb8da550fbd8903fb9565d93
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 7 17:50:41 2021 -0600
+
+    Add deliver summary
+
+commit ae3dc41a67c709043496fe52ffc63517b4c8296c
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 7 12:50:26 2021 -0600
+
+    Add memory class, first idea
+
+commit 1b0c82dfad713a85e8176b1ac150de3fcb2b7b4d
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 7 11:25:32 2021 -0600
+
+    Add function call np
+
+commit c0507ee4ccf3c8373b9a703b2cf26a2ab8096f18
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 7 09:35:32 2021 -0600
+
+    Add return statement quadruple
+
+commit e70f8f4fb13391ba1be0be5a70393faa168fec9a
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 7 09:09:33 2021 -0600
+
+    Add first neuralgic point on function call
+
+commit d41c0d3a7d23f3268e5bb9de842babc695bec79d
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Nov 6 19:39:29 2021 -0600
+
+    Add goto main, add params tables on scopes, add funtions neuralig points
+
+commit feec432222d5037cc49b1e014b91987540627cae
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Tue Nov 2 21:55:07 2021 -0600
+
+    Add print neuralgic points
+
+commit 1c99262899e1be56ff502c2ea3948a900c2e6d5d
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Tue Nov 2 17:35:14 2021 -0600
+
+    Fix print grammar
+
+commit 400553efc40ebf67d3f11a6d79a1c6257664d30a
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Oct 31 23:43:19 2021 -0600
+
+    Add for quadruples
+
+commit 0a8d98e119b5733852b6428d01ee425f094807e4
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Oct 24 13:28:38 2021 -0500
+
+    Add file 4
+
+commit 3d3e80344774c506f8d5a270931967fa780eb48f
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 23 23:43:00 2021 -0500
+
+    Add neural points for non linear statements
+
+commit 638b73a19347781eecd52569aba549b0d56d831b
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 23 07:53:12 2021 -0500
+
+    Add while neuralgic point
+
+commit cf103617a47ce6062130da2b79af1fdf88fec3ae
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Oct 22 13:23:57 2021 -0500
+
+    Add documentation 4th
+
+commit 6ef24d00b6d80a58954966750e0a91ddd706a212
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Oct 17 11:14:20 2021 -0500
+
+    Move test files
+
+commit a6287c9f1f429279b31ed1a12900a393d336a6e4
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Oct 17 00:58:00 2021 -0500
+
+    Add doc file
+
+commit e4aa7e6e7d137818c33a02bd1dfd8e22ee03e8a6
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 16 23:16:01 2021 -0500
+
+    Update readme
+
+commit 5af5cd5f6b7fc20a2e730e1382a5f5aed002eadc
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 16 23:15:34 2021 -0500
+
+    Add conditional quadruples
+
+commit ff1fe228bef7d23c32409fa9be7695c8d429ce2a
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 16 22:17:09 2021 -0500
+
+    Add asignments quadruples
+
+commit ac14754e3125fad6f419bac641c06e934e3a9e95
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 16 21:48:43 2021 -0500
+
+    Add quadruples for logic exprs
+
+commit c0aebe433cdbc0086d5f55b91c2f0a407c5e17eb
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 16 20:33:56 2021 -0500
+
+    Add quadruples
+
+commit 0fa596bea24f9a4a10414fd7ad7656b72eeb6496
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 16 16:31:42 2021 -0500
+
+    Add Quadruples class
+
+commit ce37042cce16a543f8043762e93dd4a7a9966f93
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 16 14:44:23 2021 -0500
+
+    Update readme
+
+commit 0714d340c396235b02974b36f337de3c12f0d75f
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 9 21:57:48 2021 -0500
+
+    Update readme and remove unused file
+
+commit d205ce6e22453b46363409cd82d53a8668ce7613
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 9 21:46:52 2021 -0500
+
+    Update grammar diagrams
+
+commit 2cd9e041305c2860dd77f9a292da555035e4dfcd
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 9 21:46:34 2021 -0500
+
+    Add neuralgic points and add scopes and vars
+
+commit 8416cb4c464bde321bc1c12adcd5f1a5dd9cabf3
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 9 21:46:00 2021 -0500
+
+    Add Vars Class, Add Directory father class, Fix Scopes class
+
+commit 8cbbfc10a6eb4e924ce689f7fabbc6864217df48
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 9 13:38:55 2021 -0500
+
+    Add firectories for vars and scopes
+
+commit b9803fcaf92bee722aa6d6fdd17d0871730f1b45
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Oct 8 18:56:57 2021 -0500
+
+    Add getType for a operation, Add getType tests
+
+commit 5f1edb7fa47b45f991107633b534743f08760e0a
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Oct 8 12:36:01 2021 -0500
+
+    Add doc files
+
+commit 7a9d676eb581ffef708c01b769c90d85595bd597
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Thu Oct 7 15:30:39 2021 -0500
+
+    Add debugging on parser
+
+commit 78747101e0cdcd0a7ba8b233207d8d7bb4dcc4c2
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Oct 3 14:14:07 2021 -0500
+
+    Fix statements grammar
+
+commit ff34cbbef5ba3739590c85e9222cee87da5ba033
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Oct 2 20:36:16 2021 -0500
+
+    Add README file
+
+commit 61cc6400d1ed17ba011166d5fbbcaa37de7793bf
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Oct 1 19:13:35 2021 -0500
+
+    Add gitignore
+
+commit b47850956a1d793feae2511cb5ee8339169cf997
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Oct 1 19:12:59 2021 -0500
+
+    Fix parser grammars
+
+commit e936022e866b828f1092dd5780969865f2a9f03f
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Oct 1 16:38:41 2021 -0500
+
+    Add parser
+
+commit 5e21960da2519a75c6e5ab5243390f72701459a1
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Fri Oct 1 11:34:05 2021 -0500
+
+    Add tokens, Fixes on diagrams
+
+commit a1c5ae3b7365c724ed05119b5d7ae268c68f501a
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Thu Sep 30 00:46:50 2021 -0500
+
+    Add tests files
+
+commit f9a8c5c020d77b06a1d0b9421fd257c074b441a1
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Tue Sep 28 12:43:51 2021 -0500
+
+    Created files for parser and lexer
+
+commit fbe6d6c7a24323a8d288405f5c41b8279ccff7bd
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Tue Sep 28 12:34:18 2021 -0500
+
+    Add grammar diagrams
+
+commit 9ebec99941175f595adf1c34a9a4137f82fb4d16
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Sep 27 10:08:10 2021 -0500
+
+    Add grammar diagrams
+
+commit e5c39af217fa7c933df45ee2bb52a4680873c1cc
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sat Sep 25 13:43:47 2021 -0500
+
+    Initial commit
