@@ -32,6 +32,7 @@ keywords={
     'by': 'BY',
     # == WRITIGN & READING ===
     'print': 'PRINT',
+    'println': 'PRINTLN',
     'read': 'READ',
     # === ESPECUAL FUNCTIONS ===
     'mean': 'MEAN',

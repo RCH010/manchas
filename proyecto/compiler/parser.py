@@ -197,7 +197,7 @@ def p_factor(p):
 
 def p_factor_prima_1(p):
     '''factor_prima_1 : PLUS varcte
-        | MINUS varcte
+        | MINUS np_set_as_negative varcte
         | varcte'''
 
 def p_varcte(p):
@@ -210,13 +210,20 @@ def p_varcte(p):
     p[0] = p[1]
 
 def p_writing(p):
-    '''writing : PRINT LPAREN writing_1 RPAREN SEMI'''
+    '''writing : PRINT LPAREN writing_1 RPAREN SEMI
+        | PRINTLN LPAREN writing_2 RPAREN SEMI'''
 
 def p_writing_1(p):
     '''writing_1 : expression np_add_print_quadruple_exp COMMA writing_1
         | CTESTRING  np_add_print_quadruple_str COMMA writing_1
         | expression np_add_print_quadruple_exp
         | CTESTRING np_add_print_quadruple_str'''
+
+def p_writing_2(p):
+    '''writing_2 : expression np_add_println_quadruple_exp COMMA writing_2
+        | CTESTRING  np_add_println_quadruple_str COMMA writing_2
+        | expression np_add_println_quadruple_exp
+        | CTESTRING np_add_println_quadruple_str'''
 
 def p_reading(p):
     '''reading : READ LPAREN reading_1 RPAREN np_add_read_quadruple SEMI'''
@@ -446,10 +453,9 @@ def p_np_add_cte_char(p):
 Add bool memory address on operands and types array
 - If not added, add the constant to constants table
 '''
-# TODO: revisar si para bool no deberia ser algo más como preesatablecido
 def p_np_add_cte_bool(p):
     '''np_add_cte_bool : '''
-    global program_scopes, current_scope, memory_counters, constants_table
+    global program_scopes, current_scope, memory_counters, constants_table, operands, types
     value = p[-1]
     if value not in constants_table:    
         new_mem_address = memory_counters.count_const_bool
@@ -458,6 +464,18 @@ def p_np_add_cte_bool(p):
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['BOOLEAN'])
+    
+def p_np_set_as_negative(p):
+    '''np_set_as_negative : '''
+    global memory_counters, constants_table, operands, types, operators
+    if -1 not in constants_table:    
+        new_mem_address = memory_counters.count_const_int
+        constants_table[-1] = new_mem_address
+        memory_counters.update_counter('const', Data_types['INTEGER'])
+    address_of_constant = constants_table[-1]
+    operands.append(address_of_constant)
+    types.append(Data_types['INTEGER'])
+    operators.append('*')
 
 # Add operator to poper stack
 def p_np_add_operator(p):
@@ -654,6 +672,18 @@ def p_np_add_print_quadruple_exp(p):
     value = operands.pop()
     v_type = types.pop()
     set_new_quadruple('PRINT', -1, -1, value)
+
+def p_np_add_println_quadruple_str(p):
+    '''np_add_println_quadruple_str : '''
+    value = p[-1]
+    set_new_quadruple('PRINTLN', -1, -1, value)
+
+def p_np_add_println_quadruple_exp(p):
+    '''np_add_println_quadruple_exp : '''
+    global operands, types
+    value = operands.pop()
+    v_type = types.pop()
+    set_new_quadruple('PRINTLN', -1, -1, value)
 
 
 # ======================================================================

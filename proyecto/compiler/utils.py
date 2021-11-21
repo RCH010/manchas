@@ -72,8 +72,9 @@ operators_id = {
 
     'RETURN': 30,   # For return of a function
     'PRINT': 31,    # For print statements
-    'VERIFY': 32,   # For array checking accessing value
-    'READ': 33,     # For input/read statements
+    'PRINTLN': 32,    # For print statements
+    'VERIFY': 33,   # For array checking accessing value
+    'READ': 34,     # For input/read statements
     # SPECIAL FUNCTIONS
     'MEAN': 40,     # for mean calculations
     'MEDIAN': 41,   # for median calculations

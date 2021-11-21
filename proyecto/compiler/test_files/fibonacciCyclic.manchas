@@ -1,0 +1,22 @@
+program fibonacciCyclic;
+
+main() 
+let n, i, value, temp: int;
+{
+  value = 0;
+  temp = 1;
+
+  println("Ingrese el numero de valores a calcular para la sucesión de Fibonacci");
+  read(n);
+  if (n > 0){
+    for(i = 1 to i > n by 1) {
+      temp = temp + value;
+      value = temp - value;
+    }
+    print("El valor de la serie de Fibonacci en la posición ", n);
+    print(" es: ", value);
+  }else {
+    println("El número debe ser mayor a 0");
+  }
+
+}

@@ -1,0 +1,61 @@
+program search;
+let data : int[20];
+let arraySize : int;
+
+function fillArrayData: void()
+let i: int;
+{
+  for(i = 0 to i == arraySize by 1) {
+    data[i] = i + 5;
+  }
+  data[0] = 15;
+  data[4] = 19;
+  data[2] = 30;
+  data[9] = 1;
+  data[11] = 8;
+  data[17] = 100;
+  data[18] = 78;
+  data[12] = 7;
+  data[6] = 0;
+}
+
+function printData: void()
+let i: int;
+{
+  println("");
+  for(i = 0 to i == arraySize by 1) {
+    print(data[i], " ");
+  }
+  println("");
+}
+
+function findValue:int(target: int)
+let i: int;
+{
+  for(i = 0 to i == arraySize by 1) {
+    if(data[i] == target) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+main ()
+let valueToFind, valuePosition: int;
+{
+  arraySize = 20;
+
+  fillArrayData();
+  println("El arreglo actual es: ");
+  printData();
+  
+  println("¿Cuál es el valor que quiere buscar?");
+  read(valueToFind);
+
+  valuePosition = findValue(valueToFind);
+  if(valuePosition < 0) {
+    println("El valor no se encontró en el arreglo");
+  }else {
+    print("El valor se encuentra en la posición ", valuePosition);
+  }
+}

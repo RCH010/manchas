@@ -1,0 +1,26 @@
+program fibonacciRecursive;
+
+function fibonacci: int(n : int) {
+  if(n == 0 || n == 1) {
+    return n;
+  } else {
+    return fibonacci(n - 1) + fibonacci(n - 2);
+  }
+}
+
+main() 
+let n, value: int;
+{
+  value = 0;
+  println("Ingrese el numero de valores a calcular para la sucesión de Fibonacci");
+  read(n);
+
+  if (n > 0){
+    value = fibonacci(n);
+    print("El valor de la serie de Fibonacci en la posición ", n);
+    print(" es: ", value);
+  }else {
+    println("El número debe ser mayor a 0");
+  }
+
+}

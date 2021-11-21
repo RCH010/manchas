@@ -1,0 +1,82 @@
+program sort;
+let data : int[20];
+let arraySize : int;
+
+function fillArrayData: void()
+let i: int;
+{
+  for(i = 0 to i == arraySize by 1) {
+    data[i] = i + 5;
+  }
+  data[0] = 15;
+  data[4] = 19;
+  data[2] = 30;
+  data[9] = 1;
+  data[11] = 8;
+  data[17] = 100;
+  data[18] = 78;
+  data[12] = 7;
+  data[6] = 0;
+}
+
+function printData: void()
+let i: int;
+{
+  println("");
+  for(i = 0 to i == arraySize by 1) {
+    print(data[i], " ");
+  }
+  println("");
+}
+
+function partition: int(start: int, end: int)
+let i, pivotIndex, pivot, temp: int;
+{
+  pivotIndex = start;
+  pivot = data[pivotIndex];
+
+  while (start < end) do {
+    while (start < arraySize && data[start] <= pivot) do {
+      start = start + 1;
+    }
+
+    while (data[end] > pivot) do {
+      end = end - 1;
+    }
+
+    if(start < end) {
+      temp = data[start];
+      data[start] = data[end];
+      data[end] = temp;
+    }
+  }
+
+  temp = data[end];
+  data[end] = data[pivotIndex];
+  data[pivotIndex] = temp;
+
+  return end;
+}
+
+function quickSort: void (start : int, end: int) 
+let p : int;
+{
+  if(start < end) {
+    p = partition(start, end);
+
+    quickSort(start, p-1);
+    quickSort(p+1, end);
+  }
+}
+
+main ()
+{
+  arraySize = 20;
+  fillArrayData();
+  println("Array to be sorted");
+  printData();
+  println(" ");
+  quickSort(0, arraySize - 1);
+  println("Array sorted");
+  printData();
+}

@@ -1,31 +1,8 @@
 program test2;
-let valorNumerico:int;
-
-function segundafuncion: int(valor : int)
-{
-  print("");
-  print("Esto");
-  print("es");
-  print("desde");
-  print("la");
-  print("Function");
-  print("");
-  valor = valor + 10;
-  return valor * 12;
-}
-
-function flogica: bool()
-{
-  print("Haciendo calculos en flogica");
-  return true;
-}
 
 main () 
 let res: int;
-let bolres: bool;
 {
-  print("Antes de la funcion");
-  res = segundafuncion(10);
-  print("Despues de la funcion", res);
-  print(flogica());
+  res = (-1);
+  print(res);
 }

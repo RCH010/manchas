@@ -9,5 +9,5 @@ let sum, i, x :int;
   for ( i = 1 to i > x by 1) {
     sum = sum * i;
   }
-  print("Resultado", sum);
+  print("Resultado ", sum);
 }

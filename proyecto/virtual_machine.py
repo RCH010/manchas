@@ -138,12 +138,16 @@ def assing_value(value_address, address_to_save):
     value = get_value(value_address)
     save_value(address_to_save, value)
 
-def print_value(value):
+def print_value(value, jump_line = False):
     if(type(value) is int): # is an address
         value_to_print = get_value(value)
     else:   # is a string
         value_to_print = value[1:-1]
-    print(value_to_print)
+    
+    if jump_line:
+        print(value_to_print)
+    else:
+        print(value_to_print, end='')
 
 def save_memory_for_function(function_id):
     global program_scopes
@@ -336,7 +340,7 @@ def check_quadruples():
         
         if operation == 27:         # END - used for end of program
             is_executing = False
-            print('-Execution-ended-')
+            print('\n\n-Execution-ended-')
         elif operation == 1:        # + SUM
             # quadruple structure:
             # + , leftOperand, rigtOperand, save_result_in_this_address
@@ -447,12 +451,17 @@ def check_quadruples():
             # PRINT , -, -, value_to_print
             print_value(result)
             update_instruction_pointer()
-        elif operation == 32:       # VERIFY 
+        elif operation == 32:       # PRINTLN
+            # quadruple structure:
+            # PRINT , -, -, value_to_print
+            print_value(result, True)
+            update_instruction_pointer()
+        elif operation == 33:       # VERIFY 
             # quadruple structure:
             # VERIFY , access_value, arr_inferior_limit, arr_sup_limit
             verify_array_address_access(left_operand, right_operand, result)
             update_instruction_pointer()
-        elif operation == 33:       # READ 
+        elif operation == 34:       # READ 
             # quadruple structure:
             # READ , -1, type, address_to_save_value
             save_value_on_input(result, right_operand)
@@ -497,7 +506,7 @@ def execute():
     print('======================================================')
     start_super_memory()
     start_main_memory()
-    print('-Execution-starts-')
+    print('-Execution-starts-\n')
     check_quadruples()
     # print('=global==')
     # print_super_memory()

@@ -17,23 +17,15 @@ let i, jump : int;
   edades[9] = 2;
   result = mean(edades);
 
-  print("");
-  print("");
-  print("La media es", result);
-  print("");
-  print("");
-  print("La mediana es", median(edades));
-  print("");
-  print("");
-  print("La varianza de esto como poblacion es", pvariance(edades));
-  print("");
-  print("");
-  print("La desviación estandar de esto como poblacion es", pstdev(edades));
-  print("");
-  print("");
-  print("La variance de esto como muestra es", variance(edades));
-  print("");
-  print("");
-  print("La desviación estandar de esto como muestra es", stdev(edades));
+  println("La media es ", result);
+  println("La mediana es ", median(edades));
+  println("La varianza de esto como poblacion es ", pvariance(edades));
+  println("La desviación estandar de esto como poblacion es ", pstdev(edades));
+  
+  print("La variance de esto como muestra es ");
+  println(variance(edades));
+
+  print("La desviación estandar de esto como muestra es ");
+  println(stdev(edades));
 }
 

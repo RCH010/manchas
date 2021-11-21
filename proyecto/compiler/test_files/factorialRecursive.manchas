@@ -15,5 +15,5 @@ let sum, x: int;
   x = 5;
   
   sum = multiply(x);
-  print("Resultado", sum);
+  print("Resultado ", sum);
 }
