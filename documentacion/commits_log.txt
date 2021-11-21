@@ -1,3 +1,9 @@
+commit c05772253db3f9e11415b4d2c3c0c9ad3e288435
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 21 14:34:10 2021 -0600
+
+    Add commits log file. Add docs for project
+
 commit 9fe1f1a2621c246f23d61148e7f1589429451c7c
 Author: Raul <raulcastellanosh@hotmail.com>
 Date:   Sat Nov 20 23:57:59 2021 -0600

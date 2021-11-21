@@ -78,3 +78,18 @@ Para este avance se definió como se estaría trabajando con la memoria y se hic
 Además, se añadieron los puntos neurálgicos para la definición de y uso de arreglos, y se crearon sus cuádruplos correspondientes.
 
 Finalmente, se estuvo trabajando en la máquina virtual, ya se tienen todas las operaciones aritméticas y booleanas, y además los condicionales y ciclos.
+
+
+<br>
+
+## Séptimo Avance
+
+Con este avance se comenzaron a unir todas las piezas que estaban pendientes. Primeramente, se arreglaron unos errores detectados al llamar una función. Se corrigieron los problemas que estaban causando una llamada de una función que esperaba un valor de retorno y una función que podía ser sin ningún valor de retorno.
+
+Después, se creó la clase Memory, que sería la base para poder tener la memoria en la máquina virtual. Con esto, se podrían agregar validaciones que estaban pendientes sobre los límites de memoria. Una vez que esto se logró, se implementó la ejecución de funciones en la máquina virtual.
+
+Además, se implementó el manejo de apuntadores para poder hacer uso de las direcciones virtuales que son apuntadores. Con esto, se implementó también la ejecución de código intermedio que utilizará arreglos. La ejecución de arreglos implico de nuevo varios cambios en los puntos neurálgicos ya existentes y en la gramática porque estaban creándose unas inconsistencias al momento de indexar en los arreglos.
+
+Por otro lado, se completó la generación de cuádruplos para los estatutos pendientes, aquí incluidas las funciones particulares del programa. Con esto también se trabajó con su ejecución.
+
+Finalmente, se realizaron varios de los programas que se estarán utilizando como pruebas para validar el funcionamiento del programa y se comenzó a trabajar en la documentación del proyecto.
