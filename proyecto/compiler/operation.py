@@ -1,5 +1,6 @@
 import sys
 from compiler.utils import Relation_operators, Data_types
+from compiler.utils import create_error
 
 class Operation:
     
@@ -18,8 +19,7 @@ class Operation:
             if type1 == type2:
                 return True
             else:
-                print(f'Invalid assignment operation, trying to asign a {type1} to a {type2}')
-                sys.exit()
+                create_error(f'Invalid assignment operation, trying to asign a {type1} to a {type2}', 'C-19')
 
         # int-int
         if(type1 == Data_types['INTEGER'] and type2 == Data_types['INTEGER']):
@@ -30,8 +30,7 @@ class Operation:
             elif(symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('1- Invalid operation', type1, symbol, type2)
-                sys.exit()
+                create_error(f'Invalid integers operation, {type1} {symbol} {type2}', 'C-20')
         # int - float || floar - int || float - float
         if((type1 == Data_types['INTEGER'] or type1 == Data_types['FLOAT']) 
             and (type2 == Data_types['INTEGER'] or type2 == Data_types['FLOAT'])):
@@ -40,8 +39,7 @@ class Operation:
             elif(symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('2 - Invalid operation', type1, symbol, type2)
-                sys.exit()
+                create_error(f'Invalid integer with float operation, {type1} {symbol} {type2}', 'C-21')
         # Check if we want to chars to be added or smth like that
         # int - int would reach this case
         # int - char || char - int || char - char
@@ -54,8 +52,7 @@ class Operation:
             elif(symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('3 - Invalid operation', type1, symbol, type2)
-                sys.exit()
+                create_error(f'Invalid character with integer operation, {type1} {symbol} {type2}', 'C-22')
 
         # float - char || char - float
         if((type1 == Data_types['CHARACTER'] or type1 == Data_types['FLOAT']) 
@@ -65,8 +62,7 @@ class Operation:
             elif(symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('4 - Invalid operation', type1, symbol, type2)
-                sys.exit()
+                create_error(f'Invalid character with float operation, {type1} {symbol} {type2}', 'C-23')
         # bool-bool
         if(type1 == Data_types['BOOLEAN'] and type2 == Data_types['BOOLEAN']):
             if(symbol == Relation_operators.AND or 
@@ -74,9 +70,7 @@ class Operation:
                 symbol in comparisson_operators):
                 return Data_types['BOOLEAN']
             else:
-                print('5 - Invalid operation', type1, symbol, type2)
-                sys.exit()
+                create_error(f'Invalid boleans operation, {type1} {symbol} {type2}', 'C-24')
         # any other is an invalid combination
-        print('6 - Invalid operation', type1, symbol, type2)
-        sys.exit()
+        create_error(f'Invalid operation, {type1} {symbol} {type2}', 'C-25')
 

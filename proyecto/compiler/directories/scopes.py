@@ -1,5 +1,5 @@
 import sys
-from compiler.utils import Data_types
+from compiler.utils import Data_types, create_error
 from compiler.directories.directory import Directory
 
 
@@ -13,11 +13,9 @@ class Scopes_directory(Directory):
     '''
     def add_new_scope(self, id, return_type, vars_table):
         if self.exists(id):
-            print('Error', id ,'al ready exists on the scope directory')
-            sys.exit()
+            create_error(f'{id} already exists on this scope', 'C-29')
         if return_type not in Data_types.values():
-            print('Error', 'return type:', return_type ,'is an invalid type for', id)
-            sys.exit()
+            create_error(f'Return type: {return_type} is an invalid type for {id}', 'C-30')
         params = []
         params_ids = []
         self.dic[id] = { 'vars': vars_table, 'return_type': return_type, 'params': params, 'params_ids': params_ids,  'cont': None }
@@ -93,8 +91,6 @@ class Scopes_directory(Directory):
                 else:
                     print(k, ':\t\t -->', v)
             print()
-
-# TODO: remove this... when int, float etc,are now numbers
 
 TYPES = {
     'int': 0,

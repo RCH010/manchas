@@ -36,14 +36,14 @@ main ()
   let valueA, valueB: int;
   let valueF: float;
 {  
-  print("===Suma de dos numeros===");
+  println("===Suma de dos numeros===");
   valueA = sumTwoNumbers(21, 18);
-  print(sumTwoNumbers(21, 18));
+  println(sumTwoNumbers(21, 18));
   valueB = sumTwoNumbers(21, 18) * 10;
-  print("===Mult, con funcion anidada de dos numeros===");
+  println("===Mult, con funcion anidada de dos numeros===");
   valueB = 9;
   valueA = multiplyTwoNumbers(sumTwoNumbers(sumTwoNumbers(8,1), 3), valueB);
-  print(valueA);
+  println(valueA);
 
 }
 

@@ -32,9 +32,9 @@ let b1, b2: bool;
   c1 = 'a';
   v2 = 1;
   for (v1 = 1 to v1 == 10 by v2){
-    print("Hola mundo", v1*2, 12);
+    println("Hola mundo ", v1*2);
   }
   v3 = v1 + v2;
 
-  print("Hello world");
+  println("Hello world");
 }

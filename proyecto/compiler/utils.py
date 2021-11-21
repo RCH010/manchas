@@ -1,3 +1,5 @@
+import sys
+
 class MetaTypes(type):
     def __iter__(self):
         for attr in dir(self):
@@ -83,3 +85,14 @@ operators_id = {
     'VARIANCE': 44, # for variance calculations
     'STDEV': 45,    # for Standard deviation
 }
+
+
+'''
+Create print an error message and exit the program
+'''
+def create_error(message, id=''):
+    print('====================================')
+    print(f'Error:\t ID:{id}\n')
+    print(message)
+    print('====================================')
+    sys.exit()

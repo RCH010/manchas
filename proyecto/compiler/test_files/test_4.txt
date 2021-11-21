@@ -16,7 +16,7 @@ let var3Func1: bool;
   valorNumerico = 10 *4;
 }
 
-main () 
+main ()
 let res: bool;
 {
   if (res && valorNumerico < 10) {

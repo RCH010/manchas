@@ -7,7 +7,7 @@ from compiler.directories.vars import Vars
 from compiler.operation import Operation
 from compiler.memory import Memory
 from compiler.directories.directory import Directory
-from compiler.utils import Data_types, operators_id, types_ID
+from compiler.utils import Data_types, operators_id, types_ID, create_error
 from compiler.quadruples import Quadruple
 
 # Program directory, this contains all functions and the main scope
@@ -89,7 +89,7 @@ def p_type_1(p):
         array_size = p[2]
         
         if array_size < 1:
-            create_error(f'You are trying to create an array of size: {array_size}\n\t Arrays must be defined with a value grater than 1')
+            create_error(f'You are trying to create an array of size: {array_size} \nArrays must be defined with a value grater than 1', 'C-01')
         create_constat_int_address(array_size)
 
     else:
@@ -396,7 +396,6 @@ def p_np_add_id(p):
     # Add number(virtual address) and type int to operands and types stacks
     operands.append(var_address)
     types.append(var_type)
-    # print('np_add_var_quad: -->', p[-1])
 
 '''
 Add integer memory address on operands and types array
@@ -413,7 +412,6 @@ def p_np_add_cte_int(p):
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['INTEGER'])
-    # print('add const', 'INTEGER', value, address_of_constant)
 
 '''
 Add float memory address on operands and types array
@@ -430,7 +428,6 @@ def p_np_add_cte_float(p):
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['FLOAT'])
-    # print('add const', 'FLOAT', value, address_of_constant)
 
 '''
 Add char memory address on operands and types array
@@ -447,7 +444,6 @@ def p_np_add_cte_char(p):
     address_of_constant = constants_table[value]
     operands.append(address_of_constant)
     types.append(Data_types['CHARACTER'])
-    # print('add const', 'char', value, address_of_constant)
 
 '''
 Add bool memory address on operands and types array
@@ -481,21 +477,18 @@ def p_np_set_as_negative(p):
 def p_np_add_operator(p):
     '''np_add_operator : '''
     global operators
-    # print('add operator', p[-1])
     operators.append(p[-1])
 
 def p_np_add_paren(p):
     '''np_add_paren : '''
     global operators
-    # print('add operator', p[-1])
     operators.append(p[-1])
 
 def p_np_pop_paren(p):
     '''np_pop_paren : '''
     global operators
     if operators[-1] != '(':
-        print('Error, not ( in operators stack')
-        sys.exit()
+        create_error('Error, not ( in operators stack', 'C-02')
     operators.pop()
 
 
@@ -525,8 +518,7 @@ def p_np_assign_expression(p):
     left_type = types.pop()
     res_type = Operation.getType(operator, right_type, left_type)
     if res_type == 'Error':
-        print('Invalid operation, type mismatch on', right_type, 'and', left_type, 'with a', operator)
-        sys.exit()
+        create_error(f'Invalid operation, type mismatch on {right_type}, and {left_type} with a {operator}', 'C-03')
     set_new_quadruple(operator, right_operand, -1, left_operand)
 
 def p_np_condition_gotof(p):
@@ -534,8 +526,7 @@ def p_np_condition_gotof(p):
     global operands, types, quadruples, jumps
     res_if_type = types.pop()
     if res_if_type != Data_types['BOOLEAN']:
-        print('Error, type mismatch on if')
-        sys.exit()
+        create_error(f'Error, type mismatch on if statement, it must be a boolean', 'C-04')
     res_if = operands.pop()
     set_new_quadruple('GOTOF', res_if, -1, -1)
     jumps.append(len(quadruples) - 1)
@@ -571,7 +562,7 @@ def p_np_while_expression (p):
     '''np_while_expression : '''
     exp_type = types.pop()
     if exp_type != Data_types['BOOLEAN']:
-        create_error('Type-mismatch on While expresion')
+        create_error('Type-mismatch on While expresion, it must be a boolean on a while expression', 'C-05')
     exp_res = operands.pop()
     # Generate quadruple, the result reamins
     set_new_quadruple('GOTOF', exp_res, -1, -1)
@@ -613,7 +604,7 @@ def p_np_assign_expression_for(p):
     res_type = Operation.getType(operator, right_type, left_type)
     # In the case of the 'for' the type of the variable must be integer
     if right_type != Data_types['INTEGER'] or left_type != Data_types['INTEGER'] :
-        create_error(f'Conditional variable of "For" must be integer')
+        create_error(f'Conditional variable of "For" must be an integer', 'C-06')
     set_new_quadruple(operator, right_operand, -1, left_operand)
     # save position where the for starts... this will go on the GOTO at the end of the for
     jumps.append(len(quadruples))
@@ -628,7 +619,7 @@ def p_np_non_conditional_limit(p):
     op_type = types.pop()
 
     if op_type != Data_types['BOOLEAN']:
-        create_error('Invalid type in "For" statement, must be boolean')
+        create_error('Invalid type in "For" statement (stop condition), must be boolean', 'C-07')
     set_new_quadruple('GOTOV', result, -1, -1)
     jumps.append(len(quadruples) - 1)
     
@@ -640,13 +631,13 @@ def p_np_non_conditional_end (p):
     delta_value = operands.pop()
     delta_type = types.pop()
     if delta_type != Data_types['INTEGER']:
-        create_error('Invalid type in "For" statement in delta, must be integer')
+        create_error('Invalid type in "For" statement in delta, must be integer', 'C-08')
     for_var_value = operands.pop()
     for_var_type = types.pop()
     res_type = Operation.getType('+', for_var_type, delta_type)
     
     if res_type == 'Error' or res_type != Data_types['INTEGER']:
-        create_error(f'Invalid type in "For" expression\n type mismatch on {for_var_type} and {delta_type} with a +')
+        create_error(f'Invalid type in "For" expression\n type mismatch on {for_var_type} and {delta_type} with a +', 'C-09')
     
     set_new_quadruple('+', for_var_value, delta_value, for_var_value)
     end_pos = jumps.pop()
@@ -660,12 +651,19 @@ def p_np_non_conditional_end (p):
 # ======================================================================
 #                               PRINT
 # ======================================================================
-
+'''
+Create a quadruple for print
+When value is on p[-1]
+'''
 def p_np_add_print_quadruple_str(p):
     '''np_add_print_quadruple_str : '''
     value = p[-1]
     set_new_quadruple('PRINT', -1, -1, value)
 
+'''
+Create a quadruple for print
+When value is on operands stack
+'''
 def p_np_add_print_quadruple_exp(p):
     '''np_add_print_quadruple_exp : '''
     global operands, types
@@ -673,11 +671,19 @@ def p_np_add_print_quadruple_exp(p):
     v_type = types.pop()
     set_new_quadruple('PRINT', -1, -1, value)
 
+'''
+Create a quadruple for println
+When value is on p[-1]
+'''
 def p_np_add_println_quadruple_str(p):
     '''np_add_println_quadruple_str : '''
     value = p[-1]
     set_new_quadruple('PRINTLN', -1, -1, value)
 
+'''
+Create a quadruple for println
+When value is on operands stack
+'''
 def p_np_add_println_quadruple_exp(p):
     '''np_add_println_quadruple_exp : '''
     global operands, types
@@ -700,7 +706,7 @@ def p_np_add_return_quadruple(p):
     value = operands.pop()
     v_type = types.pop()
     if (v_type != func_return_type):
-        create_error(f'Function {current_scope}, has a return type of {func_return_type}, and you are trying to return a {v_type}')
+        create_error(f'Function {current_scope}, has a return type of {func_return_type}, and you are trying to return a {v_type}', 'C-10')
     set_new_quadruple('RETURN', -1, -1, value)
 
 # ======================================================================
@@ -752,7 +758,7 @@ def p_np_check_function_call(p):
     global program_scopes, params_counts, current_scope, current_function_call_id, function_call_id_stack, operators
     current_function_call_id = p[-2]
     if not program_scopes.exists(current_function_call_id):
-        create_error(f'Function {current_function_call_id} is not defined')
+        create_error(f'Function {current_function_call_id} is not defined', 'C-11')
     params_counts.append(0)
     function_call_id_stack.append(current_function_call_id)
     set_new_quadruple('ERA', -1, -1, current_function_call_id)
@@ -771,9 +777,9 @@ def p_np_function_call_add_param(p):
     if(function_call_params[params_count] != argument_type):
         create_error(f'''
         The {params_count + 1}º argument of function {current_function_call_id}
-        should of type {function_call_params[params_count]} and you are giving a 
+        should be of type {function_call_params[params_count]} and you are giving a 
         {argument_type}
-        ''')
+        ''', 'C-12')
     set_new_quadruple('PARAM', argument, -1, f'_param_{params_count}')
     params_count += 1
     params_counts.append(params_count)
@@ -789,7 +795,7 @@ def p_np_function_end_params(p):
     operators.pop()
     if(size_of_params != params_count):
         create_error(f'''The function {current_function_call_id}, expected {size_of_params} 
-            arguments, you gave {params_count} arguments''')
+            arguments, you gave {params_count} arguments''', 'C-13')
     initial_function_addres = program_scopes.get_func_cont(current_function_call_id)
     set_new_quadruple('GOSUB', current_function_call_id, -1, initial_function_addres)
     
@@ -834,7 +840,7 @@ def p_np_check_is_array(p):
     var_address = current_var['address']
     is_array = current_var['is_array']
     if (not is_array):
-        create_error(f'{array_id} is not defined as an array.')
+        create_error(f'{array_id} is not defined as an array.', 'C-14')
     # Add number(virtual address) and type to operands and types stacks
     operands.append(var_address)
     types.append(var_type)
@@ -855,12 +861,11 @@ def p_np_verify_array_dim(p):
     array_inferior_limit = constants_table[0]
     array_superior_limit = constants_table[array_defined_size]
     if (accessing_array_type != Data_types['INTEGER']):
-        create_error(f'You are trying to access {array_id} with an {accessing_array_type} value. This must be an integer')
+        create_error(f'You are trying to access {array_id} with an {accessing_array_type} value. This must be an integer', 'C-15')
     # For example: myArray[x+1]
     # the accessing_array_val is  the virtual addres of th expression: x+1
     # the array_inferior_limit is 0 (for this language, all arrays start at 0)
     # the array_superior_limit is the defined size of the array (let myArray: int[10]) --> 10 in v address
-    # print('VERIFY', accessing_array_val, array_inferior_limit, array_superior_limit, p[-1])
     set_new_quadruple('VERIFY', accessing_array_val, array_inferior_limit, array_superior_limit)
     
 def p_np_get_array_address(p):
@@ -877,7 +882,6 @@ def p_np_get_array_address(p):
     array_init_address_const_address = create_constat_int_address(array_initial_address)
     pointer_address = create_new_pointer_address()
     
-    # print('+', accessing_array_value, array_init_address_const_address, pointer_address)
     set_new_quadruple('+', accessing_array_value, array_init_address_const_address, pointer_address)
     operators.pop() # Remove fake bottom
 
@@ -961,7 +965,7 @@ def generate_new_quadruple(operator_to_check):
         res_type = Operation.getType(operator, right_type, left_type)
         
         if res_type == 'Error':
-            create_error(f'Invalid operation, type mismatch on {right_type} and {left_type} with a {operator}')
+            create_error(f'Invalid operation, type mismatch on {right_type} and {left_type} with a {operator}', 'C-16')
         # generate new temporal of type rest_type
         current_scope_vars = program_scopes.get_vars_table(current_scope)
         temp_var_name = f"_temp{tempsCount}"
@@ -1062,7 +1066,7 @@ def get_var(var_id):
         directory_var = program_vars.get_one(var_id)
     
     if (directory_var == 'not_in_directory'):
-        create_error(f'{var_id} not found in current or global scope \n in get_var function')
+        create_error(f'{var_id} not found in current or global scope \n in get_var function', 'C-17')
 
     return directory_var
 
@@ -1103,7 +1107,7 @@ def create_quadruple_special_array_functions(array_id, quadruple_str):
     array_size = current_var['array_size']
     # Validate the var is an array and of integer/float type
     if (not is_array) or (var_type not in [Data_types['INTEGER'], Data_types['FLOAT']]):
-        create_error('The mean function only accepts an array of floats or integers.')
+        create_error('The {quadruple_str} function only accepts an array of floats or integers.', 'C-18')
     # Create a temporal variable, this is where the result will be saved
     result_address = define_new_temporal_address(Data_types['FLOAT'])
     # Add it to stacks so it can be used on a expression or else
@@ -1111,17 +1115,6 @@ def create_quadruple_special_array_functions(array_id, quadruple_str):
     types.append(Data_types['FLOAT'])
     # Create special function quadruple
     set_new_quadruple(quadruple_str, array_size, array_var_address, result_address)
-
-
-'''
-Create print an error message and exit the program
-'''
-def create_error(message):
-    print('====================================')
-    print('\t Error:')
-    print('\t', message)
-    print('====================================')
-    sys.exit()
 
 
 parser = yacc.yacc()

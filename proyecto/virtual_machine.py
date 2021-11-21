@@ -66,13 +66,13 @@ def start_super_memory():
         super_memory.memory[address] = constant
     global_size = len(constants_table)
     global_size += program_scopes.get_total_size('program')
-    check_and_update_memory(global_size, 1)
+    check_and_update_memory(global_size, 'E-01')
     
 
 def start_main_memory():
     global current_memory, memory_stack
     main_size = program_scopes.get_total_size('main')
-    check_and_update_memory(main_size, 2)
+    check_and_update_memory(main_size, 'E-02')
     # Create the memory for main scope
     current_memory = Memory()
 '''
@@ -92,7 +92,7 @@ def find_address(pointer):
     elif pointer in super_memory.memory:
         value = super_memory.memory[pointer]
     else:
-        create_error(f'{pointer} hasnt been assigned', 3)
+        create_error(f'On searching a value, this address: {pointer} hasnt been assigned', 'E-04')
         
     if (value == 'true'):
         value = True
@@ -122,7 +122,7 @@ def update_instruction_pointer(new_position = None):
     if new_position is None:
         new_position = instruction_pointer + 1
     if (new_position > len(quadruples)):
-        create_error('Instruction pointer is trying to access {new_position}, that doesnt exits', 4)
+        create_error('Instruction pointer is trying to access {new_position}, that doesnt exits', 'E-05')
     instruction_pointer = new_position
     
 def generic_operation (first, second, address_to_save, operation):
@@ -152,10 +152,10 @@ def print_value(value, jump_line = False):
 def save_memory_for_function(function_id):
     global program_scopes
     if not program_scopes.exists(function_id):
-        create_error(f'{function_id} is not defined on this program', 5)
+        create_error(f'{function_id} is not defined on this program', 'E-06')
     func_size = program_scopes.get_total_size(function_id)
     # Save memory space for function
-    check_and_update_memory(func_size, 6)
+    check_and_update_memory(func_size, 'E-03')
     
 def go_to_function(function_id, new_instruction_pomter):
     global memory_stack, instruction_pointer_stack, program_scopes, instruction_pointer, current_memory, id_function_calls, params_queue
@@ -186,7 +186,7 @@ def on_function_end():
     function_id = id_function_calls.pop()
     func_return_type = program_scopes.get_return_type(function_id)
     if func_return_type != Data_types['VOID']:
-        create_error(f'Function {function_id}, must have a return statement, with a value of type {func_return_type}', 7)
+        create_error(f'Function {function_id}, must have a return statement, with a value of type {func_return_type}', 'E-07')
     # Wake up old current memory
     new_current_memory = memory_stack.pop()
     # Get old instruction pointer
@@ -219,7 +219,7 @@ def on_function_end_with_return(return_value_address):
     func_return_type = program_scopes.get_return_type(function_id)
     type_return_value_number = str(return_value_address)[1]
     if types_values[int(type_return_value_number)] != func_return_type:
-        create_error(f'Function {function_id} shoud be returning a {func_return_type}, instead it is being returned a {types_values[str(return_value_address)[1]]}', 8)
+        create_error(f'Function {function_id} shoud be returning a {func_return_type}, instead it is being returned a {types_values[str(return_value_address)[1]]}', 'E-08')
     global_var_address = get_function_global_var_address(function_id)
     returned_value = get_value(return_value_address)
     save_value(global_var_address, returned_value)
@@ -248,16 +248,16 @@ def save_value_on_input(address_to_save, type_to_read):
         elif type_to_read == 3:         # CHARACTER
             input_value = str(input_value)
             if len(input_value) > 1:
-                create_error(f'The input value is not a valid type, for a character is must be of length 1. ', 10)
+                create_error(f'The input value is not a valid type, for a character is must be of length 1. ', 'E-09')
         elif type_to_read == 4:         # BOOL
             if input_value == 'true':
                 input_value = True
             elif input_value == 'false':
                 input_value = False
             else:
-                create_error(f'For boolean values, you must provide "false" or "true"', 11)
+                create_error(f'For boolean values, you must provide "false" or "true"', 'E-10')
     except:
-        create_error(f'The read statement expected a {types_values[type_to_read]}.', 12)
+        create_error(f'The read statement expected a {types_values[type_to_read]}.', 'E-11')
     
         
     if (str(address_to_save)[0] == '5'):
@@ -271,7 +271,7 @@ def verify_array_address_access(access_value, arr_inferior_limit, arr_upp_limit)
     inferior_limit = get_value(arr_inferior_limit)
     upper_limit = get_value(arr_upp_limit)
     if value < inferior_limit or value >= upper_limit:
-        create_error(f'Out of bounds\n Trying to acces value {value}, but limits are {inferior_limit} and {upper_limit}', 9)
+        create_error(f'Out of bounds\n Trying to acces value {value}, but limits are {inferior_limit} and {upper_limit}', 'E-12')
 
 
 

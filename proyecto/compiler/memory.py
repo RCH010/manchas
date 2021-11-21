@@ -35,7 +35,7 @@ class Memory():
     count_const_int =   410000
     count_const_float = 420000
     count_const_char =  430000
-    count_const_bool =  440000 #TODO preguntar a elda si deberia aqui ser diferente ya que solo puede ser true o false
+    count_const_bool =  440000
     count_pointers =    500000
     
     def update_counter(self, counter_type, type, space_to_save = 1):

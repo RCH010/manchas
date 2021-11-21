@@ -126,7 +126,7 @@ def t_CTEF(t):
     try:
         t.value = float(t.value)
     except ValueError:
-        print("Invalid float value", t.value)
+        print("C-26 - Invalid float value", t.value)
         t.value = 0
     return t
 
@@ -135,12 +135,12 @@ def t_CTEI(t):
     try:
         t.value = int(t.value)
     except ValueError:
-        print("Invalid Int value", t.value)
+        print("C-27 - Invalid Int value", t.value)
         t.value = 0
     return t
 
 # Tokens error
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("C-28 - Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 lexer = lex.lex()

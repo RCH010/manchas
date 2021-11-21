@@ -1,5 +1,5 @@
 import sys
-from compiler.utils import Data_types
+from compiler.utils import Data_types, create_error
 from compiler.directories.directory import Directory
 
 '''
@@ -16,12 +16,10 @@ class Vars(Directory):
     
     def add_new_var(self, id, type, value = None):
         if id in self.dic:
-            print('Error', id, 'is already declared on this scope')
-            sys.exit()
+            create_error('Cannot add this variable {id} is already declared on this scope', 'C-31')
         # A variable cant be of type void
         if type not in Data_types.values() or type == Data_types['VOID']:
-                print('Error', 'return type:', type ,'is an invalid type for', id)
-                sys.exit()
+            create_error(f'Return type: {type} is an invalid type for {id}', 'C-32')
         self.dic[id] = {'type': type ,'value': value, 'address': None}
     
     def set_address(self, id, address):

@@ -13,30 +13,29 @@ let b1, b2: bool;
   b1 = false;
 
   if(v1 > v2) {
-    print("No funciona");
+    println("No funciona");
     b1 = true;
   }else {
-    print("Si funciona");
+    println("Si funciona");
     b2 = false;
   }
   varGlobal = 10;
-  print(varGlobal);
+  println(varGlobal);
   if (b1) {
-    print("No se deberia imprimir esto");
+    println("No se deberia imprimir esto");
     print(b1);
   }
 
 
   while (v1 < 10) do {
-    print(v1);  
+    print(v1, " ");  
     v1 = v1 + 1;
   }
-
+  println("");
   v2 = 2;
   for (v1 = 1 to v1 >= 10 by v2){
-    print("Estee es el for");
-    print(v1);
+    print(v1, " ");
   }
 
-  print("-FIN-");
+  println("");
 }
