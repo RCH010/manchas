@@ -12,6 +12,7 @@ from compiler.quadruples import Quadruple
 
 # Program directory, this contains all functions and the main scope
 program_scopes = Scopes_directory()
+# This indicates the scope in which its is reading
 current_scope = ''
 # Used for declaration of many variables in one line (Params on funcitions as well)
 # for example: let my_var1, my_var2 : int;
@@ -948,7 +949,7 @@ def p_np_add_p_stdev_quadruple(p):
 
 # ==============================================================================
 # ==============================================================================
-# ==============================================================================
+# =========================== Other functions ==================================
 # ==============================================================================
 '''
 Create a new scope
@@ -962,6 +963,7 @@ def create_scope(scope_id, return_type):
 
 '''
 create a new quadruple for an expresion
+This is only used from the expression 
 '''
 def generate_new_quadruple(operator_to_check):
     global quadruples, operands, operators, types, program_scopes, current_scope, tempsCount

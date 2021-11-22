@@ -41,7 +41,7 @@ keywords={
     'pstdev': 'PSTDEV',         # For Population standard deviation of data
     'variance': 'VARIANCE',     # For Sample variance of data
     'stdev': 'STDEV',           # For Sample standard deviation of data
-    'random': 'RANDOM',           # For Sample standard deviation of data
+    'random': 'RANDOM',         # For Sample standard deviation of data
 }
 
 # =====================================
@@ -109,8 +109,6 @@ t_DIVIDE = r'/'
 # Literals
 t_CTESTRING = r'\".*\"'
 t_CTEC = r'\'(.{1})\''
-# t_TRUE = r'[tT][rR][uU][eE]'
-# t_FALSE = r'[fF][aA][lL][sS][eE]'
 
 def t_newline(t):
     r'\n+'

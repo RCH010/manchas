@@ -5,3 +5,4 @@ python3 main.py compiler/test_files/fibonacciCyclic.manchas
 python3 main.py compiler/test_files/fibonacciRecursive.manchas
 python3 main.py compiler/test_files/find.manchas
 python3 main.py compiler/test_files/arrayOperations.manchas
+python3 main.py compiler/test_files/myRLike.manchas

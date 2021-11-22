@@ -28,11 +28,13 @@ def main(argv):
     f = open(f"{argv[1]}", "r")
     input = f.read()
     res = parser.parse(input, debug=False)
-    
     print(res)
+    
     # print_quadruples()
     # print_constants()
     # print_scopes()
+    
+    # Start intermediate code execution on virtual_machine
     execute()
     
 if __name__ == "__main__":
