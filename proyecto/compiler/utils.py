@@ -85,6 +85,7 @@ operators_id = {
     'VARIANCE': 44, # for variance calculations
     'STDEV': 45,    # for Standard deviation
     'RANDOM': 46,   # for random values
+    'PLOT': 47,   # for random values
 }
 
 

@@ -1,5 +1,6 @@
 program myRLike;
-let data: int[20];
+let datay: int[30];
+let datax: int[15];
 let arraySize: int;
 
 
@@ -7,32 +8,35 @@ function fillArrayData: void()
 let i: int;
 {
   for(i = 0 to i == arraySize by 1) {
-    data[i] = random(19, 25);
-    print(data[i], " ");
+    datay[i] = random(25, 30);
+    print(datay[i], " ");
   }
+  println("");
 }
 
-function printData: void()
+function fillArrayData2: void()
 let i: int;
 {
-  println("");
-  for(i = 0 to i == arraySize by 1) {
-    print(data[i], " ");
+  for(i = 0 to i == 15 by 1) {
+    datax[i] = random(1, 5);
+    print(datax[i], " ");
   }
   println("");
 }
 
 main()
 {
-  arraySize = 20;
-  println("Las edades de un grupo de 20 personas es:");
+  arraySize = 30;
+  println("Los dos arreglos de datos:");
   fillArrayData();
-  println("");
-  print("El promedio de estos datos es: ", mean(data));
-  println("");
-  print("La mediana de estos datos es: ", median(data));
-  println("");
-  print("La varianza de la muestra de estos datos es: ", variance(data));
-  println("");
-  print("La desviación estandar de la muestra de estos datos es: ", stdev(data));
+  fillArrayData2();
+  
+  plot(datay, datax);
+
 }
+
+
+
+
+
+

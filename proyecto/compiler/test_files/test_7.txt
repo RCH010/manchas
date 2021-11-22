@@ -8,24 +8,8 @@ let i, jump : int;
 {
   jump = 1;
 
-  for(i = 0 to i == 10 by 1) {
-    edades[i] = i;
+  for(i = 0 to i >= 10 by 1) {
+    println("Hola ", i);
   }
-  edades[1] = 90;
-  edades[3] = 9;
-  edades[6] = 12;
-  edades[9] = 2;
-  result = mean(edades);
-
-  println("La media es ", result);
-  println("La mediana es ", median(edades));
-  println("La varianza de esto como poblacion es ", pvariance(edades));
-  println("La desviación estandar de esto como poblacion es ", pstdev(edades));
-  
-  print("La variance de esto como muestra es ");
-  println(variance(edades));
-
-  print("La desviación estandar de esto como muestra es ");
-  println(stdev(edades));
 }
 

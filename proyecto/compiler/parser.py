@@ -128,7 +128,8 @@ def p_statements(p):
         | writing statements1
         | reading statements1
         | repetition statements1
-        | return statements1'''
+        | return statements1
+        | plot statements1'''
     p[0] = (p[1], p[2])
 
 def p_special_functions(p):
@@ -279,6 +280,9 @@ def p_standard_deviation(p):
     
 def p_p_standard_deviation(p):
     '''p_standard_deviation : PSTDEV LPAREN ID RPAREN np_add_p_stdev_quadruple'''
+    
+def p_plot(p):
+    '''plot : PLOT LPAREN ID COMMA ID RPAREN np_add_plot_quadruple SEMI'''
 
 
 
@@ -946,6 +950,37 @@ def p_np_add_stdev_quadruple(p):
 def p_np_add_p_stdev_quadruple(p):
     '''np_add_p_stdev_quadruple : '''
     create_quadruple_special_array_functions(p[-2], 'PSTDEV')
+
+def p_np_add_plot_quadruple(p):
+    '''np_add_plot_quadruple : '''
+    x_array_id = p[-4]
+    y_array_id = p[-2]
+    
+    x_array_var = get_var(x_array_id)
+    y_array_var = get_var(y_array_id)
+    
+    x_var_type = x_array_var['type']
+    y_var_type = x_array_var['type']
+    
+    x_array_var_address = x_array_var['address']
+    y_array_var_address = y_array_var['address']
+    
+    x_is_array = x_array_var['is_array']
+    y_is_array = y_array_var['is_array']
+    
+    x_array_size = x_array_var['array_size']
+    y_array_size = y_array_var['array_size']
+    
+    if not (x_is_array and y_is_array):
+        create_error('For a plot function, both variables must be arrays', 'C-33')
+    
+    if (not (x_var_type == Data_types['INTEGER'] or x_var_type == Data_types['FLOAT'])) or (not (y_var_type == Data_types['INTEGER'] or y_var_type == Data_types['FLOAT'])):
+        create_error('For a plot function, both variables must be integers or float arrays', 'C-34')
+    
+    if x_array_size != y_array_size:
+        create_error(f'For a plot function, {x_array_id} and {y_array_id} must be of the same length.', 'C-35')
+    
+    set_new_quadruple('PLOT', x_array_var_address, y_array_var_address, x_array_size)
 
 # ==============================================================================
 # ==============================================================================

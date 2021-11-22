@@ -4,6 +4,7 @@ import bisect
 import statistics
 import random
 from collections import deque
+import matplotlib.pyplot as plt
 from compiler.parser import program_scopes, quadruples, constants_table
 from compiler.utils import Data_types
 
@@ -327,6 +328,14 @@ def calculate_random_value(lower_limit, upper_limit, address_to_save_value):
     random_value = random.randint(lower_limit, upper_limit)
     save_value(address_to_save_value, random_value)
 
+# PLOT , x_array_var_address, y_array_var_address, array_size
+def create_a_plot(x_array_var_address, y_array_var_address, array_size):
+    x_array = get_list_from_array_address(x_array_var_address, array_size)
+    y_array = get_list_from_array_address(y_array_var_address, array_size)
+    
+    plt.plot(x_array, y_array, 'bo')
+    plt.show()
+
 
 def check_quadruples():
     global is_executing, instruction_pointer
@@ -505,6 +514,11 @@ def check_quadruples():
             # quadruple structure:
             # RANDOM , lower-limit, upper_limit, address_to_save_value
             calculate_random_value(left_operand, right_operand, result)
+            update_instruction_pointer()
+        elif operation == 47:       # PLOT
+            # quadruple structure:
+            # PLOT , x_array_var_address, y_array_var_address, array_size
+            create_a_plot(left_operand, right_operand, result)
             update_instruction_pointer()
         else:
             instruction_pointer += 1

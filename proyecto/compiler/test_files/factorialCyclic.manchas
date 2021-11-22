@@ -1,13 +1,25 @@
 program factorialCyclic;
 
+function clacFactorial: int (value:int)
+let sum, i: int;
+{
+  sum = 1;
+  for ( i = 1 to i > value by 1) {
+    sum = sum * i;
+  }
+  return sum;
+}
+
+function pelos: void()
+let x, res: int;
+{
+  read(x);
+  res = clacFactorial(x);
+  print("El resultado: ", res);
+}
+
 main() 
 let sum, i, x :int;
 {
-  sum = 1;
-  x = 5;
-
-  for ( i = 1 to i > x by 1) {
-    sum = sum * i;
-  }
-  print("Resultado ", sum);
+  pelos();
 }
