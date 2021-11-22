@@ -1,10 +1,11 @@
 program test2;
 
 main () 
-let res: int;
+let res: float;
 let algo: int[10];
 {
-  res = (-1);
-  algo[12] = 14;
+  res = (-1.0);
+  algo[1] = 14;
+  res = res / 0;
   print(res);
 }

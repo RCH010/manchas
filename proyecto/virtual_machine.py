@@ -357,6 +357,8 @@ def check_quadruples():
         elif operation == 3:        # / DIVISION
             # quadruple structure:
             # / , leftOperand, rigtOperand, save_result_in_this_address
+            if get_value(right_operand) == 0:
+                create_error(f'Oh no, there is a division by zero, and we cannot perform this operation. \n{get_value(left_operand)} / 0', 'E-13')
             generic_operation(left_operand, right_operand, result, operator.truediv)
             update_instruction_pointer()
         elif operation == 4:        # * MULTIPLICATION
