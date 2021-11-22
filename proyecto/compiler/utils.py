@@ -84,6 +84,7 @@ operators_id = {
     'PSTDEV': 43,    # for Standard deviation
     'VARIANCE': 44, # for variance calculations
     'STDEV': 45,    # for Standard deviation
+    'RANDOM': 46,   # for random values
 }
 
 

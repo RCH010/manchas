@@ -41,6 +41,7 @@ keywords={
     'pstdev': 'PSTDEV',         # For Population standard deviation of data
     'variance': 'VARIANCE',     # For Sample variance of data
     'stdev': 'STDEV',           # For Sample standard deviation of data
+    'random': 'RANDOM',           # For Sample standard deviation of data
 }
 
 # =====================================

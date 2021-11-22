@@ -2,6 +2,7 @@ import sys
 import operator
 import bisect
 import statistics
+import random
 from collections import deque
 from compiler.parser import program_scopes, quadruples, constants_table
 from compiler.utils import Data_types
@@ -322,7 +323,9 @@ def get_list_from_array_address(starting_address, array_size):
         starting_address += 1
     return numbers
 
-
+def calculate_random_value(lower_limit, upper_limit, address_to_save_value):
+    random_value = random.randint(lower_limit, upper_limit)
+    save_value(address_to_save_value, random_value)
 
 
 def check_quadruples():
@@ -495,6 +498,11 @@ def check_quadruples():
             # quadruple structure:
             # STDEV , array_size, array_var_address, address_to_save_value
             calculate_stdev_value(left_operand, right_operand, result)
+            update_instruction_pointer()
+        elif operation == 46:       # RANDOM
+            # quadruple structure:
+            # RANDOM , lower-limit, upper_limit, address_to_save_value
+            calculate_random_value(left_operand, right_operand, result)
             update_instruction_pointer()
         else:
             instruction_pointer += 1

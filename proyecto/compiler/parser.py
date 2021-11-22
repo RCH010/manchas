@@ -133,6 +133,7 @@ def p_statements(p):
 def p_special_functions(p):
     '''special_functions : mean
         | median
+        | random
         | variance
         | p_variance
         | standard_deviation
@@ -262,6 +263,9 @@ def p_mean(p):
 
 def p_median(p):
     '''median : MEDIAN LPAREN ID RPAREN np_add_median_quadruple'''
+
+def p_random(p):
+    '''random : RANDOM LPAREN CTEI COMMA CTEI RPAREN np_add_random_quadruple'''
 
 def p_variance(p):
     '''variance : VARIANCE LPAREN ID RPAREN np_add_variance_quadruple'''
@@ -914,6 +918,17 @@ def p_np_add_mean_quadruple(p):
 def p_np_add_median_quadruple(p):
     '''np_add_median_quadruple : '''
     create_quadruple_special_array_functions(p[-2], 'MEDIAN')
+    
+def p_np_add_random_quadruple(p):
+    '''np_add_random_quadruple : '''
+    result_address = define_new_temporal_address(Data_types['INTEGER'])
+    # Add it to stacks so it can be used on a expression or else
+    lower_limit = p[-4]
+    upper_limit = p[-2]
+    operands.append(result_address)
+    types.append(Data_types['INTEGER'])
+    # Create special function quadruple
+    set_new_quadruple('RANDOM', lower_limit, upper_limit, result_address)
     
 def p_np_add_variance_quadruple(p):
     '''np_add_variance_quadruple : '''
