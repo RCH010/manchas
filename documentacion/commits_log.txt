@@ -1,3 +1,33 @@
+commit a4b69420ebbcc9b531321fea8e6fa2e6b3f9e82a
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 22 12:50:54 2021 -0600
+
+    Add comments on parser
+
+commit 9078a30f79b2b637565273734e52645b9e751760
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 22 12:30:52 2021 -0600
+
+    Add error on zero division
+
+commit 4c471a52adef92023ae41b48c7d9b3e509800c71
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Mon Nov 22 01:25:58 2021 -0600
+
+    Add random function to language. Add test for special functions
+
+commit 60cac365b8fc949bb53dae05aeee031617322a10
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 21 17:48:14 2021 -0600
+
+    Add docs for 7th delivery
+
+commit e183d429e93c458d83021616d0b70ca463deabd0
+Author: Raul <raulcastellanosh@hotmail.com>
+Date:   Sun Nov 21 17:42:31 2021 -0600
+
+    Set errors ids
+
 commit c05772253db3f9e11415b4d2c3c0c9ad3e288435
 Author: Raul <raulcastellanosh@hotmail.com>
 Date:   Sun Nov 21 14:34:10 2021 -0600

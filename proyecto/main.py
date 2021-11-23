@@ -30,7 +30,7 @@ def main(argv):
     res = parser.parse(input, debug=False)
     print(res)
     
-    # print_quadruples()
+    print_quadruples()
     # print_constants()
     # print_scopes()
     

@@ -1,8 +1,7 @@
 program myRLike;
-let datay: int[30];
-let datax: int[15];
+let datay: int[20];
+let datax: int[20];
 let arraySize: int;
-
 
 function fillArrayData: void()
 let i: int;
@@ -17,7 +16,7 @@ let i: int;
 function fillArrayData2: void()
 let i: int;
 {
-  for(i = 0 to i == 15 by 1) {
+  for(i = 0 to i == arraySize by 1) {
     datax[i] = random(1, 5);
     print(datax[i], " ");
   }
@@ -26,7 +25,7 @@ let i: int;
 
 main()
 {
-  arraySize = 30;
+  arraySize = 20;
   println("Los dos arreglos de datos:");
   fillArrayData();
   fillArrayData2();
