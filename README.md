@@ -1,95 +1,325 @@
-# Avances del Proyecto
-
-Raúl Castellanos Herrero  
-A01154891
-
-- Primer avance: 01/10/2021
-- Segundo avance: 09/10/2021
-- Tercer avance: 16/10/2021
+# Lenguaje Manchas
 
 
-En la carpeta de _documentación_ se encuentran los diagramas y documentos. En la carpeta _proyecto_ se encuentra el codigo de lo trabajado junto con algunos archivos pruebas con los que se estuvo probando.
+El lenguaje Manchas, es un lenguaje imperativo con el propósito de simplificar algunas operaciones básicas que se utilizan comúnmente en el análisis estadístico. 
+
+<br><br>
+
+# Manual de usuario
+
+Para poder correr el programa es necesario tener instalado Python3. Por lo que se recomienda seguir lo que se indica en la [documentación oficial](https://www.python.org/downloads/).
+
+Por otro lado, tambien se requiere la librería de matplot, por lo que tambien se recomienda seguir el manual de instalación de la [documentación oficial](https://matplotlib.org/1.4.3/faq/installing_faq.html).
+
+
+Finalmente, hay descargar este repositorio.
+
+`git clone https://github.com/RCH010/manchas.git`
+
+<br><br>
+
+# Getting Started
+
+Antes de adentrarnos en los detalles, hay que saber la estructura general de algún archivo en el lenguaje Manchas. 
+
+```
+program miPrimerPrograma;
+let  miVariableGlobal: int;
+
+function suma: int(varA: int, varB: int)
+let algunaVariableLocal: float;
+{
+  return varA + varB;
+}
+
+main()
+let otraVarLocal: int;
+{
+  println("Hola mundo");
+  otraVarLocal = suma(10, 30);
+  print("El resultado es: ", otraVarLocal);
+}
+```
+
+Como se puede ver, al inicio de cadda programa debe estar la declaración del programa, y después se pueden declarar las variables globales del programa. 
+
+**Nota**: La declaración de variables globales siempre debe ser antes que la declaración de alguna función.
+
+Después en este pequeño programa, se observa la declaración de la función `suma`. Esta es de tipo _int_ y recibe dos parametros de tipo _int_.
+
+En el bloque _main_, función que siempre se ejecutara primero, y siempre debe existir en un progrma tambien puede tener sus varibales locales, y estas se definen antes de las llaves (`{}`) y despues de la palabra reservada `main()`.
+
+En el main, comienza imprimiendo en consola (con un salto de línea) el mensaje _"Hola mundo"_. Despues, podemos ver que la función suma, regresa el resultado de la suma de `10` con `30` y ese resultado se guarda en `otraVarLocal`. Finalmente se imprime el mensaje de _"El resultado es: 40"_ en la consola.
+
+**Nota:** Todos los identificadores que se definan podrán tener letras minusculas a mayusculas (azAZ) y números (0-9). Estos no podran tener caracteres fuera de los mencionados.
+
+ 
+<br>
+
+Por ejemplo:
+
+> ✅ let miVariable2: int; <br>
+> ❌ let mi_variable2: int
+
+<br><br>
+
+
+# Ejecución
+Para ejecutar tu código. Primero hay que posicionarse en la carpeta `proyecto`, y hay que colcar el archivo de tu programa en el mismo nivel.
+
+Una vez ahi ejecuta el siguiente comando en la terminal:
+> `python3 main.py miArchivo.txt`
+
+<br>
+<br>
+
+## Tipos de operaciones
+Manchas soporta las operaciones más comunes de los lengujaes populares:
+
+| Operación | Operador |
+| ------------- | ------------- |
+| Suma  | +  |
+| Resta  | -  |
+| Multiplicación  | *  |
+| División  | /  |
+| Mayor que  | >  |
+| Menor que  | <  |
+| Mayor igual que  | >=  |
+| Menor igual que  | <=  |
+| Igual  | ==  |
+| Diferente  | !=  |
+| And  | &&  |
+| Or  | \|\|  |
+| Asignación  | =  |
+
+<br><br>
+
+
+## Tipos de datos
+En el lenguaje Manchas existen:
+
+- int
+- float
+- bool
+- char
+
+_int_, serían números enteros y _float_, números con decimales. _bool_ es de tipo booleano, donde las palabras reservadas para sus asignaciones o comparaciones son: `true` y `false`. Finalmente _char_ serían de tipo caracter. 
+
+Revisa el siguiente ejemplo:
+
+```
+program ejemplo;
+
+main()
+let unEntero: int;
+let flotante1, flotante2: float,
+let unBooleano: bool;
+let letra: char;
+{
+  unEntero =  10;
+  flotante1 = unEntero / 2;
+  flotante2 = 10.5;
+  unBooleano = true;
+  unBooleano = unBooleano && (unEntero > flotante1);
+  letra = 'a';
+}
+```
+
+
+## Declaración de funciones
+
+Las funciones siempre deberan comenzar con la palabra reservada `function` seguidas del identificador de las mismas, y luego su tipo de retorno separado por dos puntos. Por otro lado, las funciones se deben declarar antes del main.
+
+`function <nombre>: <tipo-de-retorno>(<parametros>){<estatutos>}`
+
+**Nota:** Las funciones no pueden recibir ni regresar arreglos, para soluciar esto, se recomienda que los arreglos que se usen en varias funciones se definan de forma global.
+
+Los tipos de retorno de una función, pueden ser los mismos que los definidos anteriormente. Aunque si una función no regresa nada, habria que poner que `void` en su lugar.
+
+
+Por ejemplo:
+
+> ✅ function suma: int(a:int, b:int){} <br>
+> ❌ function suma(a:int, b:int){} <br>
+> ❌ suma: int(a:int, b:int){} <br>
+
+## Declaración de variables
+
+La declaración de varibales siempre debe comenzar con la palabra reservada `let` seguida del identificador, luego dos puntos (`:`), y su tipo y un punto y coma (`;`). Tambien se pueden definir varias varables en el mismo estatuto, sólo que estas deben ser del mismo tipo.
+
+
+Por ejemplo:
+
+> ✅ let mivar: float; <br>
+> ✅ let mivarA, mivarB: bool; <br>
+> ❌ let mivarA, mivarB: bool <br>
+> ❌ mivarA, mivarB: bool; <br>
+> ❌ let mivar int; <br>
+> ❌ let mivar: void; <br>
+> ❌ let mivar; <br>
+
+
+
+## Ciclos
+
+En el lenguaje Manchas existen dos ciclos, que son los más populares en otros lenguajes. 
+
+
+### While
+
+El ciclo while ejecutara su contenido hasta que la condición dada sea falsa. Revisa el siguiente ejemplo:
+
+```
+program ejemplo;
+
+main()
+let unNumero: int;
+{
+  unNumero = 0;
+  while(unNumero <= 10) do {
+    print("El número es:", unNumero);
+    unNumero = unNumero + 1;
+    println("");
+  }
+}
+```
+
+En el ejemplo anterior, estara imprimiendo en la consola el mensaje de :
+
+_El número es: 0_ <br>
+_El número es: 1_ <br>
+_El número es: 2_ <br>
+_..._ <br>
+_El número es: 10_ <br>
+
+<br>
+
+### For
+
+Por otro lado, tambien se cuenta con el ciclo condicional _for_, el cual sí tiene una sitáxis un poco diferente. Revisa el siguiente ejemplo:
+
+
+```
+program ejemplo;
+let unArreglo: int[10];
+
+function printData: void()
+let i: int;
+{
+  println("");
+  for(i = 0 to i == 10 by 1) {
+    print(unArreglo[i], ", ");
+  }
+  println("");
+}
+
+
+main()
+let i: int;
+{
+  unNumero = 0;
+  for(i = 0 to i == 10 by 1) {
+    unArreglo[i] = i + 5;
+  }
+  printData();
+}
+```
+
+En el ejemplo anterior, estara imprimiendo en la consola el mensaje de :
+
+_5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15_
+
+
+<br>
+
+
+
+<br><br>
+
+## Condicionales
+Se cuenta con el estatuto condicional _if_. Este tiene las palabras reservadas `if` y `else`. El bloque `if` puede o no ser seguido por un bloque `else`.
+
+Revisa el siguiente ejemplo:
+```
+program ejemplo;
+
+main()
+let unNumero: int;
+{
+  unNumero = random(1, 10);
+  if(unNumero > 6) {
+    println("El número es mayor a 6");
+  } else {
+    println("El número es menor a 6");
+  }
+}
+``` 
+
+## Arreglos
+En el lengujae manchas existen los arreglos de una sóla dimensión. Su declaración es muy similar a la declaración de las variables, a excepción que se le agrega unos corchetes, y el número entero que indica su extensión.
+
+
+Por ejemplo:
+
+> ✅ let miArregloDeFlotantes: float[5]; <br>
+> ✅ let arrB1, arrB2: bool[3]; <br>
+> ❌ let mivarA[5], mivarB: bool;<br>
+> ❌ mivarA, mivarB: bool; <br>
+> ❌ let mivar int[10]]; <br>
+> ❌ let mivar: void; <br>
+
+
+**Nota:** Una vez definida el tamaño de un arreglo, esta no se puede modificar.
+
+
+Para acceder o asignar al arreglo se utiliza la sintaxis popular de acceder por medio de los corchetes.
+
+Para acceder a un arreglo se comienza en la posición 0, si se intenta acceder a una posición fuera del espacio en el que se definicio será un error.
+
+
+Revisa el siguiente ejemplo:
+```
+program ejemplo;
+
+main()
+let miArreglo: int[10];
+{
+  miArreglo[0] = 8;
+  miArreglo[1] = 8 + miArreglo[0];
+  println(miArreglo[1] + miArreglo[0]);
+}
+``` 
+
+
+## Otras funciones
+
+En el lenguaje Manchas, existen algunas funciones adicionales que podrían ser de ayuda en algún programa.
+
+Estas funciones, regresan un valor de tipo flotante:
+- `mean(unArreglo)`
+- `median(unArreglo)`
+- `random(min, max)` (enteras)
+- `variance(unArreglo)`
+- `pvariance(unArreglo)`
+- `stdev(unArreglo)`
+- `pstdev(unArreglo)`
+<br><br>
+
+Esta función no regresa nada. Las dimensiones de los arrelgos que se manden deberan ser iguales.
+- `plot(unArreglo, otroArreglo)`
+
+<br>
+**Nota:** unArreglo y otroArreglo deberían ser arrelgos de tipo enteras o flotantes
+
+# Recursos adicionales
+
+- En [esta liga](https://github.com/RCH010/manchas/blob/main/documentacion/Documentacion_Diseno_de_Compiladores_Manchas.pdf) se puede encontrar una documentación más extensa sobre todo el proyecto.
+- [Aquí](https://drive.google.com/file/d/15ucJMUwM2G65ES1DFTJYteumtlkPws0a/view?usp=sharing) podras ver un pequeño vídeo demostrativo del lenguaje.
+
+<br><br>
 
 ---
 
-## Primer avance:
-
-Para este primer avance se diseño el la sintaxis del lenguaje. Se crearon los diagramas y gramatica y se realizo el analizador sintáctico usando PLY, este comprueba la sintáxis de un archivo txt como input y valida que sea correcta o incorrecta.
-
-<br>
-
-## Segundo avance:
-
-Para este segundo avance se agregaron tres clases principales
-- Directory
-- Scopes_directory
-- Vars
-
-Las clases de _Scopesdirectory_ y _Vars_, heredan las propiedades de _Directory_, aunque se sobreescribe el constructor y para el case de Scopes se sobreescribe también la función de print().
-
-Ambas clases, son usadas para poder tener los diccionarios de procedimientos y de variables. 
-
-Por otro lado, se agregaron los puntos neurolgicos necesarios para poder agregar las scopes (global, de las funciones, y del main) al parser. Junto con los necesarios para añadir las variables que se declaren en sus scopes correspondientes.
-
-Finalmente, se añade tambien la clase Operation, que esta será usada más adelante para los cuádruplos. En esta clase se define el tipo que debe retornar, dados dos tipos y la operación (simbolo).
-
-<br>
-
-## Tercer Avance
-
-En este tercer avance se trabaja en la generación de código  de expresiones aritmeticas y asignaciones. Aunque quedan aquí pendientes la generación de algunos estatutos (print, read, mean, mode, etc...). 
-
-Se crea la clase _Quadruples_, la cual sirve para representar las producciones de código. 
-
-Utilizando esta clase, se añaden los puntos neuralgicos correspontientes para ir creando los cuadriplos de lo mencionado anteriormente. Para esto se crean varias pilas (operands, operators, types, jumps) que son utilizadas para agregar todo con forme su correcta precendencia.
-
-Finalmente se hacen modificaciones en los archivos de test, y se añade uno, para seguir probando estos avances.
-
-<br>
-
-## Cuarto Avance
-
-Para este cuarto avance, se trabajó con los estatutos condicionales, el while quedo implementado, aunque el for todavía tiene algunos casos extraños que sigo trabajando en ellos.
-
-Además, reorganice algunas cosas del código que ya estaban complicándose, cree un constructor, y unos métodos para modificar sus atributos en los cuádruplos.
-
-Durante esta semana, agregaré los puntos neurálgicos restantes y comenzaré a implementar la memoria para poder ya guardar direcciones en lugar de referencias que todavía no están. Además de revisar el código para la generación de código de funciones.
-
-<br>
-
-
-## Quinto Avance
-
-Este quinto avances tiene un gran progreso en cuando a la generación del código intermedio. Se añadieron los puntos neuralgicos para algunos estatutos líneales como el del main, return, entre otros. 
-
-Principalmente en este avance se trabajo con las funciones, y todo lo que implico. Se creo un arreglo para los parametros, y se modifica el directorio de funciones para añadir donde empieza, y la memoria. Por otro lado se añaden todos los puntos neuralgicos para la definición y utilización de las funciones.
-
-Finalmente comence a definir como estará estructurada la memoria para ya implementar esta ídea en la creación de código intermedio. Quedo pendiente empezar a trabajar con la maquina virtual para la ejecición de expresiones aritmeticas.
-
-
-<br>
-
-## Sexto Avance
-
-Para este avance me enfrenté con varios problemas que no me había dado cuenta, problemas que había estado acarreando desde entregas pasadas. Lo cual implicó cambios en la gramática y algunas refactorizaciones en todo el proyecto.
-
-Para este avance se definió como se estaría trabajando con la memoria y se hicieron los cambios necesarios para que el código intermedio fuera totalmente escrito con direcciones de memoria. Cambios como, la tabla de constantes y validaciones de la memoria a la que se accedía.
-
-Además, se añadieron los puntos neurálgicos para la definición de y uso de arreglos, y se crearon sus cuádruplos correspondientes.
-
-Finalmente, se estuvo trabajando en la máquina virtual, ya se tienen todas las operaciones aritméticas y booleanas, y además los condicionales y ciclos.
-
-
-<br>
-
-## Séptimo Avance
-
-Con este avance se comenzaron a unir todas las piezas que estaban pendientes. Primeramente, se arreglaron unos errores detectados al llamar una función. Se corrigieron los problemas que estaban causando una llamada de una función que esperaba un valor de retorno y una función que podía ser sin ningún valor de retorno.
-
-Después, se creó la clase Memory, que sería la base para poder tener la memoria en la máquina virtual. Con esto, se podrían agregar validaciones que estaban pendientes sobre los límites de memoria. Una vez que esto se logró, se implementó la ejecución de funciones en la máquina virtual.
-
-Además, se implementó el manejo de apuntadores para poder hacer uso de las direcciones virtuales que son apuntadores. Con esto, se implementó también la ejecución de código intermedio que utilizará arreglos. La ejecución de arreglos implico de nuevo varios cambios en los puntos neurálgicos ya existentes y en la gramática porque estaban creándose unas inconsistencias al momento de indexar en los arreglos.
-
-Por otro lado, se completó la generación de cuádruplos para los estatutos pendientes, aquí incluidas las funciones particulares del programa. Con esto también se trabajó con su ejecución.
-
-Finalmente, se realizaron varios de los programas que se estarán utilizando como pruebas para validar el funcionamiento del programa y se comenzó a trabajar en la documentación del proyecto.
+### Autor
+Raúl Castellanos Herrero <br>
+24-nov-2021
